@@ -1,84 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blog — CL Growth Academy</title>
 <meta name="description" content="Frank, founder-led writing on NDIS and aged care marketing — SEO, ads, email, social and content, no jargon.">
+<link rel="canonical" href="https://cl-growth-academy-website.vercel.app/blog.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CL Growth Academy">
+<meta property="og:locale" content="en_AU">
+<meta property="og:title" content="Blog — CL Growth Academy">
+<meta property="og:description" content="Frank, founder-led writing on NDIS and aged care marketing — no jargon.">
+<meta property="og:url" content="https://cl-growth-academy-website.vercel.app/blog.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Blog — CL Growth Academy">
+<meta name="twitter:description" content="Frank, founder-led writing on NDIS and aged care marketing — no jargon.">
+
+<meta name="theme-color" content="#1A1310">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Yellowtail&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="brand-strip" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
 <header class="site-header">
-  <nav class="nav">
+  <nav class="nav" aria-label="Main">
     <a href="index.html" class="brand">CL Growth<span> Academy</span></a>
-    <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
-    <div class="nav-links">
+    <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">&#9776;</button>
+    <div class="nav-links" id="nav-links">
       <a href="how-we-help.html">How We Help</a>
       <a href="ndis-marketing/index.html">NDIS Marketing</a>
-      <a href="blog.html">Blog</a>
+      <a href="blog.html" aria-current="page">Blog</a>
       <a href="contact.html" class="btn btn-mustard nav-cta">Get In Touch</a>
     </div>
   </nav>
 </header>
 
-<section class="hero" style="padding: 60px 0;">
+<main id="main">
+
+<section class="hero hero-compact">
   <div class="wrap">
     <span class="eyebrow">The blog</span>
-    <h1 style="margin-top:14px;">Focus your <span class="script">attention.</span></h1>
+    <h1>Focus your <span class="script">attention.</span></h1>
     <p class="lead">Straight talk on what actually grows an NDIS or aged care provider — and what's just noise.</p>
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">In the works</span>
+      <h2>Coming soon</h2>
+      <p class="note">These are the pieces being written first. Want one of them sooner, or have a question you'd like answered in writing? <a href="contact.html">Tell Chris</a>.</p>
+    </div>
     <div class="grid grid-3">
-      <a class="post-card" href="#">
+      <article class="post-card is-upcoming">
         <span class="eyebrow">SEO</span>
         <h3>Why "best NDIS provider near me" is the only keyword that matters</h3>
-        <p style="opacity:0.75; margin-top:10px;">Read more &rarr;</p>
-      </a>
-      <a class="post-card" href="#">
+        <span class="status">Coming soon</span>
+      </article>
+      <article class="post-card is-upcoming">
         <span class="eyebrow">Content</span>
         <h3>Ditch the stock photos: what participants actually respond to</h3>
-        <p style="opacity:0.75; margin-top:10px;">Read more &rarr;</p>
-      </a>
-      <a class="post-card" href="#">
+        <span class="status">Coming soon</span>
+      </article>
+      <article class="post-card is-upcoming">
         <span class="eyebrow">Ads</span>
         <h3>Vanity metrics vs. real enquiries — how to tell the difference</h3>
-        <p style="opacity:0.75; margin-top:10px;">Read more &rarr;</p>
-      </a>
-      <a class="post-card" href="#">
+        <span class="status">Coming soon</span>
+      </article>
+      <article class="post-card is-upcoming">
         <span class="eyebrow">Email</span>
         <h3>The follow-up sequence most providers never send</h3>
-        <p style="opacity:0.75; margin-top:10px;">Read more &rarr;</p>
-      </a>
-      <a class="post-card" href="#">
+        <span class="status">Coming soon</span>
+      </article>
+      <article class="post-card is-upcoming">
         <span class="eyebrow">Social</span>
         <h3>Your team is your best content — here's how to prove it</h3>
-        <p style="opacity:0.75; margin-top:10px;">Read more &rarr;</p>
-      </a>
-      <a class="post-card" href="#">
+        <span class="status">Coming soon</span>
+      </article>
+      <article class="post-card is-upcoming">
         <span class="eyebrow">Strategy</span>
         <h3>Fifteen years in one sector: what we've learned about NDIS growth</h3>
-        <p style="opacity:0.75; margin-top:10px;">Read more &rarr;</p>
-      </a>
+        <span class="status">Coming soon</span>
+      </article>
     </div>
-    <p style="opacity:0.6; font-size:0.85rem; margin-top:30px;">Placeholder posts — swap in real articles as they're written.</p>
   </div>
 </section>
+
+<section class="section-oxblood section-cta reveal">
+  <div class="wrap">
+    <h2>Don't want to wait for the blog?</h2>
+    <p class="lead">Have the conversation directly instead.</p>
+    <div class="btn-row">
+      <a href="contact.html" class="btn btn-paper">Book a Free Consult &rarr;</a>
+      <a href="tel:+61431584725" class="btn btn-ghost">+61 431 584 725</a>
+    </div>
+  </div>
+</section>
+
+</main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-grid">
       <div>
         <div class="brand">CL Growth<span> Academy</span></div>
-        <p style="margin-top:14px; opacity:0.75; max-width:320px;">NDIS &amp; Aged Care Marketing. Founder-led. Sydney, AU.</p>
+        <p class="footer-tagline">NDIS &amp; Aged Care Marketing. Founder-led. Sydney, AU.</p>
       </div>
-      <div>
-        <h4>Navigate</h4>
+      <nav aria-label="Footer">
+        <div class="footer-label">Navigate</div>
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="how-we-help.html">How We Help</a></li>
@@ -86,16 +130,17 @@
           <li><a href="blog.html">Blog</a></li>
           <li><a href="contact.html">Get In Touch</a></li>
         </ul>
-      </div>
+      </nav>
       <div>
-        <h4>Contact</h4>
+        <div class="footer-label">Contact</div>
         <ul>
           <li><a href="mailto:chris@clgrowthacademy.com.au">chris@clgrowthacademy.com.au</a></li>
+          <li><a href="tel:+61431584725">+61 431 584 725</a></li>
           <li>Sydney, AU</li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">© 2026 CL Growth Academy. All rights reserved.</div>
+    <div class="footer-bottom">© 2026 CL Growth Academy. Real growth, not stock photos.</div>
   </div>
 </footer>
 

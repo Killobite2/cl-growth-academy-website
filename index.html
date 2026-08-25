@@ -1,17 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CL Growth Academy — NDIS & Aged Care Marketing</title>
+<title>CL Growth Academy — NDIS &amp; Aged Care Marketing</title>
 <meta name="description" content="Founder-led marketing for NDIS and aged care providers. No stock photos, no jargon, no vanity metrics. Fifteen years of marketing built for one sector.">
+<link rel="canonical" href="https://cl-growth-academy-website.vercel.app/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CL Growth Academy">
+<meta property="og:locale" content="en_AU">
+<meta property="og:title" content="CL Growth Academy — NDIS &amp; Aged Care Marketing">
+<meta property="og:description" content="Founder-led marketing for NDIS and aged care providers. No stock photos, no jargon, no vanity metrics.">
+<meta property="og:url" content="https://cl-growth-academy-website.vercel.app/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CL Growth Academy — NDIS &amp; Aged Care Marketing">
+<meta name="twitter:description" content="Founder-led marketing for NDIS and aged care providers. No stock photos, no jargon, no vanity metrics.">
+
+<meta name="theme-color" content="#1A1310">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Yellowtail&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-<div class="brand-strip">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="brand-strip" aria-hidden="true">
   <span></span><span></span><span></span><span></span><span></span>
   <span></span><span></span><span></span><span></span><span></span>
   <span></span><span></span><span></span><span></span><span></span>
@@ -19,10 +37,10 @@
 </div>
 
 <header class="site-header">
-  <nav class="nav">
+  <nav class="nav" aria-label="Main">
     <a href="index.html" class="brand">CL Growth<span> Academy</span></a>
-    <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
-    <div class="nav-links">
+    <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">&#9776;</button>
+    <div class="nav-links" id="nav-links">
       <a href="how-we-help.html">How We Help</a>
       <a href="ndis-marketing/index.html">NDIS Marketing</a>
       <a href="blog.html">Blog</a>
@@ -31,15 +49,20 @@
   </nav>
 </header>
 
+<main id="main">
+
 <section class="hero">
   <div class="wrap">
     <div class="hero-top">
       <span class="eyebrow">Founder-led &middot; Sydney, AU</span>
       <span class="script">CL Growth Academy</span>
     </div>
-    <h1 style="margin-top:22px;">Grow your business.<br><span class="script">focus</span> your attention.</h1>
+    <h1>Grow your business.<br><span class="script">focus</span> your attention.</h1>
     <p class="lead">We help NDIS and aged care providers get seen by the people who actually need them. No stock photography, no jargon, no vanity metrics. Fifteen years of marketing, sales and strategy built for one sector, aimed at real participant enquiries.</p>
-    <a href="contact.html" class="btn btn-paper">Book a Free Consult &rarr;</a>
+    <div class="btn-row">
+      <a href="contact.html" class="btn btn-paper">Book a Free Consult &rarr;</a>
+      <a href="tel:+61431584725" class="btn btn-ghost">+61 431 584 725</a>
+    </div>
     <div class="hero-meta">
       <span>NDIS &amp; Aged Care Marketing</span>
       <span>clgrowthacademy.com.au</span>
@@ -47,56 +70,66 @@
   </div>
 </section>
 
-<section class="section-ink2">
+<section class="section-ink2 reveal">
   <div class="wrap">
-    <span class="eyebrow">Trusted by</span>
-    <h2 style="margin-top:10px;">100+ NDIS &amp; aged care providers</h2>
-    <div class="logo-strip">
-      <div class="logo-slot">Client logo</div>
-      <div class="logo-slot">Client logo</div>
-      <div class="logo-slot">Client logo</div>
-      <div class="logo-slot">Client logo</div>
-      <div class="logo-slot">Client logo</div>
-      <div class="logo-slot">Client logo</div>
+    <div class="section-head">
+      <span class="eyebrow">Trusted by</span>
+      <h2>100+ NDIS &amp; aged care providers</h2>
     </div>
-    <p style="opacity:0.6; font-size:0.8rem; margin-top:16px;">Placeholder slots — swap in real client logos when ready. No stock imagery, ever.</p>
+    <ul class="logo-strip">
+      <li class="logo-name">Tania Gomez NDIS Consulting</li>
+      <li class="logo-name">Auscare Group</li>
+      <li class="logo-name">Independent Living Victoria</li>
+      <li class="logo-name">Theratrak</li>
+      <li class="logo-name">Journey with Carers</li>
+      <li class="logo-name">Astute Living Care</li>
+      <li class="logo-name">Sahara Services</li>
+      <li class="logo-name">Able Mind Services</li>
+      <li class="logo-name">Zoomly NDIS Transport</li>
+      <li class="logo-name">All About Caring NDIS</li>
+      <li class="logo-name">Care BPO</li>
+      <li class="logo-name">Connector Co</li>
+    </ul>
+    <p class="note">Chris has also worked with WeFlex, Nine Entertainment Co, Triple M, The Hit Network, Lexus, BMW and Cricket Australia.</p>
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="wrap">
-    <span class="eyebrow">Core service</span>
-    <h2 style="margin-top:10px;">How we get you found</h2>
+    <div class="section-head">
+      <span class="eyebrow">Core service</span>
+      <h2>How we get you found</h2>
+    </div>
     <div class="grid grid-4">
-      <div class="card">
+      <a class="card" href="ndis-marketing/seo.html">
         <div class="card-number">01</div>
         <h3>NDIS SEO</h3>
         <p>Long-term visibility built for NDIS-specific searches, not vanity keywords.</p>
-        <span class="tag">Core Service</span>
-      </div>
-      <div class="card">
+        <p class="card-more">Learn more</p>
+      </a>
+      <a class="card" href="ndis-marketing/ads.html">
         <div class="card-number">02</div>
         <h3>NDIS Ads</h3>
         <p>Paid campaigns aimed at real participant enquiries, not clicks for the sake of clicks.</p>
-        <span class="tag">Core Service</span>
-      </div>
-      <div class="card">
+        <p class="card-more">Learn more</p>
+      </a>
+      <a class="card" href="ndis-marketing/email.html">
         <div class="card-number">03</div>
         <h3>Email Marketing</h3>
-        <p>Straight-talking sequences that keep your provider top of mind — no funnels for funnels' sake.</p>
-        <span class="tag">Core Service</span>
-      </div>
-      <div class="card">
+        <p>Straight-talking sequences that keep your provider top of mind.</p>
+        <p class="card-more">Learn more</p>
+      </a>
+      <a class="card" href="ndis-marketing/social.html">
         <div class="card-number">04</div>
         <h3>Social &amp; Content</h3>
         <p>Real stories from your team build more trust than any stock photo ever will.</p>
-        <span class="tag">Core Service</span>
-      </div>
+        <p class="card-more">Learn more</p>
+      </a>
     </div>
   </div>
 </section>
 
-<section class="section-paper">
+<section class="section-paper reveal">
   <div class="wrap">
     <div class="stat-panel">
       <div class="stat stat-paper">
@@ -115,77 +148,139 @@
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="wrap">
-    <span class="eyebrow">Founder-led</span>
+    <div class="section-head">
+      <span class="eyebrow">Founder-led</span>
+      <h2>Chris Lapa</h2>
+    </div>
     <div class="founder">
-      <div class="founder-photo">Photo of Chris<br>(real photo — no stock)</div>
+      <div class="founder-photo">Photo of Chris<br>(real photo &mdash; no stock)</div>
       <div>
-        <h2 style="margin-bottom:16px;">Chris Lapa</h2>
-        <p>"Let's cut to the chase — is your marketing actually bringing in participants, or just likes?"</p>
-        <p>I've spent fifteen years in marketing, sales and strategy, and I've put all of it into one sector: NDIS and aged care. I know the challenges here are the brief, not a demographic. That means no jargon, no 360-degree omnichannel nonsense — just work that gets your service seen by the people who actually need it.</p>
-        <p style="font-family: var(--font-script); font-size: 1.4rem; margin-top: 20px;">— Chris</p>
+        <p class="founder-quote">&ldquo;Let's cut to the chase &mdash; is your marketing actually bringing in participants, or just likes?&rdquo;</p>
+        <p>I've spent fifteen years in marketing, sales and strategy, and I've put all of it into one sector: NDIS and aged care. I know the challenges here are the brief, not a demographic. That means no jargon, no 360-degree omnichannel nonsense &mdash; just work that gets your service seen by the people who actually need it.</p>
+        <p class="founder-sign">&mdash; Chris</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section-oxblood">
+<section class="section-ink2 reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">In their words</span>
+      <h2>What providers say</h2>
+    </div>
+    <div class="grid grid-3">
+      <figure class="testimonial is-placeholder">
+        <blockquote>[TESTIMONIAL &mdash; paste a real quote from a provider here.]</blockquote>
+        <figcaption>[Name, role &mdash; Provider]</figcaption>
+      </figure>
+      <figure class="testimonial is-placeholder">
+        <blockquote>[TESTIMONIAL &mdash; paste a real quote from a provider here.]</blockquote>
+        <figcaption>[Name, role &mdash; Provider]</figcaption>
+      </figure>
+      <figure class="testimonial is-placeholder">
+        <blockquote>[TESTIMONIAL &mdash; paste a real quote from a provider here.]</blockquote>
+        <figcaption>[Name, role &mdash; Provider]</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section-oxblood reveal">
   <div class="wrap">
     <div class="lead-panel">
-      <span class="eyebrow" style="color: var(--oxblood);">Free lead magnet</span>
-      <h2 style="margin-top: 10px;">NDIS &amp; aged care<br><span class="script">tips, tricks</span> &amp; actionable tools</h2>
-      <div class="chip-row">
-        <span class="chip">01 SEO</span>
-        <span class="chip">02 Ads</span>
-        <span class="chip">03 Email</span>
-        <span class="chip">04 Social</span>
-        <span class="chip">05 MGD</span>
-      </div>
+      <span class="eyebrow eyebrow-light">Free lead magnet</span>
+      <h2>NDIS &amp; aged care<br><span class="script">tips, tricks</span> &amp; actionable tools</h2>
+      <ul class="chip-row">
+        <li class="chip">01 SEO</li>
+        <li class="chip">02 Ads</li>
+        <li class="chip">03 Email</li>
+        <li class="chip">04 Social</li>
+        <li class="chip">05 Managed</li>
+      </ul>
       <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
         <!-- Chris: replace YOUR_FORM_ID above with your Formspree form ID once you've created a free account at formspree.io -->
+        <label for="lead-email">Your email address</label>
         <div class="form-row">
-          <input type="email" name="email" placeholder="Your email address" required>
-          <button type="submit" class="btn" style="background: var(--ink); color: var(--paper);">Register My Interest</button>
+          <input id="lead-email" type="email" name="email" placeholder="you@yourprovider.com.au" required>
+          <button type="submit" class="btn btn-ink">Register My Interest</button>
         </div>
+        <p class="form-note">Early access to the library when it launches. No spam.</p>
       </form>
     </div>
   </div>
 </section>
 
-<section>
+<section class="reveal">
   <div class="wrap">
-    <span class="eyebrow">From the blog</span>
-    <h2 style="margin-top:10px;">Focus your attention</h2>
+    <div class="section-head">
+      <span class="eyebrow">Straight answers</span>
+      <h2>Questions we get asked</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Do you work with businesses outside NDIS and aged care?</summary>
+        <p>No. One sector only. That's the whole point &mdash; your challenges are the brief, not a demographic we're guessing at.</p>
+      </details>
+      <details>
+        <summary>Am I locked into a contract?</summary>
+        <p>No lock-in contracts. If the work isn't earning its place, you shouldn't be trapped paying for it.</p>
+      </details>
+      <details>
+        <summary>Who actually does the work?</summary>
+        <p>Chris. An approach designed for you, done by him &mdash; one point of contact, not a rotating account team reading from a deck.</p>
+      </details>
+      <details>
+        <summary>How fast will I see results?</summary>
+        <p>Depends on the channel, and anyone who tells you otherwise is selling. Ads can put you in front of people searching this week. SEO is a long game &mdash; it builds visibility that keeps paying after you stop spending. Most providers run both for that reason.</p>
+      </details>
+      <details>
+        <summary>Will you use stock photos of smiling strangers?</summary>
+        <p>Never. Real stories from your team build more trust than any stock photo ever will. We'll help you capture them on a phone &mdash; no production crew required.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="section-ink2 reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">From the blog</span>
+      <h2>Focus your attention</h2>
+    </div>
     <div class="grid grid-3">
       <a class="post-card" href="blog.html">
         <span class="eyebrow">SEO</span>
         <h3>Why "best NDIS provider near me" is the only keyword that matters</h3>
-        <p style="opacity:0.75; margin-top:10px;">Read more &rarr;</p>
+        <p class="card-more">Read the blog</p>
       </a>
       <a class="post-card" href="blog.html">
         <span class="eyebrow">Content</span>
         <h3>Ditch the stock photos: what participants actually respond to</h3>
-        <p style="opacity:0.75; margin-top:10px;">Read more &rarr;</p>
+        <p class="card-more">Read the blog</p>
       </a>
       <a class="post-card" href="blog.html">
         <span class="eyebrow">Ads</span>
         <h3>Vanity metrics vs. real enquiries — how to tell the difference</h3>
-        <p style="opacity:0.75; margin-top:10px;">Read more &rarr;</p>
+        <p class="card-more">Read the blog</p>
       </a>
     </div>
   </div>
 </section>
+
+</main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-grid">
       <div>
         <div class="brand">CL Growth<span> Academy</span></div>
-        <p style="margin-top:14px; opacity:0.75; max-width:320px;">NDIS &amp; Aged Care Marketing. Founder-led. Sydney, AU.</p>
+        <p class="footer-tagline">NDIS &amp; Aged Care Marketing. Founder-led. Sydney, AU.</p>
       </div>
-      <div>
-        <h4>Navigate</h4>
+      <nav aria-label="Footer">
+        <div class="footer-label">Navigate</div>
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="how-we-help.html">How We Help</a></li>
@@ -193,18 +288,44 @@
           <li><a href="blog.html">Blog</a></li>
           <li><a href="contact.html">Get In Touch</a></li>
         </ul>
-      </div>
+      </nav>
       <div>
-        <h4>Contact</h4>
+        <div class="footer-label">Contact</div>
         <ul>
           <li><a href="mailto:chris@clgrowthacademy.com.au">chris@clgrowthacademy.com.au</a></li>
+          <li><a href="tel:+61431584725">+61 431 584 725</a></li>
           <li>Sydney, AU</li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">© 2026 CL Growth Academy. All rights reserved.</div>
+    <div class="footer-bottom">© 2026 CL Growth Academy. Real growth, not stock photos.</div>
   </div>
 </footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "CL Growth Academy",
+  "description": "Founder-led marketing for NDIS and aged care providers in Australia.",
+  "url": "https://cl-growth-academy-website.vercel.app/",
+  "email": "chris@clgrowthacademy.com.au",
+  "telephone": "+61431584725",
+  "areaServed": "AU",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Sydney",
+    "addressRegion": "NSW",
+    "addressCountry": "AU"
+  },
+  "founder": {
+    "@type": "Person",
+    "name": "Chris Lapa",
+    "jobTitle": "Founder"
+  },
+  "knowsAbout": ["NDIS marketing", "Aged care marketing", "SEO", "Google Ads", "Email marketing", "Social media marketing"]
+}
+</script>
 
 <script src="js/main.js"></script>
 </body>

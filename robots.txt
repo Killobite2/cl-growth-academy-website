@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cl-growth-academy-website.vercel.app/sitemap.xml
