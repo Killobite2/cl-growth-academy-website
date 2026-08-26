@@ -888,10 +888,16 @@ label {
 }
 
 /* ---------------------------------------------------------------
-   18. PHOTO BAND — full-bleed, breaks out of .wrap
+   18. PHOTO HERO — full-viewport, homepage only
+
+   NOTE: do not put aspect-ratio and max-height on .photo-frame
+   together. When max-height caps the height, aspect-ratio shrinks
+   the WIDTH to preserve the ratio and the box collapses to roughly
+   half the viewport. Height is set directly here for that reason;
+   object-fit does the cropping.
    --------------------------------------------------------------- */
 
-.photo-band {
+.photo-hero-section {
   position: relative;
   padding: 0;
   background: var(--ink-2);
@@ -899,62 +905,101 @@ label {
 
 .photo-frame {
   position: relative;
-  /* Natural ratio of the source crop, capped so it reads as a
-     cinematic band on wide screens instead of a giant square */
-  aspect-ratio: 5750 / 3970;
-  max-height: 70vh;
+  width: 100%;
+  min-height: 100vh;  /* fallback for browsers without svh */
+  min-height: 100svh; /* avoids extending behind mobile browser chrome */
+  display: flex;
+  align-items: flex-end;
   overflow: hidden;
 }
 
-.photo-frame img {
+.photo-frame > img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Weighted upward to keep the screen and Chris in frame when
-     max-height crops the band vertically */
-  object-position: 50% 34%;
+  /* Holds Chris and the projector screen in frame; at phone width a
+     tall box crops this landscape source hard from the sides */
+  object-position: 55% 38%;
 }
 
-/* Bottom-weighted scrim so the overlaid caption stays legible
-   against a busy photograph */
+/* Two-axis scrim: heavy along the bottom where the type sits, plus a
+   left wash so the headline never competes with the curtain texture */
 .photo-frame::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
+  background:
+    linear-gradient(to top,
+      rgba(var(--ink-rgb), 0.96) 0%,
+      rgba(var(--ink-rgb), 0.86) 20%,
+      rgba(var(--ink-rgb), 0.52) 42%,
+      rgba(var(--ink-rgb), 0.18) 66%,
+      rgba(var(--ink-rgb), 0.55) 100%),
+    linear-gradient(to right,
+      rgba(var(--ink-rgb), 0.72) 0%,
+      rgba(var(--ink-rgb), 0.18) 52%,
+      rgba(var(--ink-rgb), 0) 100%);
+}
+
+.photo-hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-top: var(--space-10);
+  padding-bottom: var(--space-9);
+}
+
+.photo-hero-content h1 {
+  margin-top: var(--space-5);
+  font-size: var(--fs-display);
+  max-width: 22ch;
+}
+
+.photo-hero-content .lead {
+  margin-top: var(--space-5);
+  color: var(--paper);
+}
+
+.photo-credit {
+  position: absolute;
+  z-index: 1;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  max-width: 40%;
+  text-align: right;
+  font-size: var(--fs-micro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--paper-faint);
+}
+
+/* Homepage only: the nav sits over the photo so the hero can fill
+   the viewport. fixed (not sticky) keeps it out of the layout flow,
+   which avoids the jump a sticky-to-fixed swap would cause. */
+body.photo-hero .site-header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  border-bottom: none;
+  /* Not fully transparent: the nav sits over the bright projector
+     screen, where paper-on-white would fail. This guarantees
+     legibility without reading as a solid bar. */
   background: linear-gradient(
-    to top,
-    rgba(var(--ink-rgb), 0.92) 0%,
-    rgba(var(--ink-rgb), 0.55) 28%,
-    rgba(var(--ink-rgb), 0.1) 55%,
-    rgba(var(--ink-rgb), 0.28) 100%
+    to bottom,
+    rgba(var(--ink-rgb), 0.88) 0%,
+    rgba(var(--ink-rgb), 0.55) 60%,
+    rgba(var(--ink-rgb), 0) 100%
   );
 }
 
-.photo-caption {
-  position: absolute;
-  z-index: 1;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: var(--space-6) var(--space-5);
-}
-
-.photo-caption .inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
-
-.photo-caption h2 {
-  margin-top: var(--space-2);
-  max-width: 24ch;
-}
-
-.photo-caption p {
-  margin-top: var(--space-3);
-  margin-bottom: 0;
-  max-width: 54ch;
-  color: var(--paper-muted);
+body.photo-hero .site-header.is-scrolled {
+  background: var(--ink-2);
+  border-bottom: var(--border-hairline);
+  box-shadow: var(--shadow-md);
 }
 
 /* ---------------------------------------------------------------
@@ -1109,10 +1154,34 @@ label {
   .lead-panel { padding: var(--space-6) var(--space-5); }
   .hero-meta { gap: var(--space-2); }
 
-  /* Give the band more height at phone width so the room still
-     reads, and pull the caption in */
-  .photo-frame { aspect-ratio: 4 / 3; max-height: none; }
-  .photo-caption { padding: var(--space-5) var(--space-4); }
+  /* Tighter vertical padding so the headline, lead and both CTAs
+     still fit inside one viewport at phone height */
+  .photo-hero-content {
+    padding-top: var(--space-9);
+    padding-bottom: var(--space-8);
+  }
+
+  /* Hold the frame on Chris rather than centring on empty curtain
+     once the sides crop away */
+  .photo-frame > img { object-position: 58% 40%; }
+
+  /* At phone height the text block rises into the bright projector
+     screen, where cream-on-white fails. Darken far more aggressively
+     — the photo becomes texture and context, legibility wins. */
+  .photo-frame::after {
+    background: linear-gradient(to top,
+      rgba(var(--ink-rgb), 0.97) 0%,
+      rgba(var(--ink-rgb), 0.94) 55%,
+      rgba(var(--ink-rgb), 0.88) 74%,
+      rgba(var(--ink-rgb), 0.68) 90%,
+      rgba(var(--ink-rgb), 0.6) 100%);
+  }
+
+  .photo-credit {
+    right: var(--space-4);
+    bottom: var(--space-3);
+    max-width: 55%;
+  }
 
   /* A 4-column table cannot work this narrow — reflow to one
      card per journey stage, column names as inline labels */
