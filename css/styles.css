@@ -552,29 +552,92 @@ a.post-card:focus-visible {
    11. SOCIAL PROOF
    --------------------------------------------------------------- */
 
-.logo-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--space-3);
-  margin-top: var(--space-6);
-  list-style: none;
-  padding: 0;
+/* Sliding logo wall. The track holds the logo set twice so a
+   -50% translate loops seamlessly; the second copy is aria-hidden
+   and untabbable so it doesn't duplicate content or tab stops. */
+
+.marquee {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-3) 0;
+  /* Fade the ends rather than clipping logos mid-tile */
+  mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
 }
 
-.logo-name {
-  text-align: center;
-  padding: var(--space-4) var(--space-3);
-  border: var(--border-hairline);
-  border-radius: var(--radius-sm);
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: var(--fs-micro);
-  letter-spacing: 0.5px;
-  color: var(--paper-muted);
+/* Default is a static wrapping wall, so the logos are all visible
+   with JS off or motion reduced. JS adds .is-animating to opt in. */
+.marquee-track {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  gap: var(--space-4);
+}
+
+.marquee-track.is-animating {
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  width: max-content;
+  animation: marquee 48s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Pause whenever someone is reaching for a logo — clicking a moving
+   target is hostile, and these tiles are interactive */
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track { animation-play-state: paused; }
+
+.logo-tile {
+  flex: 0 0 auto;
+  width: 136px;
+  height: 98px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 64px;
+  padding: var(--space-3);
+  /* Pure white, not --paper: these logos are JPEGs with baked-in
+     white backgrounds, so any off-white would show a visible edge */
+  background: #FFFFFF;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font: inherit;
+  transition: transform var(--t-base) var(--ease),
+              box-shadow var(--t-base) var(--ease),
+              border-color var(--t-base) var(--ease);
+}
+
+.logo-tile img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-tile:hover,
+.logo-tile:focus-visible {
+  transform: scale(1.08);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--mustard);
+}
+
+.logo-tile[aria-pressed="true"] {
+  border-color: var(--mustard);
+  box-shadow: var(--shadow-md);
+}
+
+.marquee-hint {
+  margin-top: var(--space-4);
+  font-size: var(--fs-micro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--paper-faint);
 }
 
 .brands-row {
@@ -592,21 +655,41 @@ a.post-card:focus-visible {
 
 /* Testimonials */
 
-.testimonial {
+/* Single panel driven by the logo wall above it */
+
+.testimonial-panel {
+  margin: var(--space-7) 0 0;
   background: var(--ink-2);
-  border-left: 4px solid var(--oxblood);
+  border: var(--border-hairline);
+  border-left: 4px solid var(--mustard);
   border-radius: var(--radius-md);
-  padding: var(--space-6);
+  padding: var(--space-7) var(--space-6);
 }
 
-.testimonial blockquote {
+.testimonial-panel blockquote {
   margin: 0;
   font-size: var(--fs-lead);
   line-height: 1.6;
 }
 
-.testimonial figcaption {
-  margin-top: var(--space-4);
+.testimonial-panel .attrib {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.testimonial-panel .attrib img {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  padding: var(--space-1);
+  background: #FFFFFF;
+  border-radius: var(--radius-sm);
+  object-fit: contain;
+}
+
+.testimonial-panel .who {
   font-size: var(--fs-micro);
   font-weight: 800;
   text-transform: uppercase;
@@ -614,13 +697,15 @@ a.post-card:focus-visible {
   color: var(--mustard);
 }
 
-.is-placeholder {
+/* Awaiting a real quote — visibly unfinished, never mistaken for copy */
+.testimonial-panel.is-placeholder {
   background: transparent;
   border: 1px dashed rgba(var(--paper-rgb), 0.25);
   border-left: 4px solid var(--paper-faint);
 }
 
-.is-placeholder blockquote { color: var(--paper-faint); }
+.testimonial-panel.is-placeholder blockquote { color: var(--paper-faint); }
+.testimonial-panel.is-placeholder .who { color: var(--paper-faint); }
 
 /* ---------------------------------------------------------------
    12. STAT PANEL
@@ -1242,6 +1327,17 @@ body.photo-hero .site-header.is-scrolled {
 
   .reveal { opacity: 1; transform: none; }
   .btn:hover, a.card:hover, a.post-card:hover { transform: none; }
+
+  /* Static wrapping wall — JS also skips cloning under reduced
+     motion, but belt and braces in case the class is already set */
+  .marquee { mask-image: none; -webkit-mask-image: none; }
+  .marquee-track.is-animating {
+    animation: none;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+  }
+  .logo-tile:hover, .logo-tile:focus-visible { transform: none; }
 }
 
 /* ---------------------------------------------------------------

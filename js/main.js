@@ -104,12 +104,90 @@
     targets.forEach(function (el) { observer.observe(el); });
   }
 
+  /* ---------------- Client wall + testimonials ----------------
+
+     Chris: to add a real testimonial, replace the `quote` for that
+     client below and set `who` to the person's name and role.
+     A null quote renders the visibly-unfinished placeholder state. */
+
+  var CLIENTS = {
+    'tania-gomez-consulting':     { name: 'Tania Gomez Consulting',          quote: null, who: null },
+    'auscare-2':                  { name: 'Auscare Group',                   quote: null, who: null },
+    'independent-living-victoria':{ name: 'Independent Living Victoria',     quote: null, who: null },
+    'nourished-not-deprived-2':   { name: 'Nourished Not Deprived',          quote: null, who: null },
+    'pure-living':                { name: 'Pure Living Accommodation & Care',quote: null, who: null },
+    'journey-with-cares':         { name: 'Journey With Carers',             quote: null, who: null },
+    'able-mind-services':         { name: 'Able Mind Services',              quote: null, who: null },
+    'astute-living-care':         { name: 'Astute Living Care',              quote: null, who: null },
+    'zoomly-2':                   { name: 'Zoomly NDIS Transport',           quote: null, who: null },
+    'all-about-caring':           { name: 'All About Caring NDIS',           quote: null, who: null },
+    'care-bpo':                   { name: 'Care BPO',                        quote: null, who: null },
+    'resolv':                     { name: 'Resolv',                          quote: null, who: null },
+    'disbranded':                 { name: 'Disbranded',                      quote: null, who: null }
+  };
+
+  function initClients() {
+    var track = document.getElementById('logo-track');
+    var panel = document.getElementById('testimonial-panel');
+    if (!track || !panel) return;
+
+    var quoteEl = document.getElementById('tp-quote');
+    var logoEl = document.getElementById('tp-logo');
+    var whoEl = document.getElementById('tp-who');
+
+    function select(slug, tile) {
+      var c = CLIENTS[slug];
+      if (!c) return;
+
+      var hasQuote = !!c.quote;
+      panel.classList.toggle('is-placeholder', !hasQuote);
+      quoteEl.textContent = hasQuote
+        ? '“' + c.quote + '”'
+        : '[TESTIMONIAL — ' + c.name + '. Paste their quote here.]';
+      whoEl.textContent = hasQuote && c.who ? c.who + ' — ' + c.name : c.name;
+      logoEl.src = 'img/clients/' + slug + '.jpg';
+      logoEl.alt = c.name + ' logo';
+
+      // Only one tile reads as pressed, including across the cloned set
+      var all = track.querySelectorAll('.logo-tile');
+      for (var i = 0; i < all.length; i++) {
+        all[i].setAttribute('aria-pressed', all[i].dataset.client === slug ? 'true' : 'false');
+      }
+      if (tile) tile.setAttribute('aria-pressed', 'true');
+    }
+
+    track.addEventListener('click', function (e) {
+      var tile = e.target.closest('.logo-tile');
+      if (tile && tile.dataset.client) select(tile.dataset.client, tile);
+    });
+
+    // Seed the panel so it is never empty on load
+    var first = track.querySelector('.logo-tile');
+    if (first) select(first.dataset.client, first);
+
+    // Duplicate the set so translateX(-50%) loops seamlessly. Skipped
+    // under reduced motion, which leaves the static wrapping wall.
+    if (!reduceMotion) {
+      var originals = Array.prototype.slice.call(track.children);
+      originals.forEach(function (node) {
+        var copy = node.cloneNode(true);
+        // Decorative duplicate: keep it out of the a11y tree and the
+        // tab order so logos aren't announced or tabbed to twice
+        copy.setAttribute('aria-hidden', 'true');
+        copy.setAttribute('tabindex', '-1');
+        track.appendChild(copy);
+      });
+      track.classList.add('is-animating');
+    }
+  }
+
   /* ---------------- Boot ---------------- */
 
   function init() {
     initNav();
     initHeader();
     initReveals();
+    initClients();
   }
 
   if (document.readyState === 'loading') {
