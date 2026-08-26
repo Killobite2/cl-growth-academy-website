@@ -303,15 +303,47 @@ h3 { font-size: var(--fs-h3); }
   margin: 0 auto;
 }
 
+/* Logo lockup: oxblood disc holding "CL", wordmark stacked beside it.
+   Built from type and geometry rather than an image so it stays crisp
+   at any size and remains real text. --brand-scale lets the footer
+   render the same lockup larger without duplicated rules. */
+
 .brand {
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  font-size: 1.05rem;
-  letter-spacing: 0.5px;
+  --brand-scale: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10px * var(--brand-scale));
   white-space: nowrap;
 }
 
-.brand span { color: var(--oxblood); }
+.brand-mark {
+  flex: 0 0 auto;
+  width: calc(40px * var(--brand-scale));
+  height: calc(40px * var(--brand-scale));
+  border-radius: var(--radius-pill);
+  background: var(--oxblood);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: calc(0.92rem * var(--brand-scale));
+  line-height: 1;
+  /* Alfa Slab One sits slightly high in its box; nudge for optical centre */
+  padding-top: calc(2px * var(--brand-scale));
+  letter-spacing: 0.5px;
+}
+
+.brand-word {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  color: var(--paper);
+  font-size: calc(0.78rem * var(--brand-scale));
+  line-height: 0.98;
+  letter-spacing: 0.6px;
+}
 
 .nav-links {
   display: flex;
@@ -940,6 +972,8 @@ label {
   grid-template-columns: 2fr 1fr 1fr;
   gap: var(--space-6);
 }
+
+.site-footer .brand { --brand-scale: 1.15; }
 
 .footer-tagline {
   margin-top: var(--space-4);
