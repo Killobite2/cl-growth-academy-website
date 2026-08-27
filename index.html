@@ -46,15 +46,34 @@
 
 <section class="photo-hero-section">
   <div class="photo-frame">
-    <img
-      src="img/masterclass-1800.jpg"
-      srcset="img/masterclass-1200.jpg 1200w,
-              img/masterclass-1800.jpg 1800w,
-              img/masterclass-2400.jpg 2400w"
-      sizes="100vw"
-      width="5750" height="3970"
-      alt="Chris Lapa presenting the Journey To Ad Matrix slide to a full room of NDIS providers at his Paid Ads Masterclass in Sydney."
-      loading="eager" fetchpriority="high">
+    <!-- Art-directed, not merely resized. A tall phone viewport cover-crops
+         the landscape frame down to about a third of its width, leaving a
+         slice of the projector screen and no Chris at all. The portrait
+         source is a separate 9:16 crop of the same master, framed on him.
+
+         The landscape `sizes` looks wrong but is not: a cover-cropped
+         landscape source in a viewport taller than it is wide scales to match
+         HEIGHT, so it needs far more pixels than its rendered width implies.
+         Plain 100vw picked the 1800w file for a 768x1024 window and upscaled
+         it 1.65x. Overstating on tall and square viewports only means wide
+         screens still fetch no extra bytes. -->
+    <picture>
+      <source
+        media="(max-width: 600px)"
+        srcset="img/masterclass-portrait-1000.jpg 1000w,
+                img/masterclass-portrait-1400.jpg 1400w"
+        sizes="100vw"
+        width="2312" height="4111">
+      <img
+        src="img/masterclass-1800.jpg"
+        srcset="img/masterclass-1200.jpg 1200w,
+                img/masterclass-1800.jpg 1800w,
+                img/masterclass-2400.jpg 2400w"
+        sizes="(max-aspect-ratio: 1/1) 150vw, 100vw"
+        width="5651" height="3900"
+        alt="Chris Lapa presenting the Journey To Ad Matrix slide to a full room of NDIS providers at his Paid Ads Masterclass in Sydney."
+        loading="eager" fetchpriority="high">
+    </picture>
     <div class="photo-hero-content">
       <div class="wrap">
         <span class="eyebrow">NDIS &amp; Aged Care Marketing &middot; Sydney</span>

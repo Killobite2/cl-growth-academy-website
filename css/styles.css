@@ -1032,14 +1032,23 @@ label {
   overflow: hidden;
 }
 
-.photo-frame > img {
+/* The image is wrapped in <picture> for art direction, so the positioning
+   lives on the wrapper — <picture> is display:inline by default and would
+   otherwise collapse. Do not re-target these rules at `.photo-frame > img`;
+   the img is a grandchild now and the rules would silently stop matching,
+   dropping the absolute positioning and object-fit together. */
+.photo-frame > picture {
+  display: block;
   position: absolute;
   inset: 0;
+}
+
+.photo-frame picture > img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Holds Chris and the projector screen in frame; at phone width a
-     tall box crops this landscape source hard from the sides */
+  /* Holds Chris and the projector screen in frame on the landscape source */
   object-position: 55% 38%;
 }
 
@@ -1054,12 +1063,17 @@ label {
     linear-gradient(to top,
       rgba(var(--ink-rgb), 0.96) 0%,
       rgba(var(--ink-rgb), 0.86) 20%,
-      rgba(var(--ink-rgb), 0.52) 42%,
-      rgba(var(--ink-rgb), 0.18) 66%,
+      rgba(var(--ink-rgb), 0.58) 42%,
+      rgba(var(--ink-rgb), 0.24) 66%,
       rgba(var(--ink-rgb), 0.55) 100%),
+    /* The headline measured 2.85:1 against the projector screen, under AA
+       for large text. Most of the correction goes into this left wash
+       rather than the vertical one: the type is left-aligned inside the
+       wrap, so darkening leftwards buys contrast where the glyphs are
+       without dimming the right of the frame, where the room reads. */
     linear-gradient(to right,
-      rgba(var(--ink-rgb), 0.72) 0%,
-      rgba(var(--ink-rgb), 0.18) 52%,
+      rgba(var(--ink-rgb), 0.82) 0%,
+      rgba(var(--ink-rgb), 0.30) 52%,
       rgba(var(--ink-rgb), 0) 100%);
 }
 
@@ -1069,6 +1083,21 @@ label {
   width: 100%;
   padding-top: var(--space-10);
   padding-bottom: var(--space-9);
+}
+
+/* Mustard on a photograph cannot reach AA wherever the projector screen
+   shows through — its luminance needs a near-black backdrop, and no scrim
+   light enough to keep the room visible provides one. Measured at 1.90:1
+   over the phone crop and 2.40:1 at a square window. So the eyebrow carries
+   its own ground: contrast becomes a fixed property of the chip instead of
+   a gamble on what the photo is doing behind it. At 0.9 alpha it measures
+   7.0:1 or better at every breakpoint, against the brightest pixel the
+   projector slide produces. Keep it a solid fill — a mustard border sits
+   on top of this background and drags the ratio back down to ~3.1:1. */
+.photo-hero-content .eyebrow {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: rgba(var(--ink-rgb), 0.9);
 }
 
 .photo-hero-content h1 {
@@ -1109,8 +1138,8 @@ body.photo-hero .site-header {
      legibility without reading as a solid bar. */
   background: linear-gradient(
     to bottom,
-    rgba(var(--ink-rgb), 0.88) 0%,
-    rgba(var(--ink-rgb), 0.55) 60%,
+    rgba(var(--ink-rgb), 0.92) 0%,
+    rgba(var(--ink-rgb), 0.72) 60%,
     rgba(var(--ink-rgb), 0) 100%
   );
 }
@@ -1425,20 +1454,28 @@ body.photo-hero .site-header.is-scrolled {
     padding-bottom: var(--space-8);
   }
 
-  /* Hold the frame on Chris rather than centring on empty curtain
-     once the sides crop away */
-  .photo-frame > img { object-position: 58% 40%; }
+  /* The portrait source is already framed on Chris, so this centres
+     rather than compensating. At a phone's aspect the 9:16 source
+     crops only from the sides, so the Y value matters solely at the
+     600px edge of this query, where it keeps the slide in view. */
+  .photo-frame picture > img { object-position: 50% 45%; }
 
-  /* At phone height the text block rises into the bright projector
-     screen, where cream-on-white fails. Darken far more aggressively
-     — the photo becomes texture and context, legibility wins. */
+  /* The copy block covers roughly the lower three-quarters of a phone
+     viewport, and the projector screen is bright, so some scrim is
+     unavoidable — cream on white fails outright. But a flat 0.94 wash
+     erases the photograph. Graded instead: opaque where the type sits,
+     opening up towards the top so the room is actually visible. These
+     stops were set by measuring rendered luminance behind the eyebrow,
+     headline and lead — not by eye. Lightening the upper stops further
+     starts failing the header, which composites its own gradient on top
+     of this one. */
   .photo-frame::after {
     background: linear-gradient(to top,
-      rgba(var(--ink-rgb), 0.97) 0%,
-      rgba(var(--ink-rgb), 0.94) 55%,
-      rgba(var(--ink-rgb), 0.88) 74%,
-      rgba(var(--ink-rgb), 0.68) 90%,
-      rgba(var(--ink-rgb), 0.6) 100%);
+      rgba(var(--ink-rgb), 0.95) 0%,
+      rgba(var(--ink-rgb), 0.90) 38%,
+      rgba(var(--ink-rgb), 0.78) 62%,
+      rgba(var(--ink-rgb), 0.45) 82%,
+      rgba(var(--ink-rgb), 0.20) 100%);
   }
 
   .photo-credit {
