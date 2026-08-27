@@ -784,19 +784,17 @@ a.post-card:focus-visible {
 }
 
 .founder-photo {
+  width: 100%;
+  /* height:auto is load-bearing. The img carries height="660", which maps to
+     the CSS height property as a presentational hint; without this the box
+     renders 260x660 and aspect-ratio is ignored, because width and height are
+     then both definite. The attributes stay for aspect-ratio/CLS reservation. */
+  height: auto;
   aspect-ratio: 1;
-  background: var(--ink-2);
-  border: 1px dashed rgba(var(--paper-rgb), 0.25);
+  object-fit: cover;
   border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: var(--fs-micro);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  color: var(--paper-faint);
-  padding: var(--space-5);
+  /* Holds the square while the file loads, matching the section behind it */
+  background: var(--ink-2);
 }
 
 .founder-quote {

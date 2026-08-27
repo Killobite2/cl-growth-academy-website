@@ -273,7 +273,17 @@
       <h2>Chris Lapa</h2>
     </div>
     <div class="founder">
-      <div class="founder-photo">Photo of Chris<br>(real photo &mdash; no stock)</div>
+      <!-- sizes mirrors the three widths .founder-photo takes in CSS
+           (260px / 200px at <=800 / 220px at <=700). Keep them in step:
+           a stale sizes silently downloads the wrong file. -->
+      <img class="founder-photo"
+           src="img/chris-lapa-660.jpg"
+           srcset="img/chris-lapa-340.jpg 340w,
+                   img/chris-lapa-660.jpg 660w"
+           sizes="(max-width: 700px) 220px, (max-width: 800px) 200px, 260px"
+           width="660" height="660"
+           alt="Chris Lapa, founder of CL Growth Academy."
+           loading="lazy">
       <div>
         <p class="founder-quote">&ldquo;Let's cut to the chase &mdash; is your marketing actually bringing in participants, or just likes?&rdquo;</p>
         <p>I've spent fifteen years in marketing, sales and strategy, and I've put all of it into one sector: NDIS and aged care. I know the challenges here are the brief, not a demographic. That means no jargon, no 360-degree omnichannel nonsense &mdash; just work that gets your service seen by the people who actually need it.</p>
