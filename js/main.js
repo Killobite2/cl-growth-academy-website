@@ -181,6 +181,39 @@
     }
   }
 
+  /* ---------------- Newsletter forms ----------------
+
+     A plain cross-origin POST to Beehiiv would navigate the visitor
+     away to Beehiiv's own confirmation page, so the on-page success
+     copy would never show. Intercept submit, fire the POST via a
+     no-cors fetch instead (the response is opaque, so this
+     optimistically assumes success once the request is sent), then
+     swap the form for the adjacent .form-success message. */
+
+  function initNewsletterForms() {
+    var forms = document.querySelectorAll('.newsletter-form');
+    if (!forms.length) return;
+
+    forms.forEach(function (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var email = form.querySelector('input[name="email"]').value;
+
+        fetch(form.action, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'email=' + encodeURIComponent(email)
+        }).catch(function () {});
+
+        form.classList.add('is-submitted');
+        var success = form.parentElement.querySelector('.form-success');
+        if (success) success.classList.add('is-visible');
+      });
+    });
+  }
+
   /* ---------------- Boot ---------------- */
 
   function init() {
@@ -188,6 +221,7 @@
     initHeader();
     initReveals();
     initClients();
+    initNewsletterForms();
   }
 
   if (document.readyState === 'loading') {

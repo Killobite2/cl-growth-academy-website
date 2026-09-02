@@ -1575,3 +1575,77 @@ body.photo-hero .site-header.is-scrolled {
   section { padding: 12pt 0; }
   a::after { content: ' (' attr(href) ')'; font-size: 9pt; }
 }
+
+/* ---------------------------------------------------------------
+   25. NEWSLETTER PAGE
+   --------------------------------------------------------------- */
+
+.newsletter-hero { padding: var(--space-8) 0 var(--space-8); }
+
+.newsletter-hero .wrap {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: var(--space-8);
+  /* Top-aligned rather than centered: the text column is much taller
+     than the 320px photo, so centering left a large empty gap above it */
+  align-items: start;
+}
+
+/* Alfa Slab One's tall, blocky glyphs need more room between lines
+   than the sitewide 1.12 once a headline wraps to four lines */
+.newsletter-hero h1 { line-height: 1.3; }
+
+/* ---- Page-load entrance animation ----
+   Reduced motion is already handled by the sitewide
+   `@media (prefers-reduced-motion: reduce) { *, *::before, *::after {
+   animation-duration: 0.01ms !important } }` rule further down this
+   file, so no extra override is needed here. */
+
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.load-in { animation: hero-in 0.7s var(--ease) both; }
+
+.load-in-1 { animation-delay: 0ms; }
+.load-in-2 { animation-delay: 90ms; }
+.load-in-3 { animation-delay: 180ms; }
+.load-in-4 { animation-delay: 280ms; }
+.load-in-5 { animation-delay: 380ms; }
+
+@media (max-width: 700px) {
+  .newsletter-hero .wrap { grid-template-columns: 1fr; }
+  .newsletter-hero .founder-photo { max-width: 260px; margin: 0 auto; }
+}
+
+/* Mustard accent under this page's section headings — signature-accent
+   use per the brand snapshot, scoped here rather than on the shared
+   .section-head so the other four pages are untouched */
+.newsletter-page .section-head h2 {
+  display: inline-block;
+  padding-bottom: var(--space-3);
+  border-bottom: 4px solid var(--mustard);
+}
+
+.card-num { color: var(--oxblood); }
+
+/* Swapped in over .newsletter-form once a submit succeeds */
+.form-success {
+  display: none;
+  font-size: var(--fs-lead);
+  font-weight: 600;
+}
+
+.form-success.is-visible { display: block; }
+.newsletter-form.is-submitted { display: none; }
+
+.newsletter-footer { padding: var(--space-7) 0; text-align: center; }
+
+.newsletter-footer p {
+  margin: 0 0 var(--space-2) 0;
+  color: var(--paper-muted);
+  font-size: var(--fs-small);
+}
+
+.newsletter-footer p:last-child { margin-bottom: 0; }
