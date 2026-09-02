@@ -1682,3 +1682,94 @@ body.photo-hero .site-header.is-scrolled {
 .newsletter-page .reveal.is-visible .card:nth-child(1) { transition-delay: 0ms; }
 .newsletter-page .reveal.is-visible .card:nth-child(2) { transition-delay: 90ms; }
 .newsletter-page .reveal.is-visible .card:nth-child(3) { transition-delay: 180ms; }
+
+/* ---- Video hero variant ----
+   Modelled on the homepage .photo-frame: media absolutely positioned and
+   cover-fitted, a scrim over it, content layered above. min-height rather
+   than height so a cramped mobile viewport can grow to fit the form
+   instead of clipping it. */
+.newsletter-hero.has-video {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: 65vh;
+  min-height: 65svh; /* keeps clear of mobile browser chrome */
+}
+
+.newsletter-hero .hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The montage is encoded at 2.68:1, near enough to this band's ratio
+     that cover-fitting crops only a few pixels on a desktop viewport —
+     so centre is correct and no vertical bias is wanted. It earns its
+     keep on narrow viewports, where the band turns portrait and the crop
+     goes horizontal: centre keeps the middle panel of the split-screen
+     shots in view rather than slicing between two of them. */
+  object-position: center;
+  pointer-events: none;
+}
+
+/* Two-axis scrim, weighted left — the headline and form are left-aligned
+   inside the wrap, so contrast is bought where the glyphs are rather than
+   by dimming the whole frame. Same approach as .photo-frame::after. */
+.newsletter-hero.has-video::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* The two layers composite, so these read lighter than they look.
+     The vertical one is deliberately monotonic — darkest at the bottom,
+     lifting toward the top — because the small type stacks downward: the
+     lead, the form and its note need more cover than the display-size
+     headline, which only has to clear AA for large text. A gradient that
+     went light in the middle would starve the lead of contrast exactly
+     where it sits.
+
+     Measured against the brightest thing this footage contains (the white
+     wall): composite ~0.77 behind the headline gives 3.6:1 (passes large
+     text), ~0.81 behind the lead gives 4.3:1, and ~0.86 at the form note
+     gives 5:1. Falls to ~0.54 at the right edge so the room still reads
+     as footage rather than texture.
+
+     This is the dial to turn if the footage changes brightness — recut
+     material may need the stops moved. */
+  background:
+    linear-gradient(to right,
+      rgba(var(--ink-rgb), 0.72) 0%,
+      rgba(var(--ink-rgb), 0.66) 45%,
+      rgba(var(--ink-rgb), 0.44) 78%,
+      rgba(var(--ink-rgb), 0.20) 100%),
+    linear-gradient(to top,
+      rgba(var(--ink-rgb), 0.62) 0%,
+      rgba(var(--ink-rgb), 0.42) 50%,
+      rgba(var(--ink-rgb), 0.18) 100%);
+}
+
+/* .wrap is a flex item now, so it needs its width back for the
+   max-width + auto margins to keep centring the grid */
+.newsletter-hero.has-video .wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+/* Must sit after the base ::after rule above, not up in the earlier
+   700px block — media queries add no specificity, so the later of two
+   identical selectors wins and the base wash would override this. */
+@media (max-width: 700px) {
+  /* Stacked, the type spans the full width, so a left-weighted wash
+     leaves the right end of every line unprotected. Flatten it. */
+  .newsletter-hero.has-video::after {
+    background:
+      linear-gradient(to top,
+        rgba(var(--ink-rgb), 0.88) 0%,
+        rgba(var(--ink-rgb), 0.76) 50%,
+        rgba(var(--ink-rgb), 0.82) 100%);
+  }
+}

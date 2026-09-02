@@ -181,6 +181,24 @@
     }
   }
 
+  /* ---------------- Hero video ----------------
+
+     Decorative background motion. Under reduced motion, never start it —
+     a video that has not played shows its poster, which is exactly the
+     still fallback we want. CSS can't pause a video, and display:none
+     would take the poster with it, so this has to be done here.
+
+     `autoplay` stays in the markup so the video still works with JS
+     off; this only takes it away from people who asked for less motion. */
+
+  function initHeroVideo() {
+    if (!reduceMotion) return;
+    var video = document.querySelector('.hero-video');
+    if (!video) return;
+    video.removeAttribute('autoplay');
+    video.pause();
+  }
+
   /* ---------------- Newsletter forms ----------------
 
      A plain cross-origin POST to Beehiiv would navigate the visitor
@@ -221,6 +239,7 @@
     initHeader();
     initReveals();
     initClients();
+    initHeroVideo();
     initNewsletterForms();
   }
 
