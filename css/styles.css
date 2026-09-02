@@ -1563,6 +1563,14 @@ body.photo-hero .site-header.is-scrolled {
   .reveal.is-visible .way:nth-child(2),
   .reveal.is-visible .way:nth-child(3),
   .reveal.is-visible .way:nth-child(4) { transition-delay: 0ms; }
+
+  /* Newsletter cards: land them in place, and zero the stagger — the
+     blanket transition-duration override above does not touch
+     transition-delay, so card 03 would otherwise pop in 180ms late */
+  .newsletter-page .reveal .card { opacity: 1; transform: none; }
+  .newsletter-page .reveal.is-visible .card:nth-child(1),
+  .newsletter-page .reveal.is-visible .card:nth-child(2),
+  .newsletter-page .reveal.is-visible .card:nth-child(3) { transition-delay: 0ms; }
 }
 
 /* ---------------------------------------------------------------
@@ -1649,3 +1657,28 @@ body.photo-hero .site-header.is-scrolled {
 }
 
 .newsletter-footer p:last-child { margin-bottom: 0; }
+
+/* ---- Staggered card entrance ----
+   The section itself already fades in via .reveal; these give each card
+   a starting offset of its own so the row arrives in sequence instead of
+   as one block. Scoped to this page so the .card grids on index,
+   how-we-help, blog and ndis-marketing are untouched.
+
+   Overriding .card's base transition costs nothing here — these cards are
+   plain divs, and only a.card gets a hover affordance. */
+.newsletter-page .reveal .card {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--t-slow) var(--ease),
+              transform var(--t-slow) var(--ease);
+}
+
+.newsletter-page .reveal.is-visible .card {
+  opacity: 1;
+  transform: none;
+}
+
+/* 90ms steps, matching this page's .load-in cadence */
+.newsletter-page .reveal.is-visible .card:nth-child(1) { transition-delay: 0ms; }
+.newsletter-page .reveal.is-visible .card:nth-child(2) { transition-delay: 90ms; }
+.newsletter-page .reveal.is-visible .card:nth-child(3) { transition-delay: 180ms; }
