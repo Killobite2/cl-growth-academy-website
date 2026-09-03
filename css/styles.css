@@ -1657,9 +1657,14 @@ body.photo-hero .site-header.is-scrolled {
   to { transform: translateZ(var(--span)); }
 }
 
-/* Clicking a moving target is hostile, and people stop to look at photos */
-.corridor:hover .corridor-wall,
-.corridor:focus-within .corridor-wall { animation-play-state: paused; }
+/* Deliberately NOT paused on hover. The marquee pauses because its tiles are
+   real buttons and clicking a moving target is hostile; this corridor is
+   aria-hidden decoration — plain divs, alt="" images, nothing focusable or
+   clickable inside — so there is no target to protect, and a full-width band
+   that freezes under the pointer just reads as a stalled page. Motion
+   sensitivity is handled by the prefers-reduced-motion block below, which
+   rebuilds this as a static grid rather than relying on hover. Do not copy
+   the marquee's pause rule back onto it. */
 
 .corridor-card {
   position: absolute;
