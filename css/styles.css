@@ -1875,11 +1875,42 @@ body.photo-hero .site-header.is-scrolled {
   pointer-events: none;
 }
 
+/* The blurred oxblood/mustard gradient paints on ::before behind these, so
+   they need both the stacking context and the shadow to stay readable as it
+   drifts. */
 .consult-visual-copy,
+.consult-visual-points,
 .consult-visual-meta {
   position: relative;
   z-index: 1;
   text-shadow: 0 2px 18px rgba(var(--ink-rgb), 0.85);
+}
+
+/* Fills the middle of the panel. Without it .consult-visual's
+   space-between left a large empty band between headline and meta line. */
+.consult-visual-points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 30ch;
+  font-size: var(--fs-small);
+  color: var(--paper);
+}
+
+.consult-visual-points li {
+  padding-left: var(--space-5);
+  position: relative;
+}
+
+.consult-visual-points li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--mustard);
+  font-weight: 700;
 }
 
 .consult-visual-copy {

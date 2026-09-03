@@ -386,22 +386,37 @@
 
         // Native constraint validation has already passed by the time a
         // submit event fires, so there is nothing to re-check here
-        var field = form.querySelector('input[name="email"]');
         var pill = form.querySelector('.form-pill');
 
+        // Serialise the WHOLE form. This used to hardcode
+        // 'email=' + the email input, which was fine while the only
+        // consumer was the single-field newsletter — but the consult
+        // dialog reuses this same .js-waitlist handler with name, phone
+        // and message fields, and those were being silently dropped.
+        // URLSearchParams keeps the body application/x-www-form-urlencoded,
+        // the content type the newsletter endpoint already accepts, and
+        // sets that header itself — so do not set it manually here.
         fetch(form.action, {
           method: 'POST',
           mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: 'email=' + encodeURIComponent(field ? field.value : '')
+          body: new URLSearchParams(new FormData(form))
         }).catch(function () {});
+
+        // Known limitation, stated rather than hidden: no-cors makes the
+        // response opaque, so success here is assumed, not confirmed — a
+        // failed send still shows the success state. Tolerable for a
+        // newsletter; for the consult enquiry it is why that success
+        // message keeps Chris's email and phone visible, so a silent
+        // failure still leaves the reader a way through.
 
         // The pill carries the state, not the form: the form has to stay
         // in the layout for the morph to happen in place
         if (pill) pill.classList.add('is-submitted');
 
-        // Nothing left to resubmit once the fields have faded out
-        form.querySelectorAll('input, button').forEach(function (el) {
+        // Nothing left to resubmit once the fields have faded out.
+        // textarea is in this list because the consult dialog has one;
+        // without it the message stays editable after the form completes.
+        form.querySelectorAll('input, textarea, button').forEach(function (el) {
           el.disabled = true;
         });
       });
@@ -497,7 +512,15 @@
                 (wired
                   ? '<div class="form-pill form-pill-compact"><div class="form-pill-fields">' +
                     '<button type="submit" class="btn btn-mustard">Send it &rarr;</button>' +
-                    '</div><p class="form-pill-success" role="status">Message sent.</p></div>'
+                    '</div>' +
+                    /* The send is fire-and-forget (see the no-cors note in
+                       the submit handler), so this keeps the direct routes
+                       on screen: if the post quietly failed, the reader is
+                       not left believing a message arrived with no way back. */
+                    '<p class="form-pill-success" role="status">Message sent. ' +
+                    'If you would rather not wait, Chris is on ' +
+                    '<a href="mailto:chris@clgrowthacademy.com.au">chris@clgrowthacademy.com.au</a>' +
+                    '.</p></div>'
                   /* Un-wired: no submit button at all. A disabled-looking
                      button people still click, on a form that posts to a
                      dead URL, is worse than saying so and handing them the
@@ -511,8 +534,24 @@
             '</div>' +
           '</form>' +
         '</div>' +
+        /* The fifteen years are SALES AND MARKETING, not sector tenure —
+           this headline used to read "Fifteen years. / One sector." and the
+           juxtaposition claimed fifteen years in NDIS and aged care, which
+           is not true. Keep the two ideas attached to the right things.
+
+           Each point below restates a claim already made elsewhere on the
+           site (contact.html's "not an inbox someone else screens", the FAQ
+           on lock-in contracts, this dialog's own subhead). Deliberately no
+           response-time promise: the site states none, and inventing one
+           would commit Chris to something he has not said. */
         '<div class="consult-visual">' +
-          '<p class="consult-visual-copy">Fifteen years.<br><span class="script">One sector.</span></p>' +
+          '<p class="consult-visual-copy">Fifteen years<br>' +
+          '<span class="script">in sales &amp; marketing.</span></p>' +
+          '<ul class="consult-visual-points">' +
+            '<li>Chris reads this himself. Not an inbox someone else screens.</li>' +
+            '<li>No lock-in contracts, ever.</li>' +
+            '<li>If he can&rsquo;t help, he&rsquo;ll say so.</li>' +
+          '</ul>' +
           '<p class="consult-visual-meta">NDIS &amp; aged care marketing &middot; Sydney</p>' +
         '</div>' +
       '</div>';
