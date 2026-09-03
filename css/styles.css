@@ -1083,6 +1083,11 @@ input, textarea {
   transition: border-color var(--t-fast) var(--ease);
 }
 
+/* Vertical only: the default `both` lets the drag handle widen a textarea
+   past its container, which pushes the consult dialog into horizontal
+   overflow and does the same to the contact form. */
+textarea { resize: vertical; }
+
 input::placeholder, textarea::placeholder { color: var(--paper-faint); }
 input:hover, textarea:hover { border-color: rgba(var(--paper-rgb), 0.5); }
 
@@ -1778,7 +1783,23 @@ body.photo-hero .site-header.is-scrolled {
    the nav drifted.
    --------------------------------------------------------------- */
 
+/* The height chain here is load-bearing and easy to break.
+
+   max-height + overflow:hidden alone does NOT give you a scrollable modal.
+   The grid inside used to size its row to content (813px desktop, 1058px
+   phone) no matter the viewport, so .consult-form's overflow-y:auto was
+   inert — a grid item stretched to a content-sized row has
+   scrollHeight === clientHeight, nothing to scroll — and overflow:hidden
+   then blocked user scrolling entirely. Anything past the fold was gone:
+   on a 1366x768 laptop that meant Chris's email and phone, and once the
+   form is wired it would mean the submit button.
+
+   So: flex column here, a row bounded to 1fr on the grid, and min-height:0
+   at both levels because flex and grid items will not shrink below their
+   content without it. */
 .consult {
+  display: flex;
+  flex-direction: column;
   width: min(920px, calc(100vw - 2 * var(--space-5)));
   max-height: calc(100vh - 2 * var(--space-6));
   padding: 0;
@@ -1787,7 +1808,7 @@ body.photo-hero .site-header.is-scrolled {
   background: var(--ink-2);
   color: var(--paper);
   box-shadow: var(--shadow-lg);
-  overflow: hidden;
+  overflow: hidden; /* keeps the gradient panel inside the rounded corners */
 }
 
 .consult::backdrop {
@@ -1795,12 +1816,22 @@ body.photo-hero .site-header.is-scrolled {
   backdrop-filter: blur(3px);
 }
 
-.consult-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; }
+.consult-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  /* minmax(0, 1fr), not the default auto: an auto row is max-content, so the
+     items would stretch past the dialog again even with the grid bounded. */
+  grid-template-rows: minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+}
 
 .consult-form {
   position: relative;
   padding: var(--space-7) var(--space-6);
   overflow-y: auto;
+  min-height: 0;                /* without this the grid item never shrinks */
+  overscroll-behavior: contain;  /* don't hand the scroll to the page behind */
 }
 
 .consult-form h2 { margin: var(--space-3) 0 0; font-size: var(--fs-h2); }
@@ -2263,10 +2294,22 @@ body.photo-hero .site-header.is-scrolled {
   }
 
   /* Side by side leaves neither panel usable at this width */
-  .consult-grid { grid-template-columns: 1fr; }
+  .consult-grid {
+    grid-template-columns: 1fr;
+    /* Stacked, so the whole thing scrolls as one column rather than the
+       form scrolling inside a fixed panel — on a phone, scrolling the
+       intro away is the expected behaviour. Rows go back to auto: the
+       base minmax(0,1fr) would squeeze both into a single track. */
+    grid-template-rows: auto auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
   .consult-visual { order: -1; padding: var(--space-6); }
   .consult-visual-copy { font-size: var(--fs-h3); }
-  .consult-form { padding: var(--space-6) var(--space-5); }
+  .consult-form {
+    padding: var(--space-6) var(--space-5);
+    overflow-y: visible; /* the grid is the scroll container here */
+  }
 }
 
 @media (max-width: 600px) {
