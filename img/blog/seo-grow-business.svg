@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Blog card artwork: search magnifying the growth curve. Palette hardcoded
+       because <img>-loaded SVG cannot read the page's :root tokens.
+
+       The bars are drawn twice — oxblood underneath, mustard clipped to the
+       lens — so the glass genuinely reveals what is behind it rather than
+       sitting on top as a flat outline. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <defs>
+    <clipPath id="lens">
+      <circle cx="410" cy="230" r="132"/>
+    </clipPath>
+    <g id="bars">
+      <rect x="216" y="300" width="62" height="90" rx="6"/>
+      <rect x="298" y="248" width="62" height="142" rx="6"/>
+      <rect x="380" y="188" width="62" height="202" rx="6"/>
+      <rect x="462" y="128" width="62" height="262" rx="6"/>
+    </g>
+  </defs>
+
+  <use href="#bars" fill="#9E2D24"/>
+  <use href="#bars" fill="#D4A038" clip-path="url(#lens)"/>
+
+  <!-- Lens tint, then the ring and handle over the top -->
+  <circle cx="410" cy="230" r="132" fill="#F2EADB" opacity="0.08"/>
+  <line x1="506" y1="326" x2="612" y2="432" stroke="#F2EADB"
+        stroke-width="34" stroke-linecap="round"/>
+  <circle cx="410" cy="230" r="132" fill="none" stroke="#F2EADB" stroke-width="22"/>
+</svg>

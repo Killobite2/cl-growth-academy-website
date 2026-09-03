@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Blog card artwork: the message driving growth. Palette hardcoded because
+       <img>-loaded SVG cannot read the page's :root tokens. Keeps the megaphone
+       the old site used for this post, so it stays recognisable — but pairs it
+       with a trend line rather than bars, so it doesn't read as a near-copy of
+       the SEO card, which is the one that uses bars. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Megaphone: mouthpiece, body, bell opening right -->
+  <rect x="130" y="228" width="36" height="44" rx="8" fill="#9E2D24"/>
+  <rect x="166" y="212" width="68" height="76" rx="12" fill="#9E2D24"/>
+  <path d="M 234 196 L 400 118 L 400 382 L 234 304 Z" fill="#9E2D24"/>
+
+  <!-- Sound carrying out of the bell -->
+  <path d="M 430 190 A 140 140 0 0 1 430 310" fill="none" stroke="#D4A038"
+        stroke-width="13" stroke-linecap="round" opacity="0.55"/>
+  <path d="M 470 150 A 190 190 0 0 1 470 350" fill="none" stroke="#D4A038"
+        stroke-width="13" stroke-linecap="round" opacity="0.28"/>
+
+  <!-- Trend line. The head is a triangle built on the line's own direction
+       vector (unit 0.7236,-0.6908) rather than eyeballed, so it points
+       exactly along the shaft instead of skewing off it. -->
+  <line x1="512" y1="352" x2="688" y2="180" stroke="#F2EADB"
+        stroke-width="16" stroke-linecap="round"/>
+  <path d="M 720 150 L 703 196 L 673 165 Z" fill="#F2EADB"/>
+</svg>

@@ -35,25 +35,178 @@
       setOpen(!isOpen());
     });
 
+    /* ---- Dropdown ----
+       A second dismissible layer inside the same nav, so it shares the
+       Escape and outside-click handlers below rather than registering
+       competing ones. Escape closes the dropdown FIRST and only falls
+       through to the drawer when no dropdown is open — otherwise one key
+       press would collapse both and lose the visitor's place. */
+
+    var subTrigger = links.querySelector('.nav-sub-trigger');
+    var subPanel = links.querySelector('.nav-panel');
+    var hoverTimer = null;
+    var desktop = window.matchMedia('(min-width: 801px)');
+
+    function subIsOpen() {
+      return !!subPanel && subPanel.classList.contains('open');
+    }
+
+    function setSubOpen(open) {
+      if (!subPanel || !subTrigger) return;
+      subPanel.classList.toggle('open', open);
+      subTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    function closeSub(returnFocus) {
+      if (!subIsOpen()) return;
+      setSubOpen(false);
+      if (returnFocus) subTrigger.focus();
+    }
+
+    if (subTrigger && subPanel) {
+      setSubOpen(false);
+
+      subTrigger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        setSubOpen(!subIsOpen());
+      });
+
+      // Hover opens on desktop only. The close is delayed so a diagonal
+      // path from trigger to panel does not dismiss it mid-travel; the
+      // ::before bridge in the CSS covers the gap itself.
+      var sub = subTrigger.parentElement;
+      sub.addEventListener('mouseenter', function () {
+        if (!desktop.matches) return;
+        window.clearTimeout(hoverTimer);
+        setSubOpen(true);
+      });
+
+      sub.addEventListener('mouseleave', function () {
+        if (!desktop.matches) return;
+        hoverTimer = window.setTimeout(function () { setSubOpen(false); }, 120);
+      });
+
+      // Tabbing out of the panel closes it
+      sub.addEventListener('focusout', function (e) {
+        if (!sub.contains(e.relatedTarget)) closeSub(false);
+      });
+
+      // Arrow keys walk the panel once it is open
+      subPanel.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+        e.preventDefault();
+        var items = Array.prototype.slice.call(subPanel.querySelectorAll('a'));
+        var i = items.indexOf(document.activeElement);
+        var next = e.key === 'ArrowDown' ? i + 1 : i - 1;
+        if (next < 0) next = items.length - 1;
+        if (next >= items.length) next = 0;
+        items[next].focus();
+      });
+
+      subTrigger.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowDown') return;
+        e.preventDefault();
+        setSubOpen(true);
+        var first = subPanel.querySelector('a');
+        if (first) first.focus();
+      });
+    }
+
     // Escape closes and returns focus to the trigger
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') close(true);
+      if (e.key !== 'Escape') return;
+      // The consult dialog handles its own Escape natively, and the keydown
+      // still bubbles here — without this, one press would dismiss the
+      // dialog AND collapse the drawer behind it.
+      if (document.querySelector('dialog[open]')) return;
+      if (subIsOpen()) {
+        closeSub(true);
+        return;
+      }
+      close(true);
     });
 
     // Clicking outside the nav closes it
     document.addEventListener('click', function (e) {
+      if (subIsOpen() && !links.contains(e.target)) closeSub(false);
       if (isOpen() && !links.contains(e.target) && e.target !== toggle) close(false);
     });
 
     // Following a link closes the drawer
     links.addEventListener('click', function (e) {
-      if (e.target.closest('a')) close(false);
+      if (e.target.closest('a')) {
+        closeSub(false);
+        close(false);
+      }
     });
 
     // Leaving the mobile breakpoint resets state
-    window.matchMedia('(min-width: 801px)').addEventListener('change', function (e) {
+    desktop.addEventListener('change', function (e) {
       if (e.matches) close(false);
+      closeSub(false);
     });
+
+    initNavIndicator(links, desktop);
+  }
+
+  /* ---------------- Sliding nav indicator ----------------
+
+     Positioned from each item's live offsetLeft/offsetWidth rather than
+     given a per-item pseudo-element, so the bar travels between items
+     instead of cross-fading. Desktop only — inside the mobile drawer the
+     items are stacked full width and the left-bar marker reads better. */
+
+  function initNavIndicator(links, desktop) {
+    var bar = links.querySelector('.nav-indicator');
+    if (!bar) return;
+
+    // The CTA is a filled button; underlining it would read as a mistake
+    var items = Array.prototype.slice.call(
+      links.querySelectorAll('a:not(.nav-cta), .nav-sub-trigger')
+    );
+    if (!items.length) return;
+
+    var current = links.querySelector('[aria-current="page"]:not(.nav-cta)');
+    var resting = current || null;
+
+    /* Measured with getBoundingClientRect against the list, not offsetLeft.
+       offsetLeft is relative to the nearest positioned ancestor, and the
+       dropdown trigger's is .nav-sub — so it reported 0 and parked the bar
+       at the far left of the nav instead of under the trigger. */
+    function moveTo(el) {
+      if (!el || !desktop.matches) {
+        bar.classList.remove('is-visible');
+        return;
+      }
+      var base = links.getBoundingClientRect();
+      var box = el.getBoundingClientRect();
+      bar.style.transform = 'translateX(' + (box.left - base.left) + 'px)';
+      bar.style.width = box.width + 'px';
+      bar.classList.add('is-visible');
+    }
+
+    items.forEach(function (el) {
+      el.addEventListener('mouseenter', function () { moveTo(el); });
+      el.addEventListener('focus', function () { moveTo(el); });
+    });
+
+    links.addEventListener('mouseleave', function () { moveTo(resting); });
+    links.addEventListener('focusout', function (e) {
+      if (!links.contains(e.relatedTarget)) moveTo(resting);
+    });
+
+    // Re-measure on resize, rAF-throttled the same way initHeader does
+    var ticking = false;
+    window.addEventListener('resize', function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        moveTo(resting);
+        ticking = false;
+      });
+    }, { passive: true });
+
+    moveTo(resting);
   }
 
   /* ---------------- Sticky header state ---------------- */
@@ -199,37 +352,212 @@
     video.pause();
   }
 
-  /* ---------------- Newsletter forms ----------------
+  /* ---------------- Waitlist forms ----------------
 
-     A plain cross-origin POST to Beehiiv would navigate the visitor
-     away to Beehiiv's own confirmation page, so the on-page success
-     copy would never show. Intercept submit, fire the POST via a
-     no-cors fetch instead (the response is opaque, so this
-     optimistically assumes success once the request is sent), then
-     swap the form for the adjacent .form-success message. */
+     A plain cross-origin POST to Beehiiv would navigate the visitor away
+     to Beehiiv's own confirmation page, so the on-page success copy would
+     never show. Intercept submit, fire the POST via a no-cors fetch
+     instead (the response is opaque, so this optimistically assumes
+     success once the request is sent), then morph the pill in place.
 
-  function initNewsletterForms() {
-    var forms = document.querySelectorAll('.newsletter-form');
+     The endpoint guard below is the important part. Two of this site's
+     forms still point at a Formspree placeholder that was never filled
+     in. Intercepting one of those would show "You're on the list" for a
+     submission that reached nobody, which is worse than letting the POST
+     fail where the visitor can see it. So a placeholder action is left
+     entirely alone and reported to the console instead. */
+
+  function initWaitlistForms() {
+    var forms = document.querySelectorAll('.js-waitlist');
     if (!forms.length) return;
 
     forms.forEach(function (form) {
+      if (form.action.indexOf('YOUR_FORM_ID') !== -1) {
+        console.warn(
+          'Waitlist form not wired up: its action is still the Formspree ' +
+          'placeholder, so submissions go nowhere. Left un-intercepted on ' +
+          'purpose — a success message here would be a lie.', form
+        );
+        return;
+      }
+
       form.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        var email = form.querySelector('input[name="email"]').value;
+        // Native constraint validation has already passed by the time a
+        // submit event fires, so there is nothing to re-check here
+        var field = form.querySelector('input[name="email"]');
+        var pill = form.querySelector('.form-pill');
 
         fetch(form.action, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: 'email=' + encodeURIComponent(email)
+          body: 'email=' + encodeURIComponent(field ? field.value : '')
         }).catch(function () {});
 
-        form.classList.add('is-submitted');
-        var success = form.parentElement.querySelector('.form-success');
-        if (success) success.classList.add('is-visible');
+        // The pill carries the state, not the form: the form has to stay
+        // in the layout for the morph to happen in place
+        if (pill) pill.classList.add('is-submitted');
+
+        // Nothing left to resubmit once the fields have faded out
+        form.querySelectorAll('input, button').forEach(function (el) {
+          el.disabled = true;
+        });
       });
     });
+  }
+
+  /* ---------------- Journey rail ----------------
+
+     Standard tablist behaviour over the five journey stages. Panels are
+     only hidden once this runs, so with JS off all five stay visible and
+     stacked rather than collapsing to one — the data matters more than
+     the interaction. */
+
+  function initJourneyRail() {
+    var rail = document.querySelector('.rail[role="tablist"]');
+    if (!rail) return;
+
+    var tabs = Array.prototype.slice.call(rail.querySelectorAll('[role="tab"]'));
+    if (!tabs.length) return;
+
+    function panelFor(tab) {
+      return document.getElementById(tab.getAttribute('aria-controls'));
+    }
+
+    function select(tab, moveFocus) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        // Roving tabindex: one stop for the whole rail, arrows move within
+        t.tabIndex = on ? 0 : -1;
+        var panel = panelFor(t);
+        if (panel) panel.hidden = !on;
+      });
+      if (moveFocus) tab.focus();
+    }
+
+    rail.addEventListener('click', function (e) {
+      var tab = e.target.closest('[role="tab"]');
+      if (tab) select(tab, false);
+    });
+
+    rail.addEventListener('keydown', function (e) {
+      var i = tabs.indexOf(document.activeElement);
+      if (i === -1) return;
+      var next = null;
+      if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') next = tabs[0];
+      else if (e.key === 'End') next = tabs[tabs.length - 1];
+      if (!next) return;
+      e.preventDefault();
+      select(next, true);
+    });
+
+    select(tabs[0], false);
+  }
+
+  /* ---------------- Consult dialog ----------------
+
+     Built here rather than in the markup because it is identical on every
+     page: eleven hand-maintained copies is exactly how the nav drifted.
+     Injected once, on first open.
+
+     Nothing in the HTML changes either. A delegated click intercepts
+     anchors to contact.html that are .btn CTAs, so the buttons open the
+     box while footer and prose links still navigate. The href stays a real
+     fallback, and contact.html stays a real page. */
+
+  var CONSULT_ACTION = 'https://formspree.io/f/YOUR_FORM_ID';
+
+  function buildConsultDialog() {
+    var wired = CONSULT_ACTION.indexOf('YOUR_FORM_ID') === -1;
+    var dlg = document.createElement('dialog');
+    dlg.className = 'consult';
+    dlg.innerHTML =
+      '<div class="consult-grid">' +
+        '<div class="consult-form">' +
+          '<button class="consult-close" type="button" aria-label="Close">&times;</button>' +
+          '<span class="eyebrow">Book a free consult</span>' +
+          '<h2>Straight to Chris.</h2>' +
+          '<p class="consult-sub">Tell him what is not working. He will tell you straight whether he can fix it.</p>' +
+          '<form class="js-waitlist" action="' + CONSULT_ACTION + '" method="POST">' +
+            '<div class="form-row stack">' +
+              '<div><label for="c-name">Name</label>' +
+              '<input id="c-name" type="text" name="name" autocomplete="name" required></div>' +
+              '<div><label for="c-email">Email</label>' +
+              '<input id="c-email" type="email" name="email" autocomplete="email" required></div>' +
+              '<div><label for="c-phone">Phone (optional)</label>' +
+              '<input id="c-phone" type="tel" name="phone" autocomplete="tel"></div>' +
+              '<div><label for="c-msg">What is going on with your marketing?</label>' +
+              '<textarea id="c-msg" name="message" rows="4" required></textarea></div>' +
+              '<div>' +
+                (wired
+                  ? '<div class="form-pill form-pill-compact"><div class="form-pill-fields">' +
+                    '<button type="submit" class="btn btn-mustard">Send it &rarr;</button>' +
+                    '</div><p class="form-pill-success" role="status">Message sent.</p></div>'
+                  /* Un-wired: no submit button at all. A disabled-looking
+                     button people still click, on a form that posts to a
+                     dead URL, is worse than saying so and handing them the
+                     two routes that do work. */
+                  : '<p class="consult-notice">This form is not connected yet. ' +
+                    'Reach Chris directly:</p>' +
+                    '<p class="consult-direct">' +
+                    '<a href="mailto:chris@clgrowthacademy.com.au">chris@clgrowthacademy.com.au</a><br>' +
+                    '<a href="tel:+61431584725">+61 431 584 725</a></p>') +
+              '</div>' +
+            '</div>' +
+          '</form>' +
+        '</div>' +
+        '<div class="consult-visual">' +
+          '<p class="consult-visual-copy">Fifteen years.<br><span class="script">One sector.</span></p>' +
+          '<p class="consult-visual-meta">NDIS &amp; aged care marketing &middot; Sydney</p>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(dlg);
+
+    dlg.querySelector('.consult-close').addEventListener('click', function () {
+      dlg.close();
+    });
+
+    // Clicking the backdrop closes. The dialog element itself is the full
+    // viewport, so a click landing on it rather than on .consult-grid is
+    // by definition outside the box.
+    dlg.addEventListener('click', function (e) {
+      if (e.target === dlg) dlg.close();
+    });
+
+    return dlg;
+  }
+
+  function initConsultDialog() {
+    if (typeof HTMLDialogElement === 'undefined') return; // no dialog: links navigate
+    var dlg = null;
+    var opener = null;
+
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a.btn');
+      if (!a) return;
+      var href = a.getAttribute('href') || '';
+      if (!/(^|\/)contact\.html$/.test(href)) return;
+
+      e.preventDefault();
+      opener = a;
+      if (!dlg) dlg = buildConsultDialog();
+      dlg.showModal();
+      var first = dlg.querySelector('input');
+      if (first) first.focus();
+    });
+
+    // Focus back to whichever CTA opened it
+    document.addEventListener('close', function (e) {
+      if (dlg && e.target === dlg && opener) {
+        opener.focus();
+        opener = null;
+      }
+    }, true);
   }
 
   /* ---------------- Boot ---------------- */
@@ -240,7 +568,9 @@
     initReveals();
     initClients();
     initHeroVideo();
-    initNewsletterForms();
+    initWaitlistForms();
+    initJourneyRail();
+    initConsultDialog();
   }
 
   if (document.readyState === 'loading') {

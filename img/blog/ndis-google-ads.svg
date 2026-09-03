@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Blog card artwork: paid search hitting its target. Palette hardcoded
+       because <img>-loaded SVG cannot read the page's :root tokens. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Bullseye. Alternating fills rather than strokes so the rings stay
+       crisp at card width, where the whole graphic renders around 260px. -->
+  <circle cx="360" cy="250" r="175" fill="#9E2D24"/>
+  <circle cx="360" cy="250" r="122" fill="#1A1310"/>
+  <circle cx="360" cy="250" r="72" fill="#9E2D24"/>
+  <circle cx="360" cy="250" r="26" fill="#F2DFA8"/>
+
+  <!-- Click ripples off the strike point -->
+  <path d="M 470 150 A 150 150 0 0 1 470 350" fill="none" stroke="#D4A038"
+        stroke-width="10" stroke-linecap="round" opacity="0.55"/>
+  <path d="M 516 116 A 200 200 0 0 1 516 384" fill="none" stroke="#D4A038"
+        stroke-width="10" stroke-linecap="round" opacity="0.28"/>
+
+  <!-- Pointer. Its tip sits just inside the cream centre rather than on it,
+       so the bullseye still reads as hit without the cursor swallowing it.
+       The ink outline is load-bearing: the cream fill sits partly over the
+       oxblood ring, where it would otherwise lose its silhouette. -->
+  <g transform="translate(376 256) scale(2.5)" fill="#F2DFA8" stroke="#1A1310"
+     stroke-width="4" stroke-linejoin="round">
+    <path d="M0 0 L0 62 L15 48 L25 76 L38 70 L28 43 L48 43 Z"/>
+  </g>
+</svg>

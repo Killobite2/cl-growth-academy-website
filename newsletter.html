@@ -69,15 +69,23 @@
       <p class="lead load-in load-in-4">For NDIS and aged care providers. A short read, a few tips, and one thing to do each week.</p>
       <p class="load-in load-in-4">Marketing, sales, and the systems around them. Founder to founder. Not a feed of templates.</p>
 
-      <form class="newsletter-form load-in load-in-5" action="https://clgrowth.beehiiv.com/subscribe" method="POST">
-        <label for="hero-email">Email</label>
-        <div class="form-row">
-          <input id="hero-email" type="email" name="email" placeholder="Email" required>
-          <button type="submit" class="btn btn-mustard">Subscribe</button>
+      <form class="js-waitlist load-in load-in-5" action="https://clgrowth.beehiiv.com/subscribe" method="POST">
+        <label class="sr-only" for="hero-email">Email</label>
+        <div class="form-pill">
+          <div class="form-pill-fields">
+            <input id="hero-email" type="email" name="email" autocomplete="email" placeholder="Email" required>
+            <button type="submit" class="btn btn-mustard">Subscribe</button>
+          </div>
+          <p class="form-pill-success" role="status">
+            <svg class="form-tick" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10" opacity="0.35"/>
+              <path class="form-tick-path" d="M7.5 12.5l3 3 6-6.5"/>
+            </svg>
+            You're in. Watch your inbox.
+          </p>
         </div>
         <p class="form-note">Free. Weekly. You can leave any time.</p>
       </form>
-      <p class="form-success" role="status">You&rsquo;re in. Watch your inbox for the next weekly note.</p>
     </div>
   </div>
 </section>
@@ -142,15 +150,23 @@
 <section class="section-oxblood reveal">
   <div class="wrap">
     <div class="lead-panel">
-      <form class="newsletter-form" action="https://clgrowth.beehiiv.com/subscribe" method="POST">
-        <label for="repeat-email">Email</label>
-        <div class="form-row">
-          <input id="repeat-email" type="email" name="email" placeholder="Email" required>
-          <button type="submit" class="btn btn-mustard">Subscribe</button>
+      <form class="js-waitlist" action="https://clgrowth.beehiiv.com/subscribe" method="POST">
+        <label class="sr-only" for="repeat-email">Email</label>
+        <div class="form-pill">
+          <div class="form-pill-fields">
+            <input id="repeat-email" type="email" name="email" autocomplete="email" placeholder="Email" required>
+            <button type="submit" class="btn btn-mustard">Subscribe</button>
+          </div>
+          <p class="form-pill-success" role="status">
+            <svg class="form-tick" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10" opacity="0.35"/>
+              <path class="form-tick-path" d="M7.5 12.5l3 3 6-6.5"/>
+            </svg>
+            You're in. Watch your inbox.
+          </p>
         </div>
         <p class="form-note">Free. Weekly. You can leave any time.</p>
       </form>
-      <p class="form-success" role="status">You&rsquo;re in. Watch your inbox for the next weekly note.</p>
     </div>
   </div>
 </section>

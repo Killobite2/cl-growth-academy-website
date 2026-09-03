@@ -133,6 +133,19 @@ p:last-child { margin-bottom: 0; }
 
 .skip-link:focus { transform: translateY(0); }
 
+/* Announced but not shown. Used for the new-tab warning on outbound
+   links, which are otherwise a silent surprise for screen reader users. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .wrap {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -346,6 +359,7 @@ h3 { font-size: var(--fs-h3); }
 }
 
 .nav-links {
+  position: relative;
   display: flex;
   gap: var(--space-6);
   align-items: center;
@@ -356,13 +370,152 @@ h3 { font-size: var(--fs-h3); }
 .nav-links a { transition: color var(--t-fast) var(--ease); }
 .nav-links a:hover { color: var(--mustard); }
 
-/* Active page indicator — the nav used to look identical everywhere */
-.nav-links a[aria-current="page"] {
+/* Active page indicator — the nav used to look identical everywhere.
+   On desktop .nav-indicator takes over and this underline is suppressed
+   (see below); the rule stays because the mobile drawer still uses it. */
+.nav-links a[aria-current="page"],
+.nav-links .nav-sub-trigger[aria-current="page"] {
   color: var(--mustard);
   box-shadow: inset 0 -2px 0 var(--mustard);
 }
 
 .nav-links a.nav-cta[aria-current="page"] { box-shadow: none; }
+
+/* ---- Sliding indicator ----
+   A single bar positioned by JS from each item's offsetLeft/offsetWidth,
+   rather than a per-item pseudo-element, so it can travel between items
+   instead of cross-fading. Desktop only: inside the mobile drawer the
+   items are stacked full-width and the left-bar marker reads better. */
+
+.nav-indicator {
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  border-radius: var(--radius-pill);
+  background: var(--mustard);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(0);
+  transition: transform var(--t-base) var(--ease),
+              width var(--t-base) var(--ease),
+              opacity var(--t-fast) var(--ease);
+}
+
+.nav-indicator.is-visible { opacity: 1; }
+
+/* The travelling bar replaces the static underline, or the current page
+   would carry two markers at once */
+@media (min-width: 801px) {
+  .nav-links a[aria-current="page"],
+  .nav-links .nav-sub-trigger[aria-current="page"] { box-shadow: none; }
+}
+
+/* ---- NDIS Marketing dropdown ---- */
+
+.nav-sub { position: relative; }
+
+.nav-sub-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease);
+}
+
+.nav-sub-trigger:hover,
+.nav-sub-trigger[aria-expanded="true"] { color: var(--mustard); }
+
+.nav-sub-trigger svg {
+  width: 12px;
+  height: 12px;
+  transition: transform var(--t-base) var(--ease);
+}
+
+.nav-sub-trigger[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+/* Opaque on purpose. On the homepage .site-header is a transparent
+   gradient over the masterclass photograph, so an inherited background
+   would drop this menu's text straight onto the projector screen. */
+.nav-panel {
+  position: absolute;
+  top: calc(100% + var(--space-4));
+  left: 50%;
+  z-index: 60;
+  width: 320px;
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--ink-2);
+  border: var(--border-hairline);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transform: translate(-50%, -6px);
+  visibility: hidden;
+  transition: opacity var(--t-base) var(--ease),
+              transform var(--t-base) var(--ease),
+              visibility 0s linear var(--t-base);
+}
+
+.nav-panel.open {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+/* Bridges the gap between trigger and panel so a diagonal mouse path
+   does not cross dead space and close the menu */
+.nav-panel::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--space-4) * -1);
+  left: 0;
+  right: 0;
+  height: var(--space-4);
+}
+
+.nav-panel a {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  transition: background var(--t-fast) var(--ease);
+}
+
+.nav-panel a:hover,
+.nav-panel a:focus-visible { background: rgba(var(--paper-rgb), 0.07); }
+
+.nav-panel-num {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-size: var(--fs-micro);
+  color: var(--mustard);
+  padding-top: 2px;
+}
+
+.nav-panel-title { display: block; color: var(--paper); }
+
+.nav-panel-desc {
+  display: block;
+  margin-top: 2px;
+  font-weight: 400;
+  font-size: var(--fs-micro);
+  line-height: 1.4;
+  color: var(--paper-faint);
+}
+
+.nav-panel-overview {
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: var(--border-hairline);
+}
 
 .nav-toggle {
   display: none;
@@ -467,6 +620,10 @@ section { padding: var(--space-9) 0; }
   gap: var(--space-5);
 }
 
+/* grid-5 forces five columns where grid-auto will not: five 210px minimums
+   plus four 24px gaps is 1146px, over the 1120px wrap, so auto-fit drops to
+   four and strands the fifth card on a row of its own. */
+.grid-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -579,6 +736,59 @@ a.post-card:focus-visible {
   letter-spacing: var(--tracking-wide);
   color: var(--paper-faint);
 }
+
+/* Thumbnail variant. The card's own padding moves to .post-body so the
+   artwork can bleed to the edge, and overflow clips it back to the radius
+   — neither is needed by the base .post-card, so both live here.
+
+   The resting border matches .is-upcoming above for the same reason it
+   exists there: on index.html these cards sit in a .section-ink2 band whose
+   background is the card's own --ink-2, so without an edge the body of the
+   card dissolves into the band. Held at 2px so the mustard hover swaps
+   colour without shifting layout. */
+.post-card.has-thumb {
+  padding: 0;
+  overflow: hidden;
+  border-color: rgba(var(--paper-rgb), 0.12);
+  /* Column so .post-body can stretch to the grid-equalised card height,
+     which is what lets the Read more line sit on a common baseline
+     across cards whose excerpts run to different lengths */
+  display: flex;
+  flex-direction: column;
+}
+
+.post-thumb {
+  width: 100%;
+  /* height:auto is load-bearing, the same trap documented on .founder-photo:
+     the img carries height="500", which lands on the CSS height property as
+     a presentational hint. Width and height would then both be definite and
+     aspect-ratio would be ignored. The attributes stay for CLS reservation. */
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: var(--ink);
+}
+
+.post-body {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Pushed to the foot of the card rather than trailing the excerpt */
+.has-thumb .card-more { margin-top: auto; padding-top: var(--space-5); }
+
+/* Dimmed like .faq p rather than sitting at full --paper brightness, so the
+   title keeps the hierarchy */
+.post-excerpt {
+  margin-top: var(--space-3);
+  font-size: var(--fs-small);
+  color: var(--paper-muted);
+}
+
+/* Outbound arrow in place of the in-site → */
+.post-card.is-external .card-more::after { content: '↗'; }
 
 /* ---------------------------------------------------------------
    11. SOCIAL PROOF
@@ -908,6 +1118,118 @@ label {
   margin-top: var(--space-4);
 }
 
+/* ---- Waitlist pill ----
+   One rounded surface holding the field and its button, which on submit
+   fills mustard in place rather than being swapped out for a separate
+   message. Swapping (the old .newsletter-form.is-submitted display:none)
+   cannot be animated — the box has to survive for the morph to happen. */
+
+.form-pill {
+  position: relative;
+  display: flex;
+  margin-top: var(--space-5);
+  padding: var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--ink-2);
+  border: 1px solid rgba(var(--paper-rgb), 0.25);
+  transition: background var(--t-base) var(--ease),
+              border-color var(--t-base) var(--ease);
+}
+
+/* Light surfaces, scoped to the surface rather than the section for the
+   same reason as the input rule above — the homepage panel sits inside
+   .section-oxblood, so a section-scoped rule misses it */
+.lead-panel .form-pill,
+.section-paper .form-pill {
+  background: #FFFDF8;
+  border-color: rgba(var(--ink-rgb), 0.2);
+}
+
+.form-pill:focus-within { border-color: var(--mustard); }
+
+/* Button-only variant, for the contact form — a four-field form has no
+   single field to sit in the pill, so only its submit morphs */
+.form-pill-compact { display: inline-flex; margin-top: 0; }
+
+.form-pill-fields {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  transition: opacity var(--t-base) var(--ease),
+              transform var(--t-base) var(--ease);
+}
+
+/* Borderless and transparent: the pill wrapper is the visible surface now,
+   so the field must not draw a second one inside it */
+.form-pill input {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  padding: var(--space-3) var(--space-4);
+}
+
+.form-pill input:hover,
+.form-pill input:focus { border: none; outline: none; }
+
+.form-pill .btn {
+  flex: 0 0 auto;
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-5);
+}
+
+.form-pill-success {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin: 0;
+  border-radius: var(--radius-pill);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity var(--t-base) var(--ease),
+              transform var(--t-base) var(--ease);
+}
+
+.form-pill.is-submitted { background: var(--mustard); border-color: var(--mustard); }
+
+.form-pill.is-submitted .form-pill-fields {
+  opacity: 0;
+  transform: scale(0.96);
+  pointer-events: none;
+}
+
+.form-pill.is-submitted .form-pill-success {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.12s;
+}
+
+.form-tick { flex: 0 0 auto; }
+
+/* Total path length is about 13.1 units, so 14 covers it with a margin */
+.form-tick-path { stroke-dasharray: 14; stroke-dashoffset: 14; }
+
+.form-pill.is-submitted .form-tick-path {
+  animation: tick-draw var(--t-base) var(--ease) 0.2s both;
+}
+
+@keyframes tick-draw {
+  from { stroke-dashoffset: 14; }
+  to { stroke-dashoffset: 0; }
+}
+
 /* ---------------------------------------------------------------
    16. FAQ
    --------------------------------------------------------------- */
@@ -1075,12 +1397,15 @@ label {
       rgba(var(--ink-rgb), 0) 100%);
 }
 
+/* padding-bottom is small because .hero-proof now occupies the band that
+   used to be empty photograph. Raising it back to --space-9 without also
+   removing the strip re-opens the gap it was added to fill. */
 .photo-hero-content {
   position: relative;
   z-index: 1;
   width: 100%;
   padding-top: var(--space-10);
-  padding-bottom: var(--space-9);
+  padding-bottom: var(--space-5);
 }
 
 /* Mustard on a photograph cannot reach AA wherever the projector screen
@@ -1109,12 +1434,13 @@ label {
   color: var(--paper);
 }
 
+/* In flow at the end of the copy block, not pinned to the frame's bottom
+   corner: the logo strip now sits in that corner, and an absolute credit
+   would land on top of it. Keeping it in flow also means its offset never
+   needs re-deriving when the tile size changes. */
 .photo-credit {
-  position: absolute;
-  z-index: 1;
-  right: var(--space-5);
-  bottom: var(--space-5);
-  max-width: 40%;
+  display: block;
+  margin-top: var(--space-4);
   text-align: right;
   font-size: var(--fs-micro);
   font-weight: 800;
@@ -1148,70 +1474,142 @@ body.photo-hero .site-header.is-scrolled {
   box-shadow: var(--shadow-md);
 }
 
-/* ---------------------------------------------------------------
-   19. JOURNEY MATRIX
-   --------------------------------------------------------------- */
+/* Proof bar filling the hero's lower band, and lifting the headline block
+   off the bottom edge in the process.
 
-.matrix-scroll { overflow-x: auto; }
+   This was a logo strip. The logos are the Trusted by wall's own content
+   (§11), so running them here too put the same 13 marks on screen twice on
+   one page. Figures occupy the same band, say something the copy above does
+   not, and need no JS — the strip needed cloning to loop seamlessly. */
 
-.matrix {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: var(--fs-small);
-  min-width: 720px;
+.hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5) var(--space-8);
+  margin-top: var(--space-6);
+  padding: 0;
+  list-style: none;
 }
 
-.matrix caption {
+.hero-stat { max-width: 22ch; }
+
+/* Mustard is safe here where the eyebrow chip above needed its own opaque
+   ground: the scrim's bottom stop is rgba(ink, 0.96), so this end of the
+   frame is near-black whatever the photograph is doing behind it. */
+.hero-stat-figure {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  line-height: 1.1;
+  color: var(--mustard);
+}
+
+.hero-stat-label {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: var(--fs-micro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--paper-muted);
+}
+
+/* ---------------------------------------------------------------
+   19. JOURNEY RAIL
+
+   Replaced a four-column table. Same twelve cells of data, walked
+   one stage at a time instead of read across. Built as a tablist,
+   so the roving tabindex and arrow keys come from a real pattern.
+   --------------------------------------------------------------- */
+
+.rail {
+  display: flex;
+  gap: var(--space-2);
+  /* Horizontal scroll rather than wrap: five stages in a row IS the
+     information, and a wrapped second row reads as a different set */
+  overflow-x: auto;
+  padding-bottom: var(--space-3);
+  scrollbar-width: thin;
+}
+
+.rail-stage {
+  flex: 1 1 0;
+  min-width: 148px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-4) var(--space-5);
+  border: none;
+  /* The connecting line. An inset bottom border on the button itself,
+     so it tracks the stage width instead of needing a separate rail
+     element underneath to stay in sync. */
+  box-shadow: inset 0 -2px 0 rgba(var(--paper-rgb), 0.16);
+  background: none;
+  color: var(--paper-muted);
+  font: inherit;
   text-align: left;
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease),
+              box-shadow var(--t-base) var(--ease);
+}
+
+.rail-stage:hover { color: var(--paper); }
+
+.rail-stage[aria-selected="true"] {
+  color: var(--paper);
+  box-shadow: inset 0 -2px 0 var(--mustard);
+}
+
+.rail-num {
+  font-family: var(--font-display);
+  font-size: var(--fs-micro);
+  color: var(--paper-faint);
+  transition: color var(--t-fast) var(--ease);
+}
+
+.rail-stage[aria-selected="true"] .rail-num { color: var(--mustard); }
+
+.rail-name {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: var(--fs-small);
+  line-height: 1.2;
+}
+
+.rail-panels { margin-top: var(--space-6); }
+
+.rail-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  background: var(--ink-2);
+  border: var(--border-hairline);
+  border-left: 4px solid var(--mustard);
+  border-radius: var(--radius-md);
+}
+
+/* Two panels visible at once only with JS off, where nothing is hidden */
+.rail-panel + .rail-panel { margin-top: var(--space-3); }
+
+.rail-label {
+  display: block;
+  margin-bottom: var(--space-2);
   font-size: var(--fs-micro);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   color: var(--paper-faint);
-  padding-bottom: var(--space-4);
 }
 
-.matrix thead th {
-  background: var(--oxblood);
-  color: var(--paper);
-  font-family: var(--font-body);
-  font-weight: 800;
-  font-size: var(--fs-micro);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  padding: var(--space-4) var(--space-4);
-  vertical-align: middle;
-}
+.rail-cell p { margin: 0; font-size: var(--fs-small); }
 
-.matrix thead th:first-child { border-radius: var(--radius-md) 0 0 0; }
-.matrix thead th:last-child { border-radius: 0 var(--radius-md) 0 0; }
-
-.matrix tbody th {
+/* Message angle carries the actual ad copy — set as a quote */
+.rail-angle .angle {
   font-family: var(--font-display);
-  text-transform: uppercase;
-  font-size: var(--fs-small);
-  line-height: 1.2;
-  color: var(--mustard);
-  white-space: nowrap;
-}
-
-.matrix tbody th,
-.matrix tbody td {
-  padding: var(--space-5) var(--space-4);
-  border-bottom: var(--border-hairline);
-  vertical-align: top;
-}
-
-.matrix tbody tr:last-child th,
-.matrix tbody tr:last-child td { border-bottom: none; }
-
-.matrix tbody tr { background: var(--ink-2); }
-.matrix tbody tr:nth-child(even) { background: rgba(var(--paper-rgb), 0.04); }
-
-/* Message-angle column carries the actual ad copy — set as a quote */
-.matrix .angle {
-  font-style: italic;
+  font-style: normal;
+  font-size: var(--fs-h3);
+  line-height: 1.3;
   color: var(--paper);
 }
 
@@ -1227,6 +1625,280 @@ body.photo-hero .site-header.is-scrolled {
   background: var(--mustard);
   border-radius: var(--radius-sm);
   padding: 2px var(--space-2);
+}
+
+/* ---------------------------------------------------------------
+   19b. PHOTO CORRIDOR — two walls receding to one vanishing point
+   --------------------------------------------------------------- */
+
+.corridor {
+  position: relative;
+  height: 460px;
+  margin-top: var(--space-7);
+  overflow: hidden;
+  perspective: 1100px;
+  perspective-origin: 50% 48%;
+}
+
+/* --span is six card depths, matching the six unique cards written twice
+   in the markup. Flying exactly that far means card 7 lands where card 1
+   started, so the loop has no seam. Change one and you must change both. */
+.corridor-wall {
+  --gap-z: 320px;
+  --span: 1920px;
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: corridor-fly 32s linear infinite;
+}
+
+@keyframes corridor-fly {
+  from { transform: translateZ(0); }
+  to { transform: translateZ(var(--span)); }
+}
+
+/* Clicking a moving target is hostile, and people stop to look at photos */
+.corridor:hover .corridor-wall,
+.corridor:focus-within .corridor-wall { animation-play-state: paused; }
+
+.corridor-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  backface-visibility: hidden;
+}
+
+.corridor-card img { width: 100%; height: auto; display: block; }
+
+/* Each wall angles inward so the two converge. translateZ is negative and
+   grows with --i, putting later cards further down the corridor. */
+.corridor-left .corridor-card {
+  transform: translate3d(-460px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
+}
+
+.corridor-right .corridor-card {
+  transform: translate3d(160px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
+}
+
+/* Fades the far end into the page so cards arrive out of the dark rather
+   than popping into existence at the vanishing point */
+.corridor::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Kept deliberately tight. A wide radial reads as a haze over the whole
+     corridor and dims the near photographs, which are the ones anyone
+     actually looks at — this only has to swallow the vanishing point. */
+  background:
+    radial-gradient(26% 42% at 50% 48%,
+      rgba(var(--ink-rgb), 0.95) 0%,
+      rgba(var(--ink-rgb), 0.7) 40%,
+      rgba(var(--ink-rgb), 0) 78%),
+    linear-gradient(to right,
+      var(--ink) 0%,
+      rgba(var(--ink-rgb), 0) 11%,
+      rgba(var(--ink-rgb), 0) 89%,
+      var(--ink) 100%);
+}
+
+/* ---------------------------------------------------------------
+   19c. GRAIN CTA — animated closing band
+   --------------------------------------------------------------- */
+
+.grain-cta {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+  text-align: center;
+}
+
+/* The first radial-gradients in this stylesheet; everything else is linear.
+   Blurred hard so the two blooms read as one drifting field rather than two
+   discs, which is what keeps the grain on top looking like texture. */
+.grain-cta::before {
+  content: '';
+  position: absolute;
+  inset: -25%;
+  background:
+    radial-gradient(38% 42% at 28% 32%, var(--oxblood) 0%, transparent 68%),
+    radial-gradient(32% 36% at 74% 68%, var(--mustard) 0%, transparent 68%),
+    radial-gradient(30% 34% at 60% 20%, var(--cream) 0%, transparent 70%);
+  filter: blur(70px);
+  opacity: 0.85;
+  animation: grain-drift 26s ease-in-out infinite alternate;
+}
+
+@keyframes grain-drift {
+  from { transform: translate3d(-4%, -3%, 0) scale(1); }
+  to { transform: translate3d(5%, 4%, 0) scale(1.12); }
+}
+
+/* --grain's first use as an overlay on a dark ground; the three paper
+   surfaces multiply it instead */
+.grain-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.grain-cta .wrap { position: relative; z-index: 1; }
+
+/* Paper on the mustard bloom is the contrast failure case, so the copy
+   carries its own shadow rather than relying on where the drift happens
+   to be when someone lands on the page */
+.grain-cta h2,
+.grain-cta .lead {
+  color: var(--paper);
+  text-shadow: 0 2px 18px rgba(var(--ink-rgb), 0.85);
+}
+
+.grain-cta .lead { max-width: 54ch; margin: var(--space-5) auto 0; }
+.grain-cta .btn-row { justify-content: center; }
+
+/* ---------------------------------------------------------------
+   19d. CONSULT DIALOG
+
+   Native <dialog>, so focus trapping, Escape and the backdrop come
+   from the platform rather than being hand-rolled. Markup is built
+   in JS — it is identical on every page, and eleven copies is how
+   the nav drifted.
+   --------------------------------------------------------------- */
+
+.consult {
+  width: min(920px, calc(100vw - 2 * var(--space-5)));
+  max-height: calc(100vh - 2 * var(--space-6));
+  padding: 0;
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  background: var(--ink-2);
+  color: var(--paper);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.consult::backdrop {
+  background: rgba(var(--ink-rgb), 0.78);
+  backdrop-filter: blur(3px);
+}
+
+.consult-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; }
+
+.consult-form {
+  position: relative;
+  padding: var(--space-7) var(--space-6);
+  overflow-y: auto;
+}
+
+.consult-form h2 { margin: var(--space-3) 0 0; font-size: var(--fs-h2); }
+
+.consult-sub {
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-small);
+  color: var(--paper-muted);
+}
+
+.consult-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-hairline);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--paper-muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease),
+              border-color var(--t-fast) var(--ease);
+}
+
+.consult-close:hover { color: var(--paper); border-color: var(--paper); }
+
+.consult-notice {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-small);
+  color: var(--mustard);
+}
+
+.consult-direct { margin: 0; font-weight: 700; }
+
+/* Same drifting-bloom treatment as the closing CTA band, so the two read
+   as one system rather than two takes on the same idea */
+.consult-visual {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-7) var(--space-6);
+  background: var(--ink);
+}
+
+.consult-visual::before {
+  content: '';
+  position: absolute;
+  inset: -30%;
+  background:
+    radial-gradient(40% 44% at 30% 28%, var(--oxblood) 0%, transparent 68%),
+    radial-gradient(34% 38% at 72% 72%, var(--mustard) 0%, transparent 68%);
+  filter: blur(60px);
+  opacity: 0.9;
+  animation: grain-drift 26s ease-in-out infinite alternate;
+}
+
+.consult-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.consult-visual-copy,
+.consult-visual-meta {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 18px rgba(var(--ink-rgb), 0.85);
+}
+
+.consult-visual-copy {
+  margin: 0;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: var(--fs-h2);
+  line-height: 1.1;
+  color: var(--paper);
+}
+
+.consult-visual-copy .script {
+  font-family: var(--font-script);
+  text-transform: none;
+  color: var(--cream);
+}
+
+.consult-visual-meta {
+  margin: var(--space-5) 0 0;
+  font-size: var(--fs-micro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--paper-muted);
 }
 
 /* ---------------------------------------------------------------
@@ -1302,6 +1974,17 @@ body.photo-hero .site-header.is-scrolled {
 
 .way-mustard h3, .way-paper h3 { color: var(--ink); }
 .way-oxblood h3, .way-ink2 h3 { color: var(--paper); }
+
+/* Inherits each surface's text colour through currentColor on the stroke,
+   which is the whole reason these icons are inline SVG rather than files
+   under img/ — an <img>-loaded SVG is a separate document and would need
+   four hardcoded colour variants, one per .way surface. */
+.way-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--space-4);
+  color: inherit;
+}
 
 .way h3 { margin-bottom: var(--space-3); }
 
@@ -1394,7 +2077,7 @@ body.photo-hero .site-header.is-scrolled {
    --------------------------------------------------------------- */
 
 @media (max-width: 900px) {
-  .grid-4, .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-5, .grid-4, .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .founder { grid-template-columns: 200px 1fr; gap: var(--space-6); }
   .ways { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -1414,10 +2097,55 @@ body.photo-hero .site-header.is-scrolled {
     max-height: 0;
     overflow: hidden;
     box-shadow: var(--shadow-md);
-    transition: max-height var(--t-base) var(--ease);
+    /* visibility, not just max-height: a 0-height overflow:hidden drawer
+       still leaves its links in the tab order, so a keyboard user could
+       tab into an invisible menu. Delayed so it does not cut the collapse
+       animation short. */
+    visibility: hidden;
+    transition: max-height var(--t-base) var(--ease),
+                visibility 0s linear var(--t-base);
   }
 
-  .nav-links.open { max-height: 60vh; }
+  /* 85vh with its own scroll, not 60vh: the drawer now nests a six-item
+     submenu and would otherwise clip it against overflow: hidden */
+  .nav-links.open {
+    max-height: 85vh;
+    overflow-y: auto;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  /* Inline disclosure rather than a floating panel on small screens */
+  .nav-indicator { display: none; }
+
+  .nav-sub { display: flex; flex-direction: column; }
+
+  .nav-sub-trigger {
+    width: 100%;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-5);
+    border-top: 1px solid rgba(var(--paper-rgb), 0.08);
+  }
+
+  .nav-panel {
+    position: static;
+    width: auto;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: rgba(var(--ink-rgb), 0.45);
+    transform: none;
+    display: none;
+  }
+
+  .nav-panel.open { transform: none; display: block; }
+
+  .nav-panel::before { display: none; }
+
+  .nav-panel a { padding: var(--space-3) var(--space-5); border-radius: 0; }
+
+  .nav-panel-overview { margin: 0; border-bottom: none; }
 
   .nav-links a {
     padding: var(--space-4) var(--space-5);
@@ -1425,7 +2153,8 @@ body.photo-hero .site-header.is-scrolled {
     border-top: 1px solid rgba(var(--paper-rgb), 0.08);
   }
 
-  .nav-links a[aria-current="page"] { box-shadow: inset 3px 0 0 var(--mustard); }
+  .nav-links a[aria-current="page"],
+  .nav-links .nav-sub-trigger[aria-current="page"] { box-shadow: inset 3px 0 0 var(--mustard); }
 
   .nav-links a.nav-cta {
     margin: var(--space-4) var(--space-5) var(--space-5);
@@ -1445,11 +2174,11 @@ body.photo-hero .site-header.is-scrolled {
   .lead-panel { padding: var(--space-6) var(--space-5); }
   .hero-meta { gap: var(--space-2); }
 
-  /* Tighter vertical padding so the headline, lead and both CTAs
-     still fit inside one viewport at phone height */
+  /* Tighter vertical padding so the headline, lead, both CTAs and the
+     proof bar still fit inside one viewport at phone height */
   .photo-hero-content {
     padding-top: var(--space-9);
-    padding-bottom: var(--space-8);
+    padding-bottom: var(--space-5);
   }
 
   /* The portrait source is already framed on Chris, so this centres
@@ -1476,54 +2205,36 @@ body.photo-hero .site-header.is-scrolled {
       rgba(var(--ink-rgb), 0.20) 100%);
   }
 
-  .photo-credit {
-    right: var(--space-4);
-    bottom: var(--space-3);
-    max-width: 55%;
+  .photo-credit { margin-top: var(--space-3); }
+
+  .hero-proof { margin-top: var(--space-5); gap: var(--space-4) var(--space-6); }
+
+  /* Three columns of cells will not fit — stack them, and let the rail
+     scroll sideways rather than wrapping to a second row of stages */
+  .rail-panel { grid-template-columns: 1fr; gap: var(--space-4); padding: var(--space-5); }
+  .rail-stage { min-width: 132px; padding: var(--space-3) var(--space-3) var(--space-4); }
+
+  /* Shallower corridor and smaller cards, or the walls fly past the
+     edges of a phone viewport before they reach the vanishing point */
+  .corridor { height: 320px; perspective: 700px; }
+  .corridor-card { width: 190px; }
+  .corridor-wall { --gap-z: 220px; --span: 1320px; }
+  .corridor-left .corridor-card {
+    transform: translate3d(-250px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
+  }
+  .corridor-right .corridor-card {
+    transform: translate3d(60px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
   }
 
-  /* A 4-column table cannot work this narrow — reflow to one
-     card per journey stage, column names as inline labels */
-  .matrix { min-width: 0; font-size: var(--fs-body); }
-  .matrix thead { display: none; }
-  .matrix tbody, .matrix tr, .matrix tbody th, .matrix tbody td { display: block; }
-
-  .matrix tbody tr,
-  .matrix tbody tr:nth-child(even) {
-    background: var(--ink-2);
-    border: var(--border-hairline);
-    border-left: 4px solid var(--oxblood);
-    border-radius: var(--radius-md);
-    margin-bottom: var(--space-3);
-    padding: var(--space-5);
-  }
-
-  .matrix tbody th {
-    white-space: normal;
-    font-size: var(--fs-h3);
-    padding: 0 0 var(--space-4) 0;
-    border-bottom: var(--border-hairline);
-  }
-
-  .matrix tbody td {
-    padding: var(--space-4) 0 0 0;
-    border-bottom: none;
-  }
-
-  .matrix tbody td::before {
-    content: attr(data-label);
-    display: block;
-    font-size: var(--fs-micro);
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    color: var(--paper-faint);
-    margin-bottom: var(--space-1);
-  }
+  /* Side by side leaves neither panel usable at this width */
+  .consult-grid { grid-template-columns: 1fr; }
+  .consult-visual { order: -1; padding: var(--space-6); }
+  .consult-visual-copy { font-size: var(--fs-h3); }
+  .consult-form { padding: var(--space-6) var(--space-5); }
 }
 
 @media (max-width: 600px) {
-  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .grid-5, .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
   .ways { grid-template-columns: 1fr; }
 }
 
@@ -1543,6 +2254,55 @@ body.photo-hero .site-header.is-scrolled {
   .reveal { opacity: 1; transform: none; }
   .btn:hover, a.card:hover, a.post-card:hover { transform: none; }
 
+  /* The blanket rule above zeroes transition-duration but NOT
+     transition-delay, so each of these would still lag. The states must
+     stay reachable — only the travel is removed. */
+  .nav-indicator { transition: none; }
+  .nav-panel { transition: none; }
+  .nav-sub-trigger svg { transition: none; }
+
+  .form-pill.is-submitted .form-pill-success { transition-delay: 0s; transform: none; }
+  .form-pill.is-submitted .form-tick-path { animation: none; stroke-dashoffset: 0; }
+  .form-pill.is-submitted .form-pill-fields { transform: none; }
+
+  /* The corridor cannot simply be frozen: a stopped 3D corridor leaves half
+     the photographs edge-on and unreadable, and the far ones invisible. It
+     flattens to a plain grid instead, which is the only version of this
+     section where every photo is actually legible. */
+  .corridor {
+    height: auto;
+    perspective: none;
+    overflow: visible;
+    /* The 3D version bleeds to the viewport edge on purpose; a flat grid
+       doing that just looks unaligned against every other section */
+    max-width: var(--max-width);
+    margin: var(--space-7) auto 0;
+    padding: 0 var(--space-5);
+  }
+  .corridor::after { display: none; }
+  .corridor-wall {
+    position: static;
+    animation: none;
+    transform: none;
+    transform-style: flat;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  .corridor-wall + .corridor-wall { margin-top: var(--space-3); }
+  .corridor-card {
+    position: static;
+    width: auto;
+    box-shadow: none;
+  }
+  /* Only the first copy of each set — the duplicate exists solely to make
+     the fly-through loop seamless, and stacked in a grid it is just repeats */
+  .corridor-card:nth-child(n + 7) { display: none; }
+  .corridor-left .corridor-card,
+  .corridor-right .corridor-card { transform: none; }
+
+  .grain-cta::before { animation: none; }
+
   /* Static wrapping wall — JS also skips cloning under reduced
      motion, but belt and braces in case the class is already set */
   .marquee { mask-image: none; -webkit-mask-image: none; }
@@ -1553,6 +2313,7 @@ body.photo-hero .site-header.is-scrolled {
     justify-content: center;
   }
   .logo-tile:hover, .logo-tile:focus-visible { transform: none; }
+
 
   /* Notched cards: keep the surfaces and badge, drop the movement */
   .way:hover, .way:focus-visible { transform: none; }
@@ -1638,15 +2399,8 @@ body.photo-hero .site-header.is-scrolled {
 
 .card-num { color: var(--oxblood); }
 
-/* Swapped in over .newsletter-form once a submit succeeds */
-.form-success {
-  display: none;
-  font-size: var(--fs-lead);
-  font-weight: 600;
-}
-
-.form-success.is-visible { display: block; }
-.newsletter-form.is-submitted { display: none; }
+/* The old display:none swap between form and message is gone — the pill
+   morphs in place instead. See .form-pill in section 15. */
 
 .newsletter-footer { padding: var(--space-7) 0; text-align: center; }
 

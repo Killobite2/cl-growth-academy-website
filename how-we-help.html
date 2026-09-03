@@ -42,9 +42,41 @@
     <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">&#9776;</button>
     <div class="nav-links" id="nav-links">
       <a href="how-we-help.html" aria-current="page">How We Help</a>
-      <a href="ndis-marketing/index.html">NDIS Marketing</a>
+      <div class="nav-sub">
+        <button class="nav-sub-trigger" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="nav-ndis">
+          NDIS Marketing
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav-panel" id="nav-ndis">
+          <a class="nav-panel-overview" href="ndis-marketing/index.html">
+            <span class="nav-panel-num">&rarr;</span>
+            <span><span class="nav-panel-title">NDIS Marketing</span><span class="nav-panel-desc">All five channels, and how they fit together.</span></span>
+          </a>
+          <a href="ndis-marketing/seo.html">
+            <span class="nav-panel-num">01</span>
+            <span><span class="nav-panel-title">NDIS SEO</span><span class="nav-panel-desc">Long-term visibility built for NDIS-specific searches, not vanity keywords.</span></span>
+          </a>
+          <a href="ndis-marketing/ads.html">
+            <span class="nav-panel-num">02</span>
+            <span><span class="nav-panel-title">NDIS Ads</span><span class="nav-panel-desc">Paid campaigns aimed at real participant enquiries, not clicks for the sake of clicks.</span></span>
+          </a>
+          <a href="ndis-marketing/email.html">
+            <span class="nav-panel-num">03</span>
+            <span><span class="nav-panel-title">Email Marketing</span><span class="nav-panel-desc">Straight-talking sequences that keep your provider top of mind.</span></span>
+          </a>
+          <a href="ndis-marketing/social.html">
+            <span class="nav-panel-num">04</span>
+            <span><span class="nav-panel-title">Social &amp; Content</span><span class="nav-panel-desc">Real stories from your team build more trust than any stock photo ever will.</span></span>
+          </a>
+          <a href="ndis-marketing/managed.html">
+            <span class="nav-panel-num">05</span>
+            <span><span class="nav-panel-title">Managed Growth</span><span class="nav-panel-desc">All five channels run together, reported on in plain English, one point of contact.</span></span>
+          </a>
+        </div>
+      </div>
       <a href="blog.html">Blog</a>
       <a href="contact.html" class="btn btn-mustard nav-cta">Get In Touch</a>
+      <span class="nav-indicator" aria-hidden="true"></span>
     </div>
   </nav>
 </header>
@@ -121,6 +153,76 @@
         <span class="eyebrow">05</span>
         <h3>Managed Growth</h3>
         <p class="card-more">Learn more</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Kept byte-identical to the same section on index.html. There is no
+     include mechanism here, so edits to one must be made to the other —
+     same arrangement as the header and footer. -->
+<section class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Ways to work together</span>
+      <h2>Pick the level of help you need</h2>
+      <p class="lead">Some providers want the whole thing run for them. Some just want someone to keep them honest. Both are fine — but they're different jobs, so they're structured differently.</p>
+    </div>
+
+    <div class="ways">
+      <a class="way way-oxblood" href="contact.html">
+        <svg class="way-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="2.5" y="4" width="19" height="16" rx="2"/>
+          <path d="M2.5 8.5h19"/>
+          <path d="M7 16.5l3.5-3.5 2.5 2.5 4-4"/>
+          <path d="M17 11.5h1.5V13"/>
+        </svg>
+        <div class="way-eyebrow">Done for you</div>
+        <h3>NDIS Marketing &amp; Websites</h3>
+        <p>An approach designed for you, built by me. Fifteen years of marketing and website work aimed at one thing: more NDIS enquiries, and a brand that doesn't look like everyone else's.</p>
+        <span class="way-cta">Let's chat</span>
+        <span class="way-badge" aria-hidden="true">01</span>
+      </a>
+
+      <a class="way way-mustard" href="contact.html">
+        <svg class="way-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M2.5 20.5h5v-5h5v-4.5h5v-4.5h4"/>
+          <path d="M17.5 6.5V2.5"/>
+          <path d="M17.5 3.2h4.2l-1.4 1.7 1.4 1.7h-4.2"/>
+        </svg>
+        <div class="way-eyebrow">Done with you</div>
+        <h3>NDIS Marketing &amp; Sales Coach</h3>
+        <p>For providers who want to lead their own marketing. You're capable — you just need structure, a plan, and someone who'll hold you to it. We meet regularly, you execute, we refine.</p>
+        <span class="way-cta">Let's chat</span>
+        <span class="way-badge" aria-hidden="true">02</span>
+      </a>
+
+      <a class="way way-paper" href="contact.html">
+        <svg class="way-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="3" y="2.5" width="18" height="13" rx="2"/>
+          <path d="M7.5 12V9M11 12V6.5M14.5 12v-2M18 12V7.5"/>
+          <path d="M12 15.5v3"/>
+          <path d="M8 21.5l4-3 4 3"/>
+        </svg>
+        <div class="way-eyebrow">One-off</div>
+        <h3>NDIS Marketing Workshops</h3>
+        <p>Half a day or a full day, for you or your team. Cut the busywork and get clear on the handful of activities actually worth your time. Everyone leaves knowing what they're doing on Monday.</p>
+        <span class="way-cta">Let's chat</span>
+        <span class="way-badge" aria-hidden="true">03</span>
+      </a>
+
+      <a class="way way-ink2" href="contact.html">
+        <svg class="way-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M8.5 3.5H6a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 6 21.5h12a1.5 1.5 0 0 0 1.5-1.5V5A1.5 1.5 0 0 0 18 3.5h-2.5"/>
+          <rect x="8.5" y="1.8" width="7" height="3.4" rx="1"/>
+          <path d="M8 10.5h8M8 14h8M8 17.5h8"/>
+          <path d="M11 8.5v11M14 8.5v11"/>
+        </svg>
+        <div class="way-eyebrow">Ongoing</div>
+        <h3>Outsourced NDIS Marketing Manager</h3>
+        <p>A complete strategy without hiring a full-time team. Annual plan, budget and reporting, run by one person who knows the sector — so you can see the return instead of guessing at it.</p>
+        <span class="way-cta">Let's chat</span>
+        <span class="way-badge" aria-hidden="true">04</span>
       </a>
     </div>
   </div>
