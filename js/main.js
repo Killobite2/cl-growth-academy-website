@@ -368,6 +368,82 @@
     video.pause();
   }
 
+  /* ---------------- Homepage hero video ----------------
+
+     Layered OVER the photo hero, never instead of it: the <picture> below
+     stays the base layer, the poster and the fallback, so if this is
+     skipped or fails to load there is no visible gap.
+
+     Built here rather than in the markup on purpose. A <video> in the HTML
+     is fetched even when CSS hides it, and preload is only a hint, so the
+     only way to guarantee a phone downloads nothing is to not create the
+     element. That also leaves no-JS visitors on the photo, which is the
+     right fallback rather than a broken one.
+
+     The source is 1600x598, authored for the newsletter's short wide band.
+     In a full-viewport portrait window only about 17% of its width would be
+     visible, upscaled 2.8x, for 2.89MB — twenty times the photo it would be
+     covering. So: wide viewports only. */
+
+  var HERO_VIDEO_SRC = 'video/newsletter-hero.mp4';
+
+  function heroVideoWanted() {
+    if (reduceMotion) return false;
+    if (!window.matchMedia('(min-width: 701px)').matches) return false;
+
+    // Respect an explicit data-saving preference where the browser exposes
+    // one. Absent support is treated as "no objection", not as a blocker.
+    var c = navigator.connection;
+    if (c) {
+      if (c.saveData) return false;
+      if (c.effectiveType === '2g' || c.effectiveType === 'slow-2g') return false;
+    }
+    return true;
+  }
+
+  function initPhotoHeroVideo() {
+    var frame = document.querySelector('body.photo-hero .photo-frame');
+    if (!frame || frame.querySelector('video')) return;
+    if (!heroVideoWanted()) return;
+
+    var v = document.createElement('video');
+    // muted and playsinline are both load-bearing: without either, mobile
+    // browsers refuse to autoplay. Decorative, so it stays out of the
+    // accessibility tree and, having no controls, out of the tab order.
+    v.muted = true;
+    v.loop = true;
+    v.autoplay = true;
+    v.playsInline = true;
+    v.preload = 'metadata';
+    v.setAttribute('aria-hidden', 'true');
+    v.setAttribute('tabindex', '-1');
+    v.src = HERO_VIDEO_SRC;
+
+    // Only reveal once there are frames to show, or the fade would cross
+    // from the photo to a black box.
+    v.addEventListener('canplay', function () {
+      v.classList.add('is-ready');
+    });
+
+    // If it cannot play, leave the photo showing and take the element back
+    // out rather than stacking an empty layer over the hero.
+    v.addEventListener('error', function () {
+      if (v.parentNode) v.parentNode.removeChild(v);
+    });
+
+    // Insert before the content div so it sits above the picture and below
+    // the scrim, keeping every contrast measurement valid.
+    var content = frame.querySelector('.photo-hero-content');
+    frame.insertBefore(v, content || null);
+
+    var playing = v.play();
+    if (playing && typeof playing.catch === 'function') {
+      // Autoplay refusal is not an error worth surfacing; the poster photo
+      // is already the intended still state.
+      playing.catch(function () {});
+    }
+  }
+
   /* ---------------- Waitlist forms ----------------
 
      A plain cross-origin POST to Beehiiv would navigate the visitor away
@@ -623,6 +699,7 @@
     initReveals();
     initClients();
     initHeroVideo();
+    initPhotoHeroVideo();
     initWaitlistForms();
     initJourneyRail();
     initConsultDialog();

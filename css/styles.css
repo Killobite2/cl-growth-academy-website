@@ -1375,6 +1375,30 @@ label {
   object-position: 55% 38%;
 }
 
+/* Optional video layer over the photo, injected by initHeroVideo() on wide
+   viewports only. The photo underneath stays the base layer, the poster and
+   the fallback, so this can fail to load or be skipped entirely with no
+   visible gap.
+
+   The source is 1600x598 (2.68:1), authored for the newsletter's wide band
+   rather than a full-viewport hero: on a phone only 17% of its width would
+   show, upscaled 2.8x, for 2.89MB. Hence wide viewports only. It fades in
+   rather than popping, since the photo is already on screen. It must stay
+   BELOW ::after so the whole scrim, and every contrast measurement behind
+   it, still applies. */
+.photo-frame > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 45%;   /* holds Chris, who sits mid-frame */
+  opacity: 0;
+  transition: opacity var(--t-slow) var(--ease);
+}
+
+.photo-frame > video.is-ready { opacity: 1; }
+
 /* Two-axis scrim: heavy along the bottom where the type sits, plus a
    left wash so the headline never competes with the curtain texture */
 .photo-frame::after {
