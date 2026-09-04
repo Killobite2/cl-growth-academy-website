@@ -279,7 +279,43 @@
     'disbranded':                 { name: 'Disbranded',                      quote: null, who: null }
   };
 
+  /* The looping wall and the testimonial panel are separate concerns and
+     must stay that way. They used to share one function guarded by
+     `if (!track || !panel) return`, which meant removing the panel also
+     silently killed the marquee's cloning, and with it the seamless loop.
+     The panel is currently out of the markup — every quote is still
+     unwritten, so inviting a click would only disappoint — but the wall
+     still runs. */
+
   function initClients() {
+    initLogoWall();
+    initTestimonialPanel();
+  }
+
+  function initLogoWall() {
+    var track = document.getElementById('logo-track');
+    if (!track) return;
+
+    // Duplicate the set so translateX(-50%) loops seamlessly. Skipped
+    // under reduced motion, which leaves the static wrapping wall.
+    if (!reduceMotion) {
+      var originals = Array.prototype.slice.call(track.children);
+      originals.forEach(function (node) {
+        var copy = node.cloneNode(true);
+        // Decorative duplicate: keep it out of the a11y tree and the
+        // tab order so logos aren't announced or tabbed to twice
+        copy.setAttribute('aria-hidden', 'true');
+        copy.setAttribute('tabindex', '-1');
+        track.appendChild(copy);
+      });
+      track.classList.add('is-animating');
+    }
+  }
+
+  /* Dormant until Chris supplies real quotes. Restoring it means putting
+     the #testimonial-panel figure back in the markup and making the tiles
+     buttons again; this code then wires itself up with no changes. */
+  function initTestimonialPanel() {
     var track = document.getElementById('logo-track');
     var panel = document.getElementById('testimonial-panel');
     if (!track || !panel) return;
@@ -290,14 +326,10 @@
 
     function select(slug, tile) {
       var c = CLIENTS[slug];
-      if (!c) return;
+      if (!c || !c.quote) return;
 
-      var hasQuote = !!c.quote;
-      panel.classList.toggle('is-placeholder', !hasQuote);
-      quoteEl.textContent = hasQuote
-        ? '“' + c.quote + '”'
-        : '[TESTIMONIAL — ' + c.name + '. Paste their quote here.]';
-      whoEl.textContent = hasQuote && c.who ? c.who + ' — ' + c.name : c.name;
+      quoteEl.textContent = '“' + c.quote + '”';
+      whoEl.textContent = c.who ? c.who + ', ' + c.name : c.name;
       logoEl.src = 'img/clients/' + slug + '.jpg';
       logoEl.alt = c.name + ' logo';
 
@@ -314,24 +346,8 @@
       if (tile && tile.dataset.client) select(tile.dataset.client, tile);
     });
 
-    // Seed the panel so it is never empty on load
     var first = track.querySelector('.logo-tile');
     if (first) select(first.dataset.client, first);
-
-    // Duplicate the set so translateX(-50%) loops seamlessly. Skipped
-    // under reduced motion, which leaves the static wrapping wall.
-    if (!reduceMotion) {
-      var originals = Array.prototype.slice.call(track.children);
-      originals.forEach(function (node) {
-        var copy = node.cloneNode(true);
-        // Decorative duplicate: keep it out of the a11y tree and the
-        // tab order so logos aren't announced or tabbed to twice
-        copy.setAttribute('aria-hidden', 'true');
-        copy.setAttribute('tabindex', '-1');
-        track.appendChild(copy);
-      });
-      track.classList.add('is-animating');
-    }
   }
 
   /* ---------------- Hero video ----------------
@@ -376,7 +392,7 @@
         console.warn(
           'Waitlist form not wired up: its action is still the Formspree ' +
           'placeholder, so submissions go nowhere. Left un-intercepted on ' +
-          'purpose — a success message here would be a lie.', form
+          'purpose. A success message here would be a lie.', form
         );
         return;
       }
@@ -545,8 +561,8 @@
            response-time promise: the site states none, and inventing one
            would commit Chris to something he has not said. */
         '<div class="consult-visual">' +
-          '<p class="consult-visual-copy">Fifteen years<br>' +
-          '<span class="script">in sales &amp; marketing.</span></p>' +
+          '<p class="consult-visual-copy">Fifteen years of sales<br>' +
+          '<span class="script">and marketing.</span></p>' +
           '<ul class="consult-visual-points">' +
             '<li>Chris reads this himself. Not an inbox someone else screens.</li>' +
             '<li>No lock-in contracts, ever.</li>' +

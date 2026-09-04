@@ -847,7 +847,6 @@ a.post-card:focus-visible {
   background: #FFFFFF;
   border: 2px solid transparent;
   border-radius: var(--radius-md);
-  cursor: pointer;
   font: inherit;
   transition: transform var(--t-base) var(--ease),
               box-shadow var(--t-base) var(--ease),
@@ -861,16 +860,15 @@ a.post-card:focus-visible {
   object-fit: contain;
 }
 
-.logo-tile:hover,
-.logo-tile:focus-visible {
+/* The tiles are plain divs while the testimonial panel is out of the
+   markup: there is nothing to click, so no pointer cursor and no pressed
+   state. The lift on hover stays, because the wall pauses under the
+   pointer and a little response keeps that from feeling like a stall.
+   The aria-pressed rule returns with the panel. */
+.logo-tile:hover {
   transform: scale(1.08);
   box-shadow: var(--shadow-lg);
   border-color: var(--mustard);
-}
-
-.logo-tile[aria-pressed="true"] {
-  border-color: var(--mustard);
-  box-shadow: var(--shadow-md);
 }
 
 .marquee-hint {
@@ -1388,8 +1386,8 @@ label {
     linear-gradient(to top,
       rgba(var(--ink-rgb), 0.96) 0%,
       rgba(var(--ink-rgb), 0.86) 20%,
-      rgba(var(--ink-rgb), 0.58) 42%,
-      rgba(var(--ink-rgb), 0.24) 66%,
+      rgba(var(--ink-rgb), 0.68) 42%,
+      rgba(var(--ink-rgb), 0.38) 66%,
       rgba(var(--ink-rgb), 0.55) 100%),
     /* The headline measured 2.85:1 against the projector screen, under AA
        for large text. Most of the correction goes into this left wash
@@ -1397,8 +1395,8 @@ label {
        wrap, so darkening leftwards buys contrast where the glyphs are
        without dimming the right of the frame, where the room reads. */
     linear-gradient(to right,
-      rgba(var(--ink-rgb), 0.82) 0%,
-      rgba(var(--ink-rgb), 0.30) 52%,
+      rgba(var(--ink-rgb), 0.86) 0%,
+      rgba(var(--ink-rgb), 0.42) 52%,
       rgba(var(--ink-rgb), 0) 100%);
 }
 
@@ -2266,10 +2264,10 @@ body.photo-hero .site-header.is-scrolled {
   .photo-frame::after {
     background: linear-gradient(to top,
       rgba(var(--ink-rgb), 0.95) 0%,
-      rgba(var(--ink-rgb), 0.90) 38%,
-      rgba(var(--ink-rgb), 0.78) 62%,
-      rgba(var(--ink-rgb), 0.45) 82%,
-      rgba(var(--ink-rgb), 0.20) 100%);
+      rgba(var(--ink-rgb), 0.92) 42%,
+      rgba(var(--ink-rgb), 0.86) 66%,
+      rgba(var(--ink-rgb), 0.62) 84%,
+      rgba(var(--ink-rgb), 0.30) 100%);
   }
 
   .photo-credit { margin-top: var(--space-3); }
