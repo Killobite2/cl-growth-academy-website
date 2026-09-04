@@ -40,4 +40,8 @@
     <loc>https://cl-growth-academy-website.vercel.app/blog.html</loc>
     <priority>0.4</priority>
   </url>
+  <url>
+    <loc>https://cl-growth-academy-website.vercel.app/newsletter.html</loc>
+    <priority>0.6</priority>
+  </url>
 </urlset>

@@ -2513,6 +2513,20 @@ body.photo-hero .site-header.is-scrolled {
 
 .newsletter-footer p:last-child { margin-bottom: 0; }
 
+/* Pulled out of card 03 and given its own weight — feedback flagged this
+   line as the strongest copy on the page and asked that it not stay
+   buried inside a card */
+.section-callout {
+  margin: var(--space-7) auto 0;
+  max-width: 46ch;
+  text-align: center;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: var(--fs-h3);
+  line-height: 1.4;
+  color: var(--mustard);
+}
+
 /* ---- Staggered card entrance ----
    The section itself already fades in via .reveal; these give each card
    a starting offset of its own so the row arrives in sequence instead of
