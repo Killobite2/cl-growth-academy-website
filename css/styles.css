@@ -2642,3 +2642,150 @@ body.photo-hero .site-header.is-scrolled {
         rgba(var(--ink-rgb), 0.82) 100%);
   }
 }
+
+/* ---------------------------------------------------------------
+   26. NEWSLETTER NUDGE
+
+   Timed slide-in, injected by initNewsletterNudge() ten seconds after
+   load. Deliberately NOT a dialog: it arrives unprompted, so trapping or
+   stealing focus would interrupt whatever the visitor was reading or
+   typing. An aside with a close button, nothing more.
+
+   z-index 70 puts it above the header (50) and nav panel (60) and below
+   the skip link (100), so it can never cover the first thing a keyboard
+   user reaches.
+   --------------------------------------------------------------- */
+
+.nudge {
+  position: fixed;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  z-index: 70;
+  width: min(340px, calc(100vw - 2 * var(--space-5)));
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--ink-2);
+  border: 1px solid rgba(var(--paper-rgb), 0.14);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateX(calc(100% + var(--space-7)));
+  opacity: 0;
+  transition: transform var(--t-slow) var(--ease),
+              opacity var(--t-slow) var(--ease);
+}
+
+.nudge.is-open { transform: translateX(0); opacity: 1; }
+
+/* Same drifting bloom as .grain-cta, reused rather than reinvented so the
+   two read as one system. Sits behind the content via z-index, not order. */
+.nudge::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  z-index: -2;
+  background:
+    radial-gradient(40% 44% at 26% 28%, var(--oxblood) 0%, transparent 66%),
+    radial-gradient(34% 38% at 76% 74%, var(--mustard) 0%, transparent 66%);
+  filter: blur(58px);
+  opacity: 0.7;
+  animation: grain-drift 26s ease-in-out infinite alternate;
+}
+
+.nudge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--grain);
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.nudge-eyebrow {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-micro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--mustard);
+}
+
+.nudge-title {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: var(--fs-h3);
+  line-height: 1.1;
+  color: var(--paper);
+}
+
+.nudge-body {
+  margin: 0 0 var(--space-5);
+  font-size: var(--fs-small);
+  color: var(--paper-muted);
+}
+
+.nudge-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--mustard);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-sm);
+  transition: transform var(--t-fast) var(--ease);
+}
+
+.nudge-cta:hover { transform: translateY(-2px); }
+
+.nudge-close {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-hairline);
+  border-radius: var(--radius-pill);
+  background: rgba(var(--ink-rgb), 0.5);
+  color: var(--paper-muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease),
+              border-color var(--t-fast) var(--ease);
+}
+
+.nudge-close:hover { color: var(--paper); border-color: var(--paper); }
+
+/* A card pinned to one corner reads as an interruption on a phone; full
+   width along the bottom reads as a bar, and slides from the nearest edge */
+@media (max-width: 700px) {
+  .nudge {
+    left: var(--space-4);
+    right: var(--space-4);
+    bottom: var(--space-4);
+    width: auto;
+    transform: translateY(calc(100% + var(--space-6)));
+  }
+  .nudge.is-open { transform: translateY(0); }
+}
+
+/* The content is useful; only the movement is the problem. So it appears
+   in place rather than being suppressed. */
+@media (prefers-reduced-motion: reduce) {
+  .nudge {
+    transform: none;
+    transition: opacity var(--t-base) linear;
+  }
+  .nudge.is-open { transform: none; }
+  .nudge::before { animation: none; }
+}

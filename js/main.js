@@ -663,6 +663,89 @@
     return dlg;
   }
 
+  /* ---------------- Newsletter nudge ----------------
+
+     Slides in ten seconds after load. Built here rather than in the markup
+     for the same reason as the consult dialog: it is identical on every
+     page, and eleven hand-maintained copies is how the nav drifted.
+
+     Deliberately NOT a dialog and it never takes focus. It arrives
+     unprompted, so moving the caret would interrupt someone mid-sentence
+     in the consult form. Escape dismisses it only when focus is not
+     inside something else that wants Escape.
+
+     The link is root-relative, not the vercel.app URL: same destination,
+     and it keeps working when the domain changes, so this never becomes
+     part of the temporary-URL problem. */
+
+  var NUDGE_KEY = 'cl-nudge-dismissed';
+  var NUDGE_DELAY = 10000;
+  var NUDGE_REMEMBER_DAYS = 30;
+
+  function nudgeDismissed() {
+    // Storage throws in some privacy modes; a missing record just means show
+    try {
+      var v = window.localStorage.getItem(NUDGE_KEY);
+      if (!v) return false;
+      return (Date.now() - parseInt(v, 10)) < NUDGE_REMEMBER_DAYS * 864e5;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function rememberNudgeDismissed() {
+    try {
+      window.localStorage.setItem(NUDGE_KEY, String(Date.now()));
+    } catch (e) { /* nothing to do; it reappears next visit at worst */ }
+  }
+
+  function initNewsletterNudge() {
+    // Pointless on the page it is advertising
+    if (document.body.classList.contains('newsletter-page')) return;
+    if (nudgeDismissed()) return;
+
+    window.setTimeout(function () {
+      if (document.querySelector('.nudge')) return;
+
+      var el = document.createElement('aside');
+      el.className = 'nudge';
+      el.setAttribute('aria-label', 'Free weekly newsletter');
+      el.innerHTML =
+        '<button class="nudge-close" type="button" aria-label="Dismiss">&times;</button>' +
+        '<p class="nudge-eyebrow">Free &middot; Weekly</p>' +
+        '<p class="nudge-title">Free weekly newsletter</p>' +
+        '<p class="nudge-body">Marketing, sales, and one thing to do each week. ' +
+        'Written for NDIS and aged care providers.</p>' +
+        '<a class="nudge-cta" href="/newsletter.html">Subscribe &rarr;</a>';
+
+      document.body.appendChild(el);
+
+      // Next frame, so the transition has a start state to move from
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () { el.classList.add('is-open'); });
+      });
+
+      function dismiss() {
+        el.classList.remove('is-open');
+        rememberNudgeDismissed();
+        // Remove only once it has finished travelling, or it vanishes
+        window.setTimeout(function () {
+          if (el.parentNode) el.parentNode.removeChild(el);
+        }, reduceMotion ? 0 : 500);
+      }
+
+      el.querySelector('.nudge-close').addEventListener('click', dismiss);
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        // The consult dialog and the nav own Escape while they are open
+        if (document.querySelector('dialog[open]')) return;
+        if (!el.parentNode) return;
+        dismiss();
+      });
+    }, NUDGE_DELAY);
+  }
+
   function initConsultDialog() {
     if (typeof HTMLDialogElement === 'undefined') return; // no dialog: links navigate
     var dlg = null;
@@ -703,6 +786,7 @@
     initWaitlistForms();
     initJourneyRail();
     initConsultDialog();
+    initNewsletterNudge();
   }
 
   if (document.readyState === 'loading') {
