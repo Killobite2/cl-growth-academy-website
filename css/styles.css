@@ -2794,3 +2794,122 @@ body.photo-hero .site-header.is-scrolled {
   .nudge.is-open { transform: none; }
   .nudge::before { animation: none; }
 }
+
+/* ---------------------------------------------------------------
+   27. SERVICE PAGE LAYOUT
+
+   Built for the channel pages, which run long (1,200 words plus) and
+   would read as an undifferentiated column without a rhythm to them.
+   Two devices only: an alternating copy/photo row, and a timeline.
+   Everything else on those pages reuses the existing card, grid, faq
+   and section-colour components.
+   --------------------------------------------------------------- */
+
+.channel-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-7);
+  align-items: center;
+  margin-top: var(--space-8);
+}
+
+/* Alternate which side the photo sits on, so a run of these reads as a
+   rhythm rather than a list. Set explicitly per row rather than with
+   :nth-of-type(even): that counts EVERY sibling div, so a .section-head
+   above the rows shifts the whole alternation by one and the numbering
+   ends up reading 01, 02, 04, 03. */
+.channel-row.is-flipped .channel-media { order: -1; }
+
+.channel-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  line-height: 1;
+  color: var(--mustard);
+  margin-bottom: var(--space-3);
+}
+
+.channel-row h3 {
+  font-size: var(--fs-h2);
+  margin-bottom: var(--space-4);
+}
+
+.channel-row p { color: var(--paper-muted); }
+
+.channel-media img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+/* No honest photograph exists for some of these sections (technical
+   work, AI search). Rather than reach for a stock stand-in on a site
+   that promises never to, those get type on a brand surface. */
+.channel-note {
+  padding: var(--space-7) var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--ink-2);
+  border: 1px solid rgba(var(--paper-rgb), 0.12);
+}
+
+.channel-note .eyebrow { margin-bottom: var(--space-3); }
+
+/* These panels are used both inside a .channel-row and standalone in a
+   grid, so they cannot rely on .channel-row h3 for their spacing. */
+.channel-note h3 {
+  font-size: var(--fs-h3);
+  margin-bottom: var(--space-4);
+}
+
+.channel-note p:last-child { margin-bottom: 0; }
+
+/* An ordered process reads better against a spine than as another card
+   grid; these pages already carry two grids. */
+.timeline {
+  list-style: none;
+  margin: var(--space-7) 0 0;
+  padding: 0;
+}
+
+.timeline li {
+  position: relative;
+  padding: 0 0 var(--space-6) var(--space-7);
+  border-left: 2px solid rgba(var(--paper-rgb), 0.16);
+}
+
+.timeline li:last-child { padding-bottom: 0; border-left-color: transparent; }
+
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-pill);
+  background: var(--mustard);
+}
+
+.timeline-when {
+  display: block;
+  font-size: var(--fs-micro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--mustard);
+  margin-bottom: var(--space-2);
+}
+
+.timeline p { margin: 0; color: var(--paper-muted); }
+
+.section-paper .timeline li { border-left-color: rgba(var(--ink-rgb), 0.18); }
+.section-paper .timeline p,
+.section-paper .channel-row p { color: var(--ink-muted); }
+
+@media (max-width: 700px) {
+  .channel-row { grid-template-columns: 1fr; gap: var(--space-5); }
+  /* Photo first on a phone: it orients the reader before the copy */
+  .channel-row .channel-media { order: -1 !important; }
+  .channel-note { padding: var(--space-6) var(--space-5); }
+}
