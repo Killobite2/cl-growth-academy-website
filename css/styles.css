@@ -1667,16 +1667,21 @@ body.photo-hero .site-header.is-scrolled {
   perspective-origin: 50% 48%;
 }
 
-/* --span is six card depths, matching the six unique cards written twice
-   in the markup. Flying exactly that far means card 7 lands where card 1
-   started, so the loop has no seam. Change one and you must change both. */
+/* --span is TEN card depths, matching the ten unique cards written twice
+   in the markup. Flying exactly that far means card 11 lands where card 1
+   started, so the loop has no seam. Change one and you must change both:
+   --span must always equal (unique cards) x --gap-z.
+
+   The duration scales with the span too, or the fly-through simply gets
+   faster as cards are added. 32s covered 1920px; 53s covers 3200px at the
+   same perceived speed. */
 .corridor-wall {
   --gap-z: 320px;
-  --span: 1920px;
+  --span: 3200px;
   position: absolute;
   inset: 0;
   transform-style: preserve-3d;
-  animation: corridor-fly 32s linear infinite;
+  animation: corridor-fly 53s linear infinite;
 }
 
 @keyframes corridor-fly {
@@ -2307,7 +2312,7 @@ body.photo-hero .site-header.is-scrolled {
      edges of a phone viewport before they reach the vanishing point */
   .corridor { height: 320px; perspective: 700px; }
   .corridor-card { width: 190px; }
-  .corridor-wall { --gap-z: 220px; --span: 1320px; }
+  .corridor-wall { --gap-z: 220px; --span: 2200px; }
   .corridor-left .corridor-card {
     transform: translate3d(-250px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
   }
