@@ -680,14 +680,21 @@
 
   var NUDGE_KEY = 'cl-nudge-dismissed';
   var NUDGE_DELAY = 10000;
-  var NUDGE_REMEMBER_DAYS = 30;
+
+  /* sessionStorage, not localStorage, and deliberately so: dismissing it
+     should hold for the current browsing session and no longer, so the
+     newsletter gets offered again on a later visit. sessionStorage expires
+     itself when the session ends, which is exactly that rule, with no
+     timestamp arithmetic to get wrong.
+
+     Worth knowing it is scoped per tab, so opening the site in a second tab
+     counts as a second session and offers again. That is the trade for
+     asking every session rather than once a month. */
 
   function nudgeDismissed() {
     // Storage throws in some privacy modes; a missing record just means show
     try {
-      var v = window.localStorage.getItem(NUDGE_KEY);
-      if (!v) return false;
-      return (Date.now() - parseInt(v, 10)) < NUDGE_REMEMBER_DAYS * 864e5;
+      return !!window.sessionStorage.getItem(NUDGE_KEY);
     } catch (e) {
       return false;
     }
@@ -695,8 +702,8 @@
 
   function rememberNudgeDismissed() {
     try {
-      window.localStorage.setItem(NUDGE_KEY, String(Date.now()));
-    } catch (e) { /* nothing to do; it reappears next visit at worst */ }
+      window.sessionStorage.setItem(NUDGE_KEY, '1');
+    } catch (e) { /* nothing to do; it reappears next page view at worst */ }
   }
 
   function initNewsletterNudge() {
