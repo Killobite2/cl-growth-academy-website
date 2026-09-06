@@ -3134,3 +3134,205 @@ body.photo-hero .site-header.is-scrolled {
   .way:hover .way-badge { transform: none; }
   .way:hover .way-cta::after { transform: none; }
 }
+
+/* ---------------------------------------------------------------
+   29. SHOWCASE — copy beside two photographs that drift apart
+
+   A vanilla rebuild of a React/framer-motion component. The reference
+   used whileInView + staggerChildren; this rides the .reveal
+   IntersectionObserver that already exists (initReveals in main.js), so
+   the section costs no JavaScript at all — the same trick the .way
+   stagger in §20 uses.
+
+   Its palette was black / #868f97 / white glassmorphism. Mapped to this
+   brand: --ink ground, --paper-muted body, an oxblood-tinted --ink-2
+   back plate, and for the front card a hairline paper border with
+   --shadow-lg in place of the frosted glass, which does not read over an
+   ink ground the way it does over pure black.
+   --------------------------------------------------------------- */
+
+.showcase {
+  position: relative;
+  background: var(--ink);
+  overflow: hidden;   /* the back layer is deliberately outside the column */
+}
+
+.showcase-grid {
+  display: grid;
+  /* minmax(0, …) on BOTH tracks. A bare 1fr floors at min-content, which is
+     how one long word once held the newsletter hero at 481px on every phone. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.showcase-copy { max-width: 34rem; }
+
+.showcase-copy h2 { margin-top: var(--space-3); }
+
+.showcase-copy .lead { margin-top: var(--space-4); color: var(--paper-muted); }
+
+.showcase-points {
+  list-style: none;
+  margin: var(--space-6) 0 var(--space-7);
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+/* Same mustard rule as the consult panel's points, so the two read as one
+   system rather than two takes on a list */
+.showcase-points li {
+  position: relative;
+  padding-left: var(--space-6);
+  color: var(--paper-muted);
+  font-size: var(--fs-small);
+}
+
+.showcase-points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 14px;
+  height: 2px;
+  background: var(--mustard);
+}
+
+/* ---- The two layers ----
+   The back plate sits up and left of the front card and is the thing that
+   makes this read as depth rather than as one photo. It is pulled outside
+   the column on purpose; .showcase clips it. */
+
+.showcase-media {
+  position: relative;
+  justify-self: center;
+  width: 100%;
+  max-width: 470px;
+  /* Reserves the height both absolutely-positioned layers need, plus the
+     travel, so the drift never reflows the section under itself */
+  padding-block: var(--space-7);
+}
+
+.showcase-layer {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  /* 1.2s is far slower than --t-slow and deliberately so: this is the
+     section's one signature move, and at --t-slow it reads as a jump
+     rather than a drift. */
+  transition: transform 1.2s var(--ease), opacity 1.2s var(--ease);
+}
+
+.showcase-layer img {
+  width: 100%;
+  /* height:auto is load-bearing — the same trap documented on .post-thumb
+     and .founder-photo. The img carries height="600", which lands on the CSS
+     height property as a presentational hint; with width and height both
+     definite, aspect-ratio is ignored and the crop never happens. The
+     attributes stay for CLS reservation. */
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.showcase-back {
+  position: absolute;
+  top: 0;
+  left: -14%;
+  width: 78%;
+  z-index: 0;
+  opacity: 0.55;
+  filter: blur(1px);
+  border: 1px solid rgba(var(--paper-rgb), 0.1);
+  /* Tints the plate towards oxblood so the pair reads as brand rather than
+     as the same photograph printed twice */
+  background: var(--oxblood);
+}
+
+.showcase-back img { opacity: 0.72; }
+
+.showcase-front {
+  position: relative;
+  z-index: 1;
+  margin-left: 12%;
+  border: 1px solid rgba(var(--paper-rgb), 0.18);
+  box-shadow: var(--shadow-lg);
+  background: var(--ink-2);
+}
+
+/* ---- Entrance ----
+   Copy and media fade up together, media 200ms behind (the reference's
+   staggerChildren: 0.2). Then the two layers pull apart. */
+
+/* The section carries .reveal only to collect is-visible from the observer.
+   Its own 18px fade is suppressed so the staggered children ARE the
+   animation — running both means the copy fades twice at different rates
+   and the whole band reads as mush. */
+.showcase.reveal { opacity: 1; transform: none; transition: none; }
+
+.showcase .showcase-copy,
+.showcase .showcase-media {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity var(--t-slow) var(--ease),
+              transform var(--t-slow) var(--ease);
+}
+
+.showcase.is-visible .showcase-copy,
+.showcase.is-visible .showcase-media { opacity: 1; transform: none; }
+
+.showcase.is-visible .showcase-media { transition-delay: 200ms; }
+
+/* At rest the two layers sit together; on reveal they separate. Starting
+   them apart and closing would fight the fade-up above, which is already
+   travelling downward. */
+.showcase.is-visible .showcase-back { transform: translateY(-30px); }
+.showcase.is-visible .showcase-front {
+  transform: translateY(30px);
+  transition-delay: 100ms;
+}
+
+/* The reference's hairline under the section. Radial rather than linear so
+   it fades at both ends instead of butting into the page edge. */
+.showcase::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: radial-gradient(50% 50% at 50% 50%,
+    rgba(var(--paper-rgb), 0.24) 0%,
+    rgba(var(--paper-rgb), 0) 100%);
+}
+
+@media (max-width: 900px) {
+  .showcase-grid { gap: var(--space-7); }
+}
+
+@media (max-width: 700px) {
+  /* Photo first, matching .channel-row in §27 — it orients the reader
+     before the copy does */
+  .showcase-grid { grid-template-columns: minmax(0, 1fr); }
+  .showcase-media { order: -1; }
+  .showcase-copy { max-width: none; }
+
+  /* Shorter travel: 30px each way is a third of the visible band on a
+     phone, where it reads as a glitch rather than as depth */
+  .showcase.is-visible .showcase-back { transform: translateY(-14px); }
+  .showcase.is-visible .showcase-front { transform: translateY(14px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The blanket rule in §23 zeroes transition-duration but never
+     transition-delay, so without these the section would still stagger in
+     — the trap this stylesheet documents three times. Layers rest where
+     they land; the composition is the point, not the travel. */
+  .showcase .showcase-copy,
+  .showcase .showcase-media { opacity: 1; transform: none; }
+  .showcase.is-visible .showcase-media,
+  .showcase.is-visible .showcase-front { transition-delay: 0ms; }
+  .showcase-layer { transition: none; }
+  .showcase.is-visible .showcase-back { transform: translateY(-30px); }
+  .showcase.is-visible .showcase-front { transform: translateY(30px); }
+}
