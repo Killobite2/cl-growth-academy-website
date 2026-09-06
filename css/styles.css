@@ -33,6 +33,9 @@
   --fs-h1: clamp(2.1rem, 4.6vw, 3.2rem);
   --fs-h2: clamp(1.7rem, 3.4vw, 2.4rem);
   --fs-h3: clamp(1.05rem, 1.6vw, 1.3rem);
+  /* Card-scale headings. Set in Work Sans 800, not Alfa Slab One — see the
+     .card-title rule in §3 for why the display face is wrong at this size. */
+  --fs-card-title: clamp(1rem, 1.5vw, 1.15rem);
   --fs-lead: clamp(1rem, 1.4vw, 1.15rem);
   --fs-body: 1rem;
   --fs-small: 0.875rem;
@@ -86,6 +89,24 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+}
+
+/* A backstop, not the fix. Every known overflow source is dealt with at its
+   origin (the .form-pill stack in the 480px tier, the corridor offsets,
+   overflow-wrap on headings and long email tokens). This catches the next
+   one, so a single wide child cannot rock the whole document sideways — a
+   failure mode the site had on every page.
+
+   clip, NOT hidden. `overflow-x: hidden` computes overflow-y to auto, which
+   makes body a scroll container and breaks position:sticky on .site-header
+   (:309). `clip` suppresses the overflow without establishing one, so the
+   header keeps sticking. Safari <16 ignores clip and falls back to visible:
+   that loses the backstop on old iOS but never breaks the header, which is
+   the right way round for a rule that should not be doing any work. */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body {
@@ -163,17 +184,63 @@ h1, h2, h3, h4 {
   margin: 0;
   letter-spacing: 0.5px;
   text-wrap: balance;
+  /* Alfa Slab One uppercase is very wide, and every clamp below bottoms out
+     on a phone, so a single long word can exceed the 272px of content a
+     320px viewport offers. Breaking mid-word is ugly; overflowing the
+     viewport is worse. */
+  overflow-wrap: break-word;
 }
 
 h1 { font-size: var(--fs-h1); }
 h2 { font-size: var(--fs-h2); }
 h3 { font-size: var(--fs-h3); }
 
+/* Card-scale headings — the display face does not survive a narrow column.
+   At 5-up in .grid-5 a card has ~157px of measure, where Alfa Slab One at
+   --fs-h3 wraps "Outsourced NDIS Marketing Manager" to four lines while
+   "NDIS SEO" takes one: the row reads ragged and the cards fight each other.
+
+   Work Sans 800 uppercase is ~35% narrower and is not a new voice — it is
+   the .eyebrow treatment (:186) one step up the scale. Alfa Slab One keeps
+   every h1/h2, the .way cards, .channel-row h3 and the pull-quotes, i.e.
+   everywhere it has the measure to behave like a display face. */
+.card h3,
+.post-card h3,
+.channel-note h3,
+.nudge-title,
+.faq summary {
+  font-family: var(--font-body);
+  font-size: var(--fs-card-title);
+  font-weight: 800;
+  letter-spacing: var(--tracking-wide);
+  line-height: 1.25;
+}
+
 .script {
   font-family: var(--font-script);
   text-transform: none;
   font-weight: 400;
   letter-spacing: normal;
+}
+
+/* Holds a phrase on one line so a headline breaks where it reads best.
+   Replaces welding words with &nbsp;, which cannot be undone at any width:
+   "newsletter from me." in Alfa Slab One runs 480-505px as one unbreakable
+   token, and it was setting the minimum width of the entire newsletter hero
+   grid — which is 320px + 1fr, so the row needed roughly 900px of wrap
+   before the phrase fit. Below that it pushed the hero past the viewport,
+   measured at 768px and 1024px as well as on every phone.
+
+   Written as opt-in above 1200px rather than opt-out below some width. The
+   phrase is not a fixed size — --fs-h1 keeps growing with the viewport up
+   to 51px, so the phrase grows too (~13x the font size), and a hand-picked
+   max-width release has to be re-derived every time the type scale moves.
+   Defaulting to normal means the failure mode is a line breaking somewhere
+   slightly less pretty, not a hero pushed off the screen. */
+.keep-together { white-space: normal; }
+
+@media (min-width: 1200px) {
+  .keep-together { white-space: nowrap; }
 }
 
 .eyebrow {
@@ -209,6 +276,14 @@ h3 { font-size: var(--fs-h3); }
   letter-spacing: var(--tracking-wide);
   color: var(--paper-muted);
   margin-bottom: var(--space-4);
+}
+
+/* 12px type gives a 14px-tall inline box. These are real navigation on the
+   five channel pages, so they get a tappable box rather than the line box. */
+.breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .breadcrumb a:hover { color: var(--cream); }
@@ -327,6 +402,9 @@ h3 { font-size: var(--fs-h3); }
   align-items: center;
   gap: calc(10px * var(--brand-scale));
   white-space: nowrap;
+  /* The 40px mark left the whole lockup 4px short of a 44px tap target,
+     and it is the home link on every page */
+  min-height: 44px;
 }
 
 .brand-mark {
@@ -517,6 +595,9 @@ h3 { font-size: var(--fs-h3); }
   border-bottom: var(--border-hairline);
 }
 
+/* 44px square. It was 39x34 — the smallest hit area on the site and also
+   the most-used control on a phone, since it gates the whole nav. The glyph
+   still renders at 1.6rem; the box around it is what changed. */
 .nav-toggle {
   display: none;
   background: none;
@@ -525,7 +606,11 @@ h3 { font-size: var(--fs-h3); }
   font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
-  padding: var(--space-1) var(--space-2);
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ---------------------------------------------------------------
@@ -636,8 +721,13 @@ section { padding: var(--space-9) 0; }
    10. CARDS
    --------------------------------------------------------------- */
 
+/* Column, not block, for the same reason .post-card.has-thumb is one (:800):
+   the grid equalises card heights, so without it the "Learn more" line
+   trails whatever length its own copy happens to be and the row's five
+   links land at five different heights. */
 .card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   background: var(--paper);
   color: var(--ink);
   border-radius: var(--radius-md);
@@ -647,6 +737,11 @@ section { padding: var(--space-9) 0; }
               box-shadow var(--t-base) var(--ease),
               border-color var(--t-base) var(--ease);
 }
+
+/* auto beats the .card-more margin-top on specificity; padding-top restores
+   a minimum gap for the tallest card in the row, where auto resolves to 0.
+   Same pairing as .has-thumb .card-more (:836). */
+.card > .card-more { margin-top: auto; padding-top: var(--space-5); }
 
 /* Only cards that are actually links get an interactive affordance */
 a.card:hover,
@@ -829,8 +924,15 @@ a.post-card:focus-visible {
   to { transform: translateX(-50%); }
 }
 
-/* Pause whenever someone is reaching for a logo — clicking a moving
-   target is hostile, and these tiles are interactive */
+/* Pauses on hover so a logo can be read rather than chased.
+
+   Honest about the limit: the tiles are plain divs with nothing focusable
+   inside, so :focus-within cannot fire, and there is no touch equivalent —
+   on a phone the wall never stops. Accepted rather than fixed, because the
+   alternative is making thirteen decorative logos focusable and adding
+   thirteen stops to the tab order of every page. Nothing is only available
+   here; the client names appear in the copy too. The :focus-within half is
+   kept for the day a tile becomes a real link. */
 .marquee:hover .marquee-track,
 .marquee:focus-within .marquee-track { animation-play-state: paused; }
 
@@ -1170,6 +1272,7 @@ label {
   flex: 1 1 auto;
   width: auto;
   min-width: 0;
+  min-height: 44px;   /* padding alone left it at 43 */
   border: none;
   background: transparent;
   padding: var(--space-3) var(--space-4);
@@ -1239,20 +1342,23 @@ label {
 
 .faq { display: grid; gap: var(--space-3); }
 
+/* No padding here — it moved onto summary and .faq p so the summary's own
+   box is the full-width tap target. */
 .faq details {
   background: var(--ink-2);
   border: var(--border-hairline);
   border-radius: var(--radius-md);
-  padding: var(--space-5) var(--space-6);
 }
 
 .faq details[open] { border-color: rgba(var(--paper-rgb), 0.3); }
 
+/* Family, size and tracking come from the card-title rule in §3.
+   The padding lives here rather than on .faq details so the whole tap
+   target is the summary box itself — on details it sat outside the
+   summary, leaving a ~22px-tall target on a phone. */
 .faq summary {
-  font-family: var(--font-display);
   text-transform: uppercase;
-  font-size: var(--fs-h3);
-  line-height: 1.3;
+  padding: var(--space-5) var(--space-6);
   cursor: pointer;
   list-style: none;
   display: flex;
@@ -1273,8 +1379,10 @@ label {
 
 .faq details[open] summary::after { transform: rotate(45deg); }
 
+/* Picks up the horizontal gutter that details gave up, and the bottom one.
+   margin-top is 0 because summary's own padding already separates them. */
 .faq p {
-  margin-top: var(--space-4);
+  margin: 0 var(--space-6) var(--space-5);
   color: var(--paper-muted);
   max-width: 68ch;
 }
@@ -1542,119 +1650,6 @@ body.photo-hero .site-header.is-scrolled {
 }
 
 /* ---------------------------------------------------------------
-   19. JOURNEY RAIL
-
-   Replaced a four-column table. Same twelve cells of data, walked
-   one stage at a time instead of read across. Built as a tablist,
-   so the roving tabindex and arrow keys come from a real pattern.
-   --------------------------------------------------------------- */
-
-.rail {
-  display: flex;
-  gap: var(--space-2);
-  /* Horizontal scroll rather than wrap: five stages in a row IS the
-     information, and a wrapped second row reads as a different set */
-  overflow-x: auto;
-  padding-bottom: var(--space-3);
-  scrollbar-width: thin;
-}
-
-.rail-stage {
-  flex: 1 1 0;
-  min-width: 148px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-4) var(--space-5);
-  border: none;
-  /* The connecting line. An inset bottom border on the button itself,
-     so it tracks the stage width instead of needing a separate rail
-     element underneath to stay in sync. */
-  box-shadow: inset 0 -2px 0 rgba(var(--paper-rgb), 0.16);
-  background: none;
-  color: var(--paper-muted);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: color var(--t-fast) var(--ease),
-              box-shadow var(--t-base) var(--ease);
-}
-
-.rail-stage:hover { color: var(--paper); }
-
-.rail-stage[aria-selected="true"] {
-  color: var(--paper);
-  box-shadow: inset 0 -2px 0 var(--mustard);
-}
-
-.rail-num {
-  font-family: var(--font-display);
-  font-size: var(--fs-micro);
-  color: var(--paper-faint);
-  transition: color var(--t-fast) var(--ease);
-}
-
-.rail-stage[aria-selected="true"] .rail-num { color: var(--mustard); }
-
-.rail-name {
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  font-size: var(--fs-small);
-  line-height: 1.2;
-}
-
-.rail-panels { margin-top: var(--space-6); }
-
-.rail-panel {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1.2fr;
-  gap: var(--space-5);
-  padding: var(--space-6);
-  background: var(--ink-2);
-  border: var(--border-hairline);
-  border-left: 4px solid var(--mustard);
-  border-radius: var(--radius-md);
-}
-
-/* Two panels visible at once only with JS off, where nothing is hidden */
-.rail-panel + .rail-panel { margin-top: var(--space-3); }
-
-.rail-label {
-  display: block;
-  margin-bottom: var(--space-2);
-  font-size: var(--fs-micro);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  color: var(--paper-faint);
-}
-
-.rail-cell p { margin: 0; font-size: var(--fs-small); }
-
-/* Message angle carries the actual ad copy — set as a quote */
-.rail-angle .angle {
-  font-family: var(--font-display);
-  font-style: normal;
-  font-size: var(--fs-h3);
-  line-height: 1.3;
-  color: var(--paper);
-}
-
-/* Cells obscured in the source photo — visibly unresolved, never guessed */
-.needs-confirm {
-  display: inline-block;
-  font-style: normal;
-  font-size: var(--fs-micro);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--ink);
-  background: var(--mustard);
-  border-radius: var(--radius-sm);
-  padding: 2px var(--space-2);
-}
-
-/* ---------------------------------------------------------------
    19b. PHOTO CORRIDOR — two walls receding to one vanishing point
    --------------------------------------------------------------- */
 
@@ -1825,10 +1820,17 @@ body.photo-hero .site-header.is-scrolled {
    at both levels because flex and grid items will not shrink below their
    content without it. */
 .consult {
+  position: relative;   /* anchors .consult-close, which sits outside the grid */
   display: flex;
   flex-direction: column;
   width: min(920px, calc(100vw - 2 * var(--space-5)));
+  /* svh, not vh: with the iOS URL bar showing, vh measures the LARGE
+     viewport, so the dialog is sized taller than what is actually visible
+     and its bottom — the submit button, or Chris's email and phone in the
+     un-wired state — sits under the browser chrome. Same pairing as
+     .photo-frame and .newsletter-hero. vh first as the fallback. */
   max-height: calc(100vh - 2 * var(--space-6));
+  max-height: calc(100svh - 2 * var(--space-6));
   padding: 0;
   border: var(--border-hairline);
   border-radius: var(--radius-lg);
@@ -1869,19 +1871,29 @@ body.photo-hero .site-header.is-scrolled {
   color: var(--paper-muted);
 }
 
+/* Anchored to .consult, not .consult-form. On a phone .consult-visual takes
+   order:-1 and leads the stack, so a form-anchored X started several hundred
+   pixels down the scroll container — off-screen at the moment the dialog
+   opened, when it is the only control the user is looking for.
+
+   The trade is that it now sits over .consult-visual's gradient rather than
+   inside the form, so it carries its own ground to stay legible against the
+   mustard bloom, and .consult-visual-copy reserves room for it below. */
 .consult-close {
   position: absolute;
   top: var(--space-4);
   right: var(--space-4);
-  width: 34px;
-  height: 34px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  background: rgba(var(--ink-rgb), 0.55);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
   border: var(--border-hairline);
   border-radius: var(--radius-pill);
-  background: none;
-  color: var(--paper-muted);
+  color: var(--paper);
   font-size: 1.4rem;
   line-height: 1;
   cursor: pointer;
@@ -1897,7 +1909,19 @@ body.photo-hero .site-header.is-scrolled {
   color: var(--mustard);
 }
 
-.consult-direct { margin: 0; font-weight: 700; }
+/* chris@clgrowthacademy.com.au is 28 characters with no break opportunity
+   in it, and at 700 weight it is wider than the dialog's content box on a
+   phone. anywhere, not break-word: break-word only breaks a word that
+   would overflow on its own line, which leaves the address to push the box
+   wider first. */
+.consult-direct {
+  margin: 0;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.form-pill-success,
+.footer-grid li a { overflow-wrap: anywhere; }
 
 /* Same drifting-bloom treatment as the closing CTA band, so the two read
    as one system rather than two takes on the same idea */
@@ -1943,6 +1967,10 @@ body.photo-hero .site-header.is-scrolled {
   z-index: 1;
   text-shadow: 0 2px 18px rgba(var(--ink-rgb), 0.85);
 }
+
+/* Clears the close button, which is anchored to the dialog corner and so
+   overlaps this panel's first line. 44px control + its 16px offset. */
+.consult-visual-copy { padding-right: 60px; }
 
 /* Fills the middle of the panel. Without it .consult-visual's
    space-between left a large empty band between headline and meta line. */
@@ -2177,7 +2205,9 @@ body.photo-hero .site-header.is-scrolled {
 }
 
 @media (max-width: 800px) {
-  .nav-toggle { display: block; }
+  /* inline-flex, not block — the base rule centres the glyph in its 44px
+     box with align-items/justify-content, which need a flex container */
+  .nav-toggle { display: inline-flex; }
 
   .nav-links {
     position: absolute;
@@ -2201,10 +2231,18 @@ body.photo-hero .site-header.is-scrolled {
   }
 
   /* 85vh with its own scroll, not 60vh: the drawer now nests a six-item
-     submenu and would otherwise clip it against overflow: hidden */
+     submenu and would otherwise clip it against overflow: hidden.
+
+     svh follows vh for the reason given on .consult: with the URL bar
+     showing, 85vh measures the large viewport, so a fully expanded drawer
+     runs past the visible bottom edge. overscroll-behavior stops the scroll
+     handing off to the page once the drawer hits either end, which
+     otherwise moves the page underneath the open menu. */
   .nav-links.open {
     max-height: 85vh;
+    max-height: 85svh;
     overflow-y: auto;
+    overscroll-behavior: contain;
     visibility: visible;
     transition-delay: 0s;
   }
@@ -2256,6 +2294,21 @@ body.photo-hero .site-header.is-scrolled {
     justify-content: center;
     border-top: none;
   }
+
+  /* The footer list is the site's secondary nav, and once .footer-grid goes
+     single column it is the main one on a phone. As inline links they were
+     16px tall on a ~30px pitch — two adjacent targets inside one thumb.
+     Scoped to this query rather than applied globally so the desktop footer
+     does not grow by 24px per row for no benefit. */
+  .footer-grid li { margin-bottom: 0; }
+
+  /* block, not inline-block: "Blog" is a 29px-wide word, and a target
+     sized to its text is a target you have to aim at. The row is the
+     target instead, which is the ordinary phone-nav convention. */
+  .footer-grid li a {
+    display: block;
+    padding: var(--space-3) 0;
+  }
 }
 
 @media (max-width: 700px) {
@@ -2303,21 +2356,45 @@ body.photo-hero .site-header.is-scrolled {
 
   .hero-proof { margin-top: var(--space-5); gap: var(--space-4) var(--space-6); }
 
-  /* Three columns of cells will not fit — stack them, and let the rail
-     scroll sideways rather than wrapping to a second row of stages */
-  .rail-panel { grid-template-columns: 1fr; gap: var(--space-4); padding: var(--space-5); }
-  .rail-stage { min-width: 132px; padding: var(--space-3) var(--space-3) var(--space-4); }
-
   /* Shallower corridor and smaller cards, or the walls fly past the
-     edges of a phone viewport before they reach the vanishing point */
-  .corridor { height: 320px; perspective: 700px; }
-  .corridor-card { width: 190px; }
-  .corridor-wall { --gap-z: 220px; --span: 2200px; }
+     edges of a phone viewport before they reach the vanishing point.
+
+     900px, not 700: a shallower perspective foreshortens harder, so the
+     near cards grew fast and crowded out the receding ones behind them,
+     leaving little to read as a corridor. Raising it flattens the growth
+     curve. Note that a card does sweep across the whole band once per
+     cycle as it passes the camera — that is the fly-through effect and it
+     happens identically at 1280px, so it is not something to design out.
+
+     The duration is overridden here because --span is: the invariant above
+     says they scale together, and 53s was authored for 3200px. Leaving it
+     ran the phone fly-through 31% slow. */
+  .corridor { height: 320px; perspective: 900px; }
+  .corridor-card { width: 160px; }
+  .corridor-wall { --gap-z: 220px; --span: 2200px; animation-duration: 36s; }
   .corridor-left .corridor-card {
-    transform: translate3d(-250px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
+    transform: translate3d(-205px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
   }
   .corridor-right .corridor-card {
-    transform: translate3d(60px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
+    transform: translate3d(45px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
+  }
+
+  /* The centre radial is what swallows the vanishing point, and at this
+     width it covers proportionally far more of the band — it was erasing
+     the receding cards that make the corridor legible as a corridor, and
+     leaving a dead black gutter between two slabs. Lightened, and the edge
+     fade widened to take over the job of hiding the near cards' cropping. */
+  .corridor::after {
+    background:
+      radial-gradient(22% 30% at 50% 50%,
+        rgba(var(--ink-rgb), 0.75) 0%,
+        rgba(var(--ink-rgb), 0.4) 45%,
+        rgba(var(--ink-rgb), 0) 80%),
+      linear-gradient(to right,
+        var(--ink) 0%,
+        rgba(var(--ink-rgb), 0) 16%,
+        rgba(var(--ink-rgb), 0) 84%,
+        var(--ink) 100%);
   }
 
   /* Side by side leaves neither panel usable at this width */
@@ -2342,6 +2419,69 @@ body.photo-hero .site-header.is-scrolled {
 @media (max-width: 600px) {
   .grid-5, .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
   .ways { grid-template-columns: 1fr; }
+}
+
+/* ---- Small phones ----
+   Everything above was written against 600px as the floor, so a 360px
+   viewport used to get rules identical to a 599px one. This is the tier
+   where the assumptions actually stop holding. */
+@media (max-width: 480px) {
+  /* 16px gutters buy back 16px of measure, which several rules below
+     and the headline clamps all need at 320px */
+  .wrap { padding: 0 var(--space-4); }
+
+  /* The pill stacks. Side by side it could not work at this width: the
+     button is flex:0 0 auto so its max-content width is the floor of the
+     whole control, which left the email field 32px wide on the newsletter
+     page — measured, not estimated — and pushed the pill past the
+     viewport. Stacked, the button gets a full line and the field gets the
+     rest, so both stay usable. */
+  .form-pill {
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+  }
+
+  .form-pill-fields {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .form-pill input {
+    padding: var(--space-3);
+    text-align: center;
+  }
+
+  .form-pill .btn {
+    justify-content: center;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  /* Shrink-wrapped on wider screens because it holds only a button; at this
+     width it should span the column like every other stacked control */
+  .form-pill-compact { display: flex; }
+
+  /* Tighter again below 480. The walls have to sit closer to the centre or
+     they leave a black gutter down the middle with a cropped slab either
+     side, which is the opposite of a corridor. Span, gap and duration stay
+     locked to each other per the invariant in §19b. */
+  .corridor { height: 260px; perspective: 800px; }
+  .corridor-card { width: 128px; }
+  .corridor-wall { --gap-z: 180px; --span: 1800px; animation-duration: 30s; }
+  .corridor-left .corridor-card {
+    transform: translate3d(-158px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
+  }
+  .corridor-right .corridor-card {
+    transform: translate3d(30px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
+  }
+
+  /* Cards carry the same padding at 320px as at 1440px, which spends 48px
+     of a 288px measure on air */
+  .card { padding: var(--space-5) var(--space-4); }
+  .post-body { padding: var(--space-5); }
+  .faq summary { padding: var(--space-4) var(--space-5); }
+  .faq p { margin: 0 var(--space-5) var(--space-4); }
+  .channel-note { padding: var(--space-6) var(--space-5); }
 }
 
 /* ---------------------------------------------------------------
@@ -2402,10 +2542,24 @@ body.photo-hero .site-header.is-scrolled {
     box-shadow: none;
   }
   /* Only the first copy of each set — the duplicate exists solely to make
-     the fly-through loop seamless, and stacked in a grid it is just repeats */
-  .corridor-card:nth-child(n + 7) { display: none; }
+     the fly-through loop seamless, and stacked in a grid it is just repeats.
+     n + 11 because each wall holds TEN unique cards written twice; this said
+     n + 7 from when it was six, which silently dropped four real photographs
+     for every reduced-motion visitor. If the card count changes again, this
+     number and --span both follow it. */
+  .corridor-card:nth-child(n + 11) { display: none; }
   .corridor-left .corridor-card,
   .corridor-right .corridor-card { transform: none; }
+
+  /* Three columns of a twenty-photo grid is roughly 83px per photo at
+     320px — legible as colour, not as a room. This has to be nested rather
+     than added to the 600px block in §22, because that block sits earlier
+     in the file and media queries carry no specificity, so the rule above
+     would win. */
+  @media (max-width: 700px) {
+    .corridor { padding: 0 var(--space-4); }
+    .corridor-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 
   .grain-cta::before { animation: none; }
 
@@ -2459,7 +2613,10 @@ body.photo-hero .site-header.is-scrolled {
 
 .newsletter-hero .wrap {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  /* minmax(0, …) so the text track can shrink below its widest word. A bare
+     1fr is minmax(auto, 1fr) and takes its floor from min-content, which is
+     how one long headline word pushed this whole row past the viewport. */
+  grid-template-columns: 320px minmax(0, 1fr);
   gap: var(--space-8);
   /* Top-aligned rather than centered: the text column is much taller
      than the 320px photo, so centering left a large empty gap above it */
@@ -2490,7 +2647,10 @@ body.photo-hero .site-header.is-scrolled {
 .load-in-5 { animation-delay: 380ms; }
 
 @media (max-width: 700px) {
-  .newsletter-hero .wrap { grid-template-columns: 1fr; }
+  /* minmax(0,1fr), not 1fr: a bare 1fr track is minmax(auto, 1fr) and cannot
+     shrink below its widest child's min-content, so one long word held the
+     whole hero at 481px on every phone regardless of viewport. */
+  .newsletter-hero .wrap { grid-template-columns: minmax(0, 1fr); }
   .newsletter-hero .founder-photo { max-width: 260px; margin: 0 auto; }
 }
 
@@ -2517,6 +2677,15 @@ body.photo-hero .site-header.is-scrolled {
 }
 
 .newsletter-footer p:last-child { margin-bottom: 0; }
+
+/* The site URL is a paragraph of its own, so it is a standalone target
+   rather than an inline one and needs a tappable box. overflow-wrap
+   because it is a 36-character unbreakable string. */
+.newsletter-footer p > a:only-child {
+  display: inline-block;
+  padding: var(--space-3) 0;
+  overflow-wrap: anywhere;
+}
 
 /* Pulled out of card 03 and given its own weight — feedback flagged this
    line as the strongest copy on the page and asked that it not stay
@@ -2717,12 +2886,10 @@ body.photo-hero .site-header.is-scrolled {
   color: var(--mustard);
 }
 
+/* Family, size and tracking come from the card-title rule in §3 */
 .nudge-title {
   margin: 0 0 var(--space-3);
-  font-family: var(--font-display);
   text-transform: uppercase;
-  font-size: var(--fs-h3);
-  line-height: 1.1;
   color: var(--paper);
 }
 
@@ -2749,12 +2916,15 @@ body.photo-hero .site-header.is-scrolled {
 
 .nudge-cta:hover { transform: translateY(-2px); }
 
+/* 44px. It was 30px — the smallest target on the site, and on a phone it is
+   the only way to dismiss the bar: there is no swipe and no tap-outside,
+   and Escape is not a phone gesture. */
 .nudge-close {
   position: absolute;
-  top: var(--space-3);
-  right: var(--space-3);
-  width: 30px;
-  height: 30px;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2777,11 +2947,24 @@ body.photo-hero .site-header.is-scrolled {
   .nudge {
     left: var(--space-4);
     right: var(--space-4);
-    bottom: var(--space-4);
+    /* Clear of the iPhone home-indicator strip. At a flat 16px the CTA sat
+       inside the system's swipe-up zone, so a tap near it was ambiguous
+       between pressing the button and going home. env() resolves to 0 on
+       every device without an inset, so the fallback needs no query. */
+    bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
     width: auto;
     transform: translateY(calc(100% + var(--space-6)));
   }
   .nudge.is-open { transform: translateY(0); }
+
+  /* The drawer wins while it is open. The nudge outranks the header (70 vs
+     50) so it can float over an expanded drawer's lower links — including
+     the "Get In Touch" CTA the drawer puts last. Nothing dismisses the
+     nudge to get at them, so it has to yield. */
+  body:has(.nav-links.open) .nudge {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 /* The content is useful; only the movement is the problem. So it appears
@@ -2856,9 +3039,9 @@ body.photo-hero .site-header.is-scrolled {
 .channel-note .eyebrow { margin-bottom: var(--space-3); }
 
 /* These panels are used both inside a .channel-row and standalone in a
-   grid, so they cannot rely on .channel-row h3 for their spacing. */
+   grid, so they cannot rely on .channel-row h3 for their spacing. Family
+   and size come from the card-title rule in §3. */
 .channel-note h3 {
-  font-size: var(--fs-h3);
   margin-bottom: var(--space-4);
 }
 
@@ -2912,4 +3095,42 @@ body.photo-hero .site-header.is-scrolled {
   /* Photo first on a phone: it orients the reader before the copy */
   .channel-row .channel-media { order: -1 !important; }
   .channel-note { padding: var(--space-6) var(--space-5); }
+}
+
+/* ---------------------------------------------------------------
+   28. POINTER CAPABILITY
+   --------------------------------------------------------------- */
+
+/* A touch device fires :hover on tap and then holds it until the next tap
+   lands somewhere else. So every affordance meant to say "this is
+   clickable" instead says "this is stuck": a card sitting 4px off the page
+   with a shadow under it, a badge frozen mid-spin, all through the
+   navigation away and often on return via the back button.
+
+   Neutralised here rather than by wrapping a dozen scattered rules in
+   (hover: hover), which would mean restructuring §4, §10, §11, §20 and §26
+   for one concern. The shape mirrors the reduced-motion block in §23 — same
+   selectors, same reason to exist, different trigger.
+
+   :focus-visible is deliberately untouched: a keyboard user on a
+   touchscreen laptop still gets the full affordance, and it cannot stick,
+   because focus moves on. */
+@media (hover: none) {
+  .btn:hover,
+  a.card:hover,
+  a.post-card:hover,
+  .nudge-cta:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  a.card:hover .card-more::after,
+  a.post-card:hover .card-more::after { transform: none; }
+
+  .logo-tile:hover { transform: none; border-color: transparent; }
+
+  .way:hover { transform: none; box-shadow: none; }
+  .way:hover::before { opacity: 0; }
+  .way:hover .way-badge { transform: none; }
+  .way:hover .way-cta::after { transform: none; }
 }

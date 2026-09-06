@@ -515,57 +515,6 @@
     });
   }
 
-  /* ---------------- Journey rail ----------------
-
-     Standard tablist behaviour over the five journey stages. Panels are
-     only hidden once this runs, so with JS off all five stay visible and
-     stacked rather than collapsing to one — the data matters more than
-     the interaction. */
-
-  function initJourneyRail() {
-    var rail = document.querySelector('.rail[role="tablist"]');
-    if (!rail) return;
-
-    var tabs = Array.prototype.slice.call(rail.querySelectorAll('[role="tab"]'));
-    if (!tabs.length) return;
-
-    function panelFor(tab) {
-      return document.getElementById(tab.getAttribute('aria-controls'));
-    }
-
-    function select(tab, moveFocus) {
-      tabs.forEach(function (t) {
-        var on = t === tab;
-        t.setAttribute('aria-selected', on ? 'true' : 'false');
-        // Roving tabindex: one stop for the whole rail, arrows move within
-        t.tabIndex = on ? 0 : -1;
-        var panel = panelFor(t);
-        if (panel) panel.hidden = !on;
-      });
-      if (moveFocus) tab.focus();
-    }
-
-    rail.addEventListener('click', function (e) {
-      var tab = e.target.closest('[role="tab"]');
-      if (tab) select(tab, false);
-    });
-
-    rail.addEventListener('keydown', function (e) {
-      var i = tabs.indexOf(document.activeElement);
-      if (i === -1) return;
-      var next = null;
-      if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
-      else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
-      else if (e.key === 'Home') next = tabs[0];
-      else if (e.key === 'End') next = tabs[tabs.length - 1];
-      if (!next) return;
-      e.preventDefault();
-      select(next, true);
-    });
-
-    select(tabs[0], false);
-  }
-
   /* ---------------- Consult dialog ----------------
 
      Built here rather than in the markup because it is identical on every
@@ -584,9 +533,14 @@
     var dlg = document.createElement('dialog');
     dlg.className = 'consult';
     dlg.innerHTML =
+      /* Outside .consult-grid on purpose. Inside .consult-form it scrolled
+         with the form, and on a phone .consult-visual is ordered above the
+         form, so the close button began its life off-screen — invisible at
+         the exact moment someone wants it. Anchored to the dialog it stays
+         pinned to the top-right corner at every width. */
+      '<button class="consult-close" type="button" aria-label="Close">&times;</button>' +
       '<div class="consult-grid">' +
         '<div class="consult-form">' +
-          '<button class="consult-close" type="button" aria-label="Close">&times;</button>' +
           '<span class="eyebrow">Book a free consult</span>' +
           '<h2>Straight to Chris.</h2>' +
           '<p class="consult-sub">Tell him what is not working. He will tell you straight whether he can fix it.</p>' +
@@ -768,8 +722,17 @@
       opener = a;
       if (!dlg) dlg = buildConsultDialog();
       dlg.showModal();
-      var first = dlg.querySelector('input');
-      if (first) first.focus();
+
+      /* Focus the first field on a pointer-and-keyboard machine, where it
+         saves a click. NOT on a touch device: it raises the soft keyboard
+         immediately, which eats half the viewport before the reader has
+         seen what the box is, and scrolls the heading out of view.
+         showModal() has already moved focus into the dialog, so the
+         keyboard path is intact either way. */
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        var first = dlg.querySelector('input');
+        if (first) first.focus();
+      }
     });
 
     // Focus back to whichever CTA opened it
@@ -791,7 +754,6 @@
     initHeroVideo();
     initPhotoHeroVideo();
     initWaitlistForms();
-    initJourneyRail();
     initConsultDialog();
     initNewsletterNudge();
   }
