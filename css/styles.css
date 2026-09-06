@@ -1697,7 +1697,7 @@ body.photo-hero .site-header.is-scrolled {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 300px;
+  width: 380px;
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
@@ -1709,11 +1709,11 @@ body.photo-hero .site-header.is-scrolled {
 /* Each wall angles inward so the two converge. translateZ is negative and
    grows with --i, putting later cards further down the corridor. */
 .corridor-left .corridor-card {
-  transform: translate3d(-460px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
+  transform: translate3d(-450px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
 }
 
 .corridor-right .corridor-card {
-  transform: translate3d(160px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
+  transform: translate3d(70px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
 }
 
 /* Fades the far end into the page so cards arrive out of the dark rather
@@ -1727,10 +1727,10 @@ body.photo-hero .site-header.is-scrolled {
      corridor and dims the near photographs, which are the ones anyone
      actually looks at — this only has to swallow the vanishing point. */
   background:
-    radial-gradient(26% 42% at 50% 48%,
-      rgba(var(--ink-rgb), 0.95) 0%,
-      rgba(var(--ink-rgb), 0.7) 40%,
-      rgba(var(--ink-rgb), 0) 78%),
+    radial-gradient(15% 30% at 50% 48%,
+      rgba(var(--ink-rgb), 0.9) 0%,
+      rgba(var(--ink-rgb), 0.55) 45%,
+      rgba(var(--ink-rgb), 0) 80%),
     linear-gradient(to right,
       var(--ink) 0%,
       rgba(var(--ink-rgb), 0) 11%,
@@ -2370,13 +2370,13 @@ body.photo-hero .site-header.is-scrolled {
      says they scale together, and 53s was authored for 3200px. Leaving it
      ran the phone fly-through 31% slow. */
   .corridor { height: 320px; perspective: 900px; }
-  .corridor-card { width: 160px; }
+  .corridor-card { width: 200px; }
   .corridor-wall { --gap-z: 220px; --span: 2200px; animation-duration: 36s; }
   .corridor-left .corridor-card {
-    transform: translate3d(-205px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
+    transform: translate3d(-215px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
   }
   .corridor-right .corridor-card {
-    transform: translate3d(45px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
+    transform: translate3d(15px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
   }
 
   /* The centre radial is what swallows the vanishing point, and at this
@@ -2386,10 +2386,10 @@ body.photo-hero .site-header.is-scrolled {
      fade widened to take over the job of hiding the near cards' cropping. */
   .corridor::after {
     background:
-      radial-gradient(22% 30% at 50% 50%,
-        rgba(var(--ink-rgb), 0.75) 0%,
-        rgba(var(--ink-rgb), 0.4) 45%,
-        rgba(var(--ink-rgb), 0) 80%),
+      radial-gradient(13% 24% at 50% 50%,
+        rgba(var(--ink-rgb), 0.7) 0%,
+        rgba(var(--ink-rgb), 0.35) 45%,
+        rgba(var(--ink-rgb), 0) 82%),
       linear-gradient(to right,
         var(--ink) 0%,
         rgba(var(--ink-rgb), 0) 16%,
@@ -2466,13 +2466,13 @@ body.photo-hero .site-header.is-scrolled {
      side, which is the opposite of a corridor. Span, gap and duration stay
      locked to each other per the invariant in §19b. */
   .corridor { height: 260px; perspective: 800px; }
-  .corridor-card { width: 128px; }
+  .corridor-card { width: 160px; }
   .corridor-wall { --gap-z: 180px; --span: 1800px; animation-duration: 30s; }
   .corridor-left .corridor-card {
-    transform: translate3d(-158px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
+    transform: translate3d(-168px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
   }
   .corridor-right .corridor-card {
-    transform: translate3d(30px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
+    transform: translate3d(8px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
   }
 
   /* Cards carry the same padding at 320px as at 1440px, which spends 48px
