@@ -527,7 +527,9 @@ h3 { font-size: var(--fs-h3); }
   top: calc(100% + var(--space-4));
   left: 50%;
   z-index: 60;
-  width: 320px;
+  /* min(), not a flat 600px: at the 801px breakpoint where this panel first
+     appears, 600px plus the wrap's gutters would overhang the viewport. */
+  width: min(600px, calc(100vw - 2 * var(--space-5)));
   padding: var(--space-3);
   border-radius: var(--radius-lg);
   background: var(--ink-2);
@@ -594,6 +596,38 @@ h3 { font-size: var(--fs-h3); }
   padding-bottom: var(--space-3);
   border-bottom: var(--border-hairline);
 }
+
+/* ---- Two-column panel ----
+   The dropdown lists seven channels across two engines plus the managed
+   tier. Nine rows in a 320px column runs past the fold on a laptop, so the
+   groups sit side by side and the panel widens to suit.
+
+   Each group is its own wrapper rather than the panel being a two-column
+   grid: a grid flows row-wise, which would interleave Marketing and Growth
+   entries. Wrappers keep DOM order equal to reading order, which is also
+   what initNavIndicator's arrow-key walk over querySelectorAll('a')
+   depends on. */
+.nav-panel-cols {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.nav-panel-col { flex: 1 1 0; min-width: 0; }
+
+/* A label, not a heading: it must not enter the document outline, and the
+   panel sits inside a <nav> where an h-level would be noise. */
+.nav-panel-group {
+  display: block;
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-wider);
+  color: var(--mustard);
+}
+
+.nav-panel-group + .nav-panel-group,
+.nav-panel-col a + .nav-panel-group { margin-top: var(--space-3); }
 
 /* 44px square. It was 39x34 — the smallest hit area on the site and also
    the most-used control on a phone, since it gates the whole nav. The glyph
@@ -1298,10 +1332,53 @@ label {
   border-top: var(--border-hairline);
 }
 
+/* Four columns now: brand, Services, Company, Contact. The service list
+   went from one hub link to eight channel pages, and a flat single-line
+   list does not hold at that count. */
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 1.4fr 1fr 0.8fr 1.1fr;
   gap: var(--space-6);
+}
+
+/* ---- Footer newsletter capture ----
+   The footer is where people land who have read the page and are not ready
+   to book, so it offers the lower-commitment step. Reuses .form-pill and
+   .js-waitlist with the live Beehiiv action, so initWaitlistForms picks it
+   up with no JS change and it genuinely submits. */
+.footer-signup {
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: var(--border-hairline);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: var(--space-6);
+  align-items: center;
+}
+
+/* A <p>, not a heading, for the same reason .footer-label is not one: this
+   block repeats on every page and an h2 in the footer would sit in the
+   outline below whatever the page's own h2s are. */
+.footer-signup-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--fs-card-title);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--paper);
+}
+
+.footer-signup .form-pill { margin-top: 0; }
+
+.footer-signup .form-note { margin-top: var(--space-3); }
+
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 700px) {
+  .footer-signup { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
 }
 
 .site-footer .brand { --brand-scale: 1.15; }
@@ -2177,6 +2254,12 @@ body.photo-hero .site-header.is-scrolled {
   }
 
   .nav-panel.open { transform: none; display: block; }
+
+  /* Back to one column inside the drawer, which is already narrow and
+     already scrolls. Two columns here would halve the measure for no gain. */
+  .nav-panel-cols { flex-direction: column; gap: 0; }
+
+  .nav-panel-group { padding: var(--space-3) var(--space-5) var(--space-1); }
 
   .nav-panel::before { display: none; }
 

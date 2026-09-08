@@ -33,6 +33,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://cl-growth-academy-website.vercel.app/ndis-marketing/social-ads.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cl-growth-academy-website.vercel.app/ndis-marketing/referrals.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cl-growth-academy-website.vercel.app/ndis-marketing/sales-process.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://cl-growth-academy-website.vercel.app/contact.html</loc>
     <priority>0.9</priority>
   </url>
