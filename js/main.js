@@ -166,7 +166,11 @@
     );
     if (!items.length) return;
 
-    var current = links.querySelector('[aria-current="page"]:not(.nav-cta)');
+    /* [aria-current], not [aria-current="page"]: the dropdown trigger is a
+       section marker carrying aria-current="true" (it is not itself a page),
+       and it is what the bar should rest under on any channel page. DOM order
+       puts it before the panel's own current link, which is hidden anyway. */
+    var current = links.querySelector('[aria-current]:not(.nav-cta)');
     var resting = current || null;
 
     /* Measured with getBoundingClientRect against the list, not offsetLeft.

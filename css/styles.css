@@ -452,7 +452,7 @@ h3 { font-size: var(--fs-h3); }
    On desktop .nav-indicator takes over and this underline is suppressed
    (see below); the rule stays because the mobile drawer still uses it. */
 .nav-links a[aria-current="page"],
-.nav-links .nav-sub-trigger[aria-current="page"] {
+.nav-links .nav-sub-trigger[aria-current] {
   color: var(--mustard);
   box-shadow: inset 0 -2px 0 var(--mustard);
 }
@@ -487,7 +487,7 @@ h3 { font-size: var(--fs-h3); }
    would carry two markers at once */
 @media (min-width: 801px) {
   .nav-links a[aria-current="page"],
-  .nav-links .nav-sub-trigger[aria-current="page"] { box-shadow: none; }
+  .nav-links .nav-sub-trigger[aria-current] { box-shadow: none; }
 }
 
 /* ---- NDIS Marketing dropdown ---- */
@@ -2274,7 +2274,7 @@ body.photo-hero .site-header.is-scrolled {
   }
 
   .nav-links a[aria-current="page"],
-  .nav-links .nav-sub-trigger[aria-current="page"] { box-shadow: inset 3px 0 0 var(--mustard); }
+  .nav-links .nav-sub-trigger[aria-current] { box-shadow: inset 3px 0 0 var(--mustard); }
 
   .nav-links a.nav-cta {
     margin: var(--space-4) var(--space-5) var(--space-5);
@@ -3075,6 +3075,17 @@ body.photo-hero .site-header.is-scrolled {
 .timeline p { margin: 0; color: var(--paper-muted); }
 
 .section-paper .timeline li { border-left-color: rgba(var(--ink-rgb), 0.18); }
+
+/* The paragraph that closes a timeline's argument, as opposed to the
+   one-line cross-link footnote .note is sized for. Full body colour,
+   because it is the point rather than an aside. */
+.timeline-summary {
+  margin-top: var(--space-6);
+  max-width: 68ch;
+  color: var(--paper-muted);
+}
+
+.section-paper .timeline-summary { color: var(--ink-muted); }
 .section-paper .timeline p,
 .section-paper .channel-row p { color: var(--ink-muted); }
 
