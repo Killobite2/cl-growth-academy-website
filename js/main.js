@@ -489,8 +489,8 @@
       '<div class="consult-grid">' +
         '<div class="consult-form">' +
           '<span class="eyebrow">Free growth audit</span>' +
-          '<h2>Straight to Chris.</h2>' +
-          '<p class="consult-sub">Tell him what you are trying to grow. He will tell you straight whether he can help.</p>' +
+          '<h2>Straight to me.</h2>' +
+          '<p class="consult-sub">Tell me what you are trying to grow. I will tell you straight whether I can help.</p>' +
           '<form class="js-waitlist" action="' + CONSULT_ACTION + '" method="POST">' +
             '<div class="form-row stack">' +
               '<div><label for="c-name">Name</label>' +
@@ -511,17 +511,25 @@
                        on screen: if the post quietly failed, the reader is
                        not left believing a message arrived with no way back. */
                     '<p class="form-pill-success" role="status">Message sent. ' +
-                    'If you would rather not wait, Chris is on ' +
-                    '<a href="mailto:chris@clgrowthacademy.com.au">chris@clgrowthacademy.com.au</a>' +
+                    'If you would rather not wait, I am on ' +
+                    '<a href="mailto:chris@thegrowthacademy.com.au">chris@thegrowthacademy.com.au</a>' +
                     '.</p></div>'
                   /* Un-wired: no submit button at all. A disabled-looking
                      button people still click, on a form that posts to a
                      dead URL, is worse than saying so and handing them the
-                     two routes that do work. */
+                     two routes that do work.
+
+                     The address is @thegrowthacademy.com.au, NOT
+                     @clgrowthacademy.com.au. The latter has no MX records
+                     and resolves to a link-local address, so mail to it
+                     bounces: publishing it here, as the fallback offered
+                     precisely because the form is dead, was the worst
+                     version of this. Do not switch domains until
+                     clgrowthacademy.com.au has working mail. */
                   : '<p class="consult-notice">This form is not connected yet. ' +
-                    'Reach Chris directly:</p>' +
+                    'Reach me directly:</p>' +
                     '<p class="consult-direct">' +
-                    '<a href="mailto:chris@clgrowthacademy.com.au">chris@clgrowthacademy.com.au</a><br>' +
+                    '<a href="mailto:chris@thegrowthacademy.com.au">chris@thegrowthacademy.com.au</a><br>' +
                     '<a href="tel:+61431584725">+61 431 584 725</a></p>') +
               '</div>' +
             '</div>' +
@@ -536,14 +544,14 @@
            site (contact.html's "not an inbox someone else screens", the FAQ
            on lock-in contracts, this dialog's own subhead). Deliberately no
            response-time promise: the site states none, and inventing one
-           would commit Chris to something he has not said. */
+           would commit him to something he has not said. */
         '<div class="consult-visual">' +
           '<p class="consult-visual-copy">Fifteen years of sales<br>' +
           '<span class="script">and marketing.</span></p>' +
           '<ul class="consult-visual-points">' +
-            '<li>Chris reads this himself. Not an inbox someone else screens.</li>' +
+            '<li>I read this myself. Not an inbox someone else screens.</li>' +
             '<li>No lock-in contracts, ever.</li>' +
-            '<li>If he can&rsquo;t help, he&rsquo;ll say so.</li>' +
+            '<li>If I can&rsquo;t help, I&rsquo;ll say so.</li>' +
           '</ul>' +
           '<p class="consult-visual-meta">NDIS &amp; aged care marketing &middot; Sydney</p>' +
         '</div>' +

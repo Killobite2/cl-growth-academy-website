@@ -3007,6 +3007,15 @@ body.photo-hero .site-header.is-scrolled {
 
 .channel-row p { color: var(--paper-muted); }
 
+/* Used standalone on the hub, not just inside a .channel-row, where it
+   needs its own spacing since there is no grid gap to inherit. Capped at
+   760px because that is the source's real width: stretched to the full
+   1072px wrap it was upscaling 1.4x and showing it. */
+.wrap > .channel-media {
+  margin: var(--space-7) auto 0;
+  max-width: 760px;
+}
+
 .channel-media img {
   width: 100%;
   height: auto;
@@ -3179,16 +3188,33 @@ body.photo-hero .site-header.is-scrolled {
   gap: var(--space-3);
 }
 
+/* The same list used outside the showcase, where a section needs a set of
+   items rather than a paragraph. Generalised rather than copied so there is
+   one mustard-rule list on the site, not three. */
+.points {
+  list-style: none;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+  font-size: var(--fs-small);
+  color: var(--paper-muted);
+}
+
+.section-paper .points { color: var(--ink-muted); }
+
 /* Same mustard rule as the consult panel's points, so the two read as one
    system rather than two takes on a list */
-.showcase-points li {
+.showcase-points li,
+.points li {
   position: relative;
   padding-left: var(--space-6);
   color: var(--paper-muted);
   font-size: var(--fs-small);
 }
 
-.showcase-points li::before {
+.showcase-points li::before,
+.points li::before {
   content: '';
   position: absolute;
   left: 0;

@@ -117,7 +117,7 @@ def build_footer(root, ch):
       <div>
         <div class="footer-label">Contact</div>
         <ul>
-          <li><a href="mailto:chris@clgrowthacademy.com.au">chris@clgrowthacademy.com.au</a></li>
+          <li><a href="mailto:chris@thegrowthacademy.com.au">chris@thegrowthacademy.com.au</a></li>
           <li><a href="tel:+61431584725">+61 431 584 725</a></li>
           <li><a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></li>
           <li>Sydney, AU</li>

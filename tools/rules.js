@@ -3,7 +3,7 @@
 //   2. no dead internal link
 const { chromium } = require('playwright-core');
 
-const BASE = 'http://localhost:3000';
+const BASE = process.env.BASE || 'http://localhost:3000';
 
 (async () => {
   const browser = await chromium.launch({ channel: 'msedge' });
