@@ -768,16 +768,6 @@ a.card:focus-visible {
 .card h3 { margin-bottom: var(--space-3); }
 .card p { color: var(--ink); }
 
-.card .tag {
-  display: inline-block;
-  margin-top: var(--space-4);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  color: var(--oxblood);
-}
-
 /* "Read more →" / "Learn more →" — 15 inline styles collapsed */
 .card-more {
   display: inline-flex;
@@ -818,19 +808,6 @@ a.post-card:focus-visible {
 }
 
 .post-card .eyebrow { margin-bottom: var(--space-3); }
-
-/* Upcoming-post state — honest about not being published yet */
-.post-card.is-upcoming { border-color: rgba(var(--paper-rgb), 0.12); }
-
-.post-card .status {
-  display: inline-block;
-  margin-top: var(--space-4);
-  font-size: var(--fs-micro);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  color: var(--paper-faint);
-}
 
 /* Thumbnail variant. The card's own padding moves to .post-body so the
    artwork can bleed to the edge, and overflow clips it back to the radius
@@ -962,92 +939,15 @@ a.post-card:focus-visible {
   object-fit: contain;
 }
 
-/* The tiles are plain divs while the testimonial panel is out of the
-   markup: there is nothing to click, so no pointer cursor and no pressed
-   state. The lift on hover stays, because the wall pauses under the
-   pointer and a little response keeps that from feeling like a stall.
-   The aria-pressed rule returns with the panel. */
+/* The tiles are plain divs, not buttons: there is nothing to click. The
+   lift on hover stays, because the wall pauses under the pointer and a
+   little response keeps that from reading as a stall. On touch the lift is
+   suppressed in §28, where :hover cannot be trusted. */
 .logo-tile:hover {
   transform: scale(1.08);
   box-shadow: var(--shadow-lg);
   border-color: var(--mustard);
 }
-
-.marquee-hint {
-  margin-top: var(--space-4);
-  font-size: var(--fs-micro);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  color: var(--paper-faint);
-}
-
-.brands-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3) var(--space-6);
-  margin-top: var(--space-5);
-  padding: 0;
-  list-style: none;
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  font-size: var(--fs-small);
-  color: var(--paper-muted);
-}
-
-/* Testimonials */
-
-/* Single panel driven by the logo wall above it */
-
-.testimonial-panel {
-  margin: var(--space-7) 0 0;
-  background: var(--ink-2);
-  border: var(--border-hairline);
-  border-left: 4px solid var(--mustard);
-  border-radius: var(--radius-md);
-  padding: var(--space-7) var(--space-6);
-}
-
-.testimonial-panel blockquote {
-  margin: 0;
-  font-size: var(--fs-lead);
-  line-height: 1.6;
-}
-
-.testimonial-panel .attrib {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  margin-top: var(--space-5);
-}
-
-.testimonial-panel .attrib img {
-  flex: 0 0 auto;
-  width: 52px;
-  height: 52px;
-  padding: var(--space-1);
-  background: #FFFFFF;
-  border-radius: var(--radius-sm);
-  object-fit: contain;
-}
-
-.testimonial-panel .who {
-  font-size: var(--fs-micro);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  color: var(--mustard);
-}
-
-/* Awaiting a real quote — visibly unfinished, never mistaken for copy */
-.testimonial-panel.is-placeholder {
-  background: transparent;
-  border: 1px dashed rgba(var(--paper-rgb), 0.25);
-  border-left: 4px solid var(--paper-faint);
-}
-
-.testimonial-panel.is-placeholder blockquote { color: var(--paper-faint); }
-.testimonial-panel.is-placeholder .who { color: var(--paper-faint); }
 
 /* ---------------------------------------------------------------
    12. STAT PANEL
@@ -1991,12 +1891,17 @@ body.photo-hero .site-header.is-scrolled {
   position: relative;
 }
 
+/* Drawn, not typed. This was a literal em-dash in content:, which rendered
+   on every page and was the site's only remaining breach of the no-em-dash
+   rule. Same mustard bar .showcase-points uses, so the two lists match. */
 .consult-visual-points li::before {
-  content: '—';
+  content: '';
   position: absolute;
   left: 0;
-  color: var(--mustard);
-  font-weight: 700;
+  top: 0.62em;
+  width: 14px;
+  height: 2px;
+  background: var(--mustard);
 }
 
 .consult-visual-copy {

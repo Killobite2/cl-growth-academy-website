@@ -257,40 +257,21 @@
     targets.forEach(function (el) { observer.observe(el); });
   }
 
-  /* ---------------- Client wall + testimonials ----------------
+  /* ---------------- Client wall ----------------
 
-     Chris: to add a real testimonial, replace the `quote` for that
-     client below and set `who` to the person's name and role.
-     A null quote renders the visibly-unfinished placeholder state. */
+     The logo wall used to feed a testimonial panel keyed off a CLIENTS map,
+     with a click on a tile swapping in that provider's quote. Every quote
+     was still unwritten, so the panel was pulled from the markup and the
+     tiles went back to being plain divs. The map, the panel's wiring and
+     its CSS are removed here rather than left dormant: they were 90 lines
+     that nothing could reach, and a placeholder state for quotes that were
+     never coming reads as a promise. Reinstating it means real quotes
+     first, then markup, then the code. Both live in git.
 
-  var CLIENTS = {
-    'tania-gomez-consulting':     { name: 'Tania Gomez Consulting',          quote: null, who: null },
-    'auscare-2':                  { name: 'Auscare Group',                   quote: null, who: null },
-    'independent-living-victoria':{ name: 'Independent Living Victoria',     quote: null, who: null },
-    'nourished-not-deprived-2':   { name: 'Nourished Not Deprived',          quote: null, who: null },
-    'pure-living':                { name: 'Pure Living Accommodation & Care',quote: null, who: null },
-    'journey-with-cares':         { name: 'Journey With Carers',             quote: null, who: null },
-    'able-mind-services':         { name: 'Able Mind Services',              quote: null, who: null },
-    'astute-living-care':         { name: 'Astute Living Care',              quote: null, who: null },
-    'zoomly-2':                   { name: 'Zoomly NDIS Transport',           quote: null, who: null },
-    'all-about-caring':           { name: 'All About Caring NDIS',           quote: null, who: null },
-    'care-bpo':                   { name: 'Care BPO',                        quote: null, who: null },
-    'resolv':                     { name: 'Resolv',                          quote: null, who: null },
-    'disbranded':                 { name: 'Disbranded',                      quote: null, who: null }
-  };
-
-  /* The looping wall and the testimonial panel are separate concerns and
-     must stay that way. They used to share one function guarded by
-     `if (!track || !panel) return`, which meant removing the panel also
-     silently killed the marquee's cloning, and with it the seamless loop.
-     The panel is currently out of the markup — every quote is still
-     unwritten, so inviting a click would only disappoint — but the wall
-     still runs. */
-
-  function initClients() {
-    initLogoWall();
-    initTestimonialPanel();
-  }
+     Note the wall itself is deliberately its own function. It used to
+     share one guarded by `if (!track || !panel) return`, which meant
+     removing the panel also silently killed the marquee's cloning, and
+     with it the seamless loop. */
 
   function initLogoWall() {
     var track = document.getElementById('logo-track');
@@ -310,44 +291,6 @@
       });
       track.classList.add('is-animating');
     }
-  }
-
-  /* Dormant until Chris supplies real quotes. Restoring it means putting
-     the #testimonial-panel figure back in the markup and making the tiles
-     buttons again; this code then wires itself up with no changes. */
-  function initTestimonialPanel() {
-    var track = document.getElementById('logo-track');
-    var panel = document.getElementById('testimonial-panel');
-    if (!track || !panel) return;
-
-    var quoteEl = document.getElementById('tp-quote');
-    var logoEl = document.getElementById('tp-logo');
-    var whoEl = document.getElementById('tp-who');
-
-    function select(slug, tile) {
-      var c = CLIENTS[slug];
-      if (!c || !c.quote) return;
-
-      quoteEl.textContent = '“' + c.quote + '”';
-      whoEl.textContent = c.who ? c.who + ', ' + c.name : c.name;
-      logoEl.src = 'img/clients/' + slug + '.jpg';
-      logoEl.alt = c.name + ' logo';
-
-      // Only one tile reads as pressed, including across the cloned set
-      var all = track.querySelectorAll('.logo-tile');
-      for (var i = 0; i < all.length; i++) {
-        all[i].setAttribute('aria-pressed', all[i].dataset.client === slug ? 'true' : 'false');
-      }
-      if (tile) tile.setAttribute('aria-pressed', 'true');
-    }
-
-    track.addEventListener('click', function (e) {
-      var tile = e.target.closest('.logo-tile');
-      if (tile && tile.dataset.client) select(tile.dataset.client, tile);
-    });
-
-    var first = track.querySelector('.logo-tile');
-    if (first) select(first.dataset.client, first);
   }
 
   /* ---------------- Hero video ----------------
@@ -541,9 +484,9 @@
       '<button class="consult-close" type="button" aria-label="Close">&times;</button>' +
       '<div class="consult-grid">' +
         '<div class="consult-form">' +
-          '<span class="eyebrow">Book a free consult</span>' +
+          '<span class="eyebrow">Free growth audit</span>' +
           '<h2>Straight to Chris.</h2>' +
-          '<p class="consult-sub">Tell him what is not working. He will tell you straight whether he can fix it.</p>' +
+          '<p class="consult-sub">Tell him what you are trying to grow. He will tell you straight whether he can help.</p>' +
           '<form class="js-waitlist" action="' + CONSULT_ACTION + '" method="POST">' +
             '<div class="form-row stack">' +
               '<div><label for="c-name">Name</label>' +
@@ -750,7 +693,7 @@
     initNav();
     initHeader();
     initReveals();
-    initClients();
+    initLogoWall();
     initHeroVideo();
     initPhotoHeroVideo();
     initWaitlistForms();
