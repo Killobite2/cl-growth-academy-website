@@ -13,6 +13,10 @@ const PAGES = [
   // side-by-side. This check is the one that caught the mismatched headings
   // and the stranded card, both of which every automated rule passed clean.
   ['blog', '/blog.html'],
+  // A channel page. This whole class was absent from the list, which is why a
+  // 0px gap between a .channel-row and the card grid under it shipped on all
+  // eight of them without any screenshot check noticing.
+  ['channel', '/ndis-marketing/ads.html'],
 ];
 
 async function shoot(ctx, base, path, out) {

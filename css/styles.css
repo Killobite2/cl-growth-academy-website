@@ -856,10 +856,33 @@ section { padding: var(--space-9) 0; }
    9. GRIDS
    --------------------------------------------------------------- */
 
+/* margin-top is load-bearing, not decoration. This site spaces blocks by
+   putting a top margin on the FOLLOWING element, and .section-head is the only
+   thing that owns a margin-bottom (48px). A .grid with no top margin therefore
+   looked fine only because a .section-head almost always sat above it: where
+   one did not, the grid butted straight against the previous block and the
+   first card's border landed on the last line of body copy. That shipped on
+   all eight channel pages, under every `.channel-row` followed by a
+   `.grid.grid-2`.
+
+   Sibling margins collapse to the larger of the two, and no .grid on this site
+   is ever a grid or flex item, so the collapse is never suppressed. That makes
+   this safe rather than sweeping: after a .section-head it is max(48, 48) and
+   nothing moves, which is 18 of the 29 grids on the site. It only bites where
+   the gap was wrong: 0px after a .channel-row, 16px after a bare .lead.
+
+   tools/spacing.js exists to catch the next one of these. */
 .grid {
   display: grid;
   gap: var(--space-5);
+  margin-top: var(--space-7);
 }
+
+/* contact.html opens a section with a .grid and no .section-head above it. A
+   first child's top margin has nothing to collapse with and cannot collapse
+   through the section's padding, so it would simply add 48px to the 96px
+   already there. */
+.wrap > .grid:first-child { margin-top: 0; }
 
 /* grid-5 forces five columns where grid-auto will not: five 210px minimums
    plus four 24px gaps is 1146px, over the 1120px wrap, so auto-fit drops to
@@ -3330,13 +3353,24 @@ body.photo-hero .site-header.is-scrolled {
    one mustard-rule list on the site, not three. */
 .points {
   list-style: none;
-  margin: var(--space-4) 0 0;
+  /* The bottom margin matters because a bare <p> and a .prose block both
+     declare no top margin, so a paragraph following one of these lists sat at
+     exactly 0px from the last item. On managed.html that reads as a broken
+     list item rather than as a new paragraph: .points li carries 24px of left
+     padding and a mustard dash, so the paragraph appears 24px further left
+     with no dash and no vertical offset at all. */
+  margin: var(--space-4) 0 var(--space-5);
   padding: 0;
   display: grid;
   gap: var(--space-3);
   font-size: var(--fs-small);
   color: var(--paper-muted);
 }
+
+/* Six of the ten lists on the site are the last thing inside a card or a
+   column, where a trailing margin only pads the bottom of the box. Same
+   last-child guard the bare `p` rule uses in §2. */
+.points:last-child { margin-bottom: 0; }
 
 .section-paper .points { color: var(--ink-muted); }
 

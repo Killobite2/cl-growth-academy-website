@@ -71,6 +71,37 @@ pages are covered the moment they are linked, and a page linked from
 *nowhere* shows up as a missing row in the crawl list. `newsletter.html` is
 deliberately unreachable, so it never appears and has to be checked by hand.
 
+### `spacing.js` — vertical gaps between blocks
+```
+node spacing.js
+BASE=https://cl-growth-academy-website.vercel.app node spacing.js
+```
+Walks the direct children of every `.wrap`, `.prose`, `.channel-row > div`,
+`.channel-note`, `.card` and `.article-toc`, and measures the gap between each
+stacked pair. Fails under 8px; reports 8 to 19px as "tight" without failing, so
+the deliberate 16px cases (`.note` owns that) stay visible but do not block.
+Runs at 1280px and 390px.
+
+Written after body copy shipped touching the top border of the card below it on
+**all eight** channel pages. Nothing else here looks at vertical geometry, and
+`compare.js` did not cover the channel pages at all, which is why it went out.
+
+The cause is structural and worth knowing before adding a component: this site
+puts the gap on the **following** element's `margin-top`, and `.section-head` is
+the only thing that owns a `margin-bottom`. A block with no top margin
+therefore only looks right when a `.section-head` happens to sit above it.
+
+Two things it has to do, both learned by getting them wrong first:
+
+- **Force every `.reveal` to `.is-visible` and wait before measuring.** An
+  unrevealed element sits at `translateY(18px)`, which reads as a gap 18px
+  smaller than the truth. That invented a phantom `-2px` overlap on four pages
+  *and* hid a real 0px gap on the pair below it.
+- **Skip pairs that are side by side.** Two columns of a grid are siblings
+  whose boxes overlap vertically on purpose; the article hero's copy and its
+  photograph "overlap" by 293px and that is correct. Pairs whose horizontal
+  ranges overlap by less than half the narrower box are not stacked.
+
 ### `audit.js` — mobile layout
 ```
 node audit.js
