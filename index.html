@@ -378,17 +378,25 @@
         <a href="ndis-marketing/managed.html" class="btn btn-mustard">See how it works &rarr;</a>
       </div>
       <!-- Cropped to 4:5 on disk rather than in the browser. The card is a
-           portrait frame, so serving the landscape originals meant fetching
-           the whole thing and discarding 47% of it to object-fit — 176KB of
-           it, measured. These are the largest true 4:5 region each source
-           contains, so nothing is upscaled and nothing is thrown away. -->
+           portrait frame, so serving a landscape source meant fetching the
+           whole thing and discarding 47% of it to object-fit — 176KB of it,
+           measured. The card box renders 414px wide, so 900px covers DPR2
+           with headroom and nothing is upscaled.
+
+           The front card's crop is deliberately tight. Its source has two
+           other people in the room behind Chris who have not agreed to appear
+           in marketing, and the frame stops short of both of them. Widening
+           it needs their consent, not a different set of coordinates.
+
+           alt="" is correct here and not an oversight: the parent is
+           aria-hidden, so this pair is decorative twice over. -->
       <div class="showcase-media" aria-hidden="true">
         <div class="showcase-layer showcase-back">
           <img src="img/service/manager-listening-4x5.jpg"
                alt="" width="480" height="600" loading="lazy">
         </div>
         <div class="showcase-layer showcase-front">
-          <img src="img/service/manager-chris-4x5.jpg"
+          <img src="img/service/chris-whiteboard-4x5.jpg"
                alt="" width="900" height="1125" loading="lazy">
         </div>
       </div>
