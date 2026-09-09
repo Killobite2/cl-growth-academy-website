@@ -54,6 +54,7 @@ const WARN_UNDER = 20;  // tight, sometimes deliberate (.note owns 16px)
   const browser = await chromium.launch({ channel: 'msedge' });
   const fails = [];
   const warns = [];
+  const unreachable = [];
 
   for (const width of WIDTHS) {
     const ctx = await browser.newContext({
@@ -65,7 +66,18 @@ const WARN_UNDER = 20;  // tight, sometimes deliberate (.note owns 16px)
 
     for (const path of PAGES) {
       const page = await ctx.newPage();
-      await page.goto(BASE + path, { waitUntil: 'networkidle' }).catch(() => null);
+      const resp = await page.goto(BASE + path, { waitUntil: 'networkidle' }).catch(() => null);
+
+      // Bail on a page that did not load, rather than evaluating against a
+      // dead context. Swallowing the goto failure alone is not enough: the
+      // evaluate below then throws "Execution context was destroyed" and
+      // takes the whole run down, which exits 1 and looks exactly like a
+      // collision. An unreachable page has to report as an unreachable page.
+      if (!resp || !resp.ok()) {
+        unreachable.push(`${path} @${width}: ${resp ? resp.status() : 'no response'}`);
+        await page.close();
+        continue;
+      }
 
       // Reveal everything up front rather than scrolling and hoping the
       // observer caught every target. See note 1 above.
@@ -138,6 +150,12 @@ const WARN_UNDER = 20;  // tight, sometimes deliberate (.note owns 16px)
   console.log(`\n===== TIGHT (${FAIL_UNDER}px to ${WARN_UNDER - 1}px, review) =====`);
   if (warns.length) show(warns); else console.log('  none');
 
+  console.log('\n===== UNREACHABLE =====');
+  if (unreachable.length) unreachable.forEach(u => console.log('  ' + u));
+  else console.log('  none');
+
   console.log(`\n  ${PAGES.length} pages x ${WIDTHS.length} widths`);
-  process.exit(fails.length ? 1 : 0);
+  // Unreachable pages fail the run too. A pass that silently checked nothing
+  // is worse than a failure that says why.
+  process.exit(fails.length || unreachable.length ? 1 : 0);
 })();
