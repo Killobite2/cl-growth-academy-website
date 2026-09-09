@@ -1694,20 +1694,6 @@ label {
   color: var(--paper);
 }
 
-/* In flow at the end of the copy block, not pinned to the frame's bottom
-   corner: the logo strip now sits in that corner, and an absolute credit
-   would land on top of it. Keeping it in flow also means its offset never
-   needs re-deriving when the tile size changes. */
-.photo-credit {
-  display: block;
-  margin-top: var(--space-4);
-  text-align: right;
-  font-size: var(--fs-micro);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  color: var(--paper-faint);
-}
 
 /* Homepage only: the nav sits over the photo so the hero can fill
    the viewport. fixed (not sticky) keeps it out of the layout flow,
@@ -2488,7 +2474,6 @@ body.photo-hero .site-header.is-scrolled {
       rgba(var(--ink-rgb), 0.30) 100%);
   }
 
-  .photo-credit { margin-top: var(--space-3); }
 
   .hero-proof { margin-top: var(--space-5); gap: var(--space-4) var(--space-6); }
 

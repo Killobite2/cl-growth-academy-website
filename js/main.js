@@ -566,7 +566,7 @@
             '<li>No lock-in contracts, ever.</li>' +
             '<li>If I can&rsquo;t help, I&rsquo;ll say so.</li>' +
           '</ul>' +
-          '<p class="consult-visual-meta">NDIS &amp; aged care marketing &middot; Sydney</p>' +
+          '<p class="consult-visual-meta">NDIS &amp; aged care marketing</p>' +
         '</div>' +
       '</div>';
     document.body.appendChild(dlg);

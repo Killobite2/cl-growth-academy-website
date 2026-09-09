@@ -112,7 +112,7 @@ def build_footer(root, ch):
     <div class="footer-grid">
       <div>
         <div class="brand">{BRAND}</div>
-        <p class="footer-tagline">NDIS &amp; Aged Care Growth. Founder-led. Sydney.</p>
+        <p class="footer-tagline">NDIS &amp; Aged Care Growth. Founder-led.</p>
       </div>
       <nav aria-label="Services">
         <div class="footer-label">Services</div>
@@ -135,7 +135,7 @@ def build_footer(root, ch):
           <li><a href="mailto:chris@thegrowthacademy.com.au">chris@thegrowthacademy.com.au</a></li>
           <li><a href="tel:+61431584725">+61 431 584 725</a></li>
           <li><a href="{LINKEDIN}" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></li>
-          <li>Sydney, AU</li>
+          <li>Australia</li>
         </ul>
       </div>
     </div>
