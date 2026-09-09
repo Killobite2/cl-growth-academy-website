@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: four quarters of work, with a step line climbing across
+       them. The line steps rather than curves because progress on a plan
+       arrives in decisions, not in a smooth gradient.
+       For ndis-digital-marketing-strategy.html, section "The first ninety
+       days". Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Loaded via <img>, never
+       inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Baseline -->
+  <path d="M90 410 L710 410" stroke="#F2EADB" stroke-width="3" opacity="0.35"/>
+
+  <!-- The four columns, climbing. Oxblood, so the mustard line reads over
+       them rather than against them. -->
+  <g fill="#9E2D24">
+    <rect x="112" y="320" width="118" height="90" rx="4" opacity="0.55"/>
+    <rect x="262" y="264" width="118" height="146" rx="4" opacity="0.7"/>
+    <rect x="412" y="196" width="118" height="214" rx="4" opacity="0.85"/>
+    <rect x="562" y="126" width="118" height="284" rx="4"/>
+  </g>
+
+  <!-- The step line, riding the top of each column and stepping up between
+       them. Drawn as one path so the corners stay mitred. -->
+  <path d="M112 320 L230 320 L230 264 L380 264 L380 196 L530 196 L530 126 L680 126"
+        fill="none" stroke="#D4A038" stroke-width="7"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Where the last step lands -->
+  <circle cx="680" cy="126" r="15" fill="#F2DFA8" stroke="#1A1310" stroke-width="4"/>
+
+  <!-- Quarter markers under the baseline -->
+  <g fill="#F2EADB" opacity="0.4">
+    <rect x="152" y="432" width="38" height="8" rx="4"/>
+    <rect x="302" y="432" width="38" height="8" rx="4"/>
+    <rect x="452" y="432" width="38" height="8" rx="4"/>
+    <rect x="602" y="432" width="38" height="8" rx="4"/>
+  </g>
+</svg>

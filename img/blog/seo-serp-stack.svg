@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: the top result against everything under it. One mustard
+       row, four fading paper rows, and a rule marking where the screen ends.
+       The falling opacity is the claim: position one is not slightly better,
+       it is most of the traffic.
+       For how-can-seo-grow-my-business.html, section "Page one or nowhere".
+       Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Loaded via <img>, never
+       inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Position one. Full width, mustard, with a paper sub-line, so it is
+       unambiguously the row that got the click. -->
+  <rect x="90" y="70" width="620" height="16" rx="8" fill="#D4A038"/>
+  <rect x="90" y="98" width="430" height="10" rx="5" fill="#F2EADB" opacity="0.6"/>
+
+  <!-- Positions two to five. Each narrower and fainter than the one above:
+       both dimensions fall, because both attention and click share do. -->
+  <g fill="#F2EADB">
+    <rect x="90" y="158" width="560" height="14" rx="7" opacity="0.62"/>
+    <rect x="90" y="234" width="500" height="14" rx="7" opacity="0.44"/>
+    <rect x="90" y="310" width="440" height="14" rx="7" opacity="0.28"/>
+    <rect x="90" y="386" width="380" height="14" rx="7" opacity="0.16"/>
+  </g>
+  <g fill="#9E2D24">
+    <rect x="90" y="184" width="380" height="9" rx="5" opacity="0.75"/>
+    <rect x="90" y="260" width="340" height="9" rx="5" opacity="0.55"/>
+    <rect x="90" y="336" width="300" height="9" rx="5" opacity="0.35"/>
+    <rect x="90" y="412" width="260" height="9" rx="5" opacity="0.2"/>
+  </g>
+
+  <!-- The fold. Oxblood rather than mustard so it does not compete with the
+       top row for the eye. -->
+  <path d="M70 452 L730 452" stroke="#9E2D24" stroke-width="5"/>
+  <path d="M400 466 L400 486" stroke="#9E2D24" stroke-width="5"
+        stroke-linecap="round"/>
+  <path d="M382 470 L400 488 L418 470" fill="none" stroke="#9E2D24"
+        stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

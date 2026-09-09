@@ -69,10 +69,38 @@ Reach me directly:" and then gave the dead address. The honest fallback did not 
 
 ## Decided, do not revisit without a reason
 
-- **Blog posts stay on thegrowthacademy.com.au.** Republishing them here without
-  redirects on the old site would put the two copies in competition for the same
-  terms. The excerpts already match the doc's rewrites and the cards say they open
-  off-site.
+- **The four blog posts now have pages here, and they canonicalise off-domain.**
+  This reverses the earlier "leave them external" decision. The objection to
+  bringing them across was that two copies of the same piece compete for the same
+  searches, and a `<link rel="canonical">` pointing at the original on
+  thegrowthacademy.com.au answers that directly: Google keeps ranking the
+  WordPress copies, and the pages here exist for people reading the site.
+
+  Three things travel together and must not be changed separately. The canonical,
+  `BlogPosting.url` and `mainEntityOfPage.@id` all point at the original. `og:url`
+  stays ours, because Open Graph is a sharing address rather than a canonical
+  claim. And the four article URLs are deliberately **absent from sitemap.xml**,
+  since a sitemap entry asks a crawler to index a page that is telling it to index
+  a different one. `tools/rules.js` asserts all of this, so breaking it fails the
+  check rather than going quiet.
+
+  When `thegrowthacademy.com.au` is finally retired or redirected here, flip the
+  canonicals to this domain, flip those two JSON-LD fields with them, and add the
+  four URLs to the sitemap. The article filenames match the WordPress slugs
+  exactly so that redirect map is one to one.
+
+  Four older posts are still only on WordPress, listed in the second band on
+  `blog.html`. Their slugs came from the old site's own sitemap: three of the four
+  guesses were wrong, so check `wp-sitemap-posts-post-1.xml` rather than inferring
+  a slug from a title. `rules.js` skips absolute URLs, so a dead external link
+  will not be caught for you.
+
+- **No stock imagery, on the blog as everywhere else.** The articles are
+  illustrated with ten hand-authored brand SVGs in `img/blog/` and with event
+  photographs already in the repo. This is not a preference: the homepage says
+  "Not stock photography" out loud, the feedback doc says "No stock", and the NDIS
+  Digital Marketing article itself tells providers to ditch the stock photos.
+  Buying an image would contradict all three at once.
 - **URLs stay under `/ndis-marketing/`** even though the section is labelled "NDIS
   Growth". "NDIS marketing" is the hub page's own primary search term.
 - **"We meet regularly, you execute, we refine" keeps its "we".** It is genuinely

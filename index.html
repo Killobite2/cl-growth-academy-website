@@ -596,49 +596,50 @@
       <span class="eyebrow">From the blog</span>
       <h2>NDIS marketing blog</h2>
     </div>
-    <!-- These four are published on thegrowthacademy.com.au, so they open
-         off-site in a new tab. The .sr-only span says so out loud, because
-         target="_blank" is otherwise a silent surprise for screen reader
-         users. The artwork is custom SVG rather than stock, which is the
-         same promise the "In the room" section makes with real photographs.
+    <!-- These four now have pages here, under blog/. Each one canonicalises
+         to the original on thegrowthacademy.com.au, which is still live, so
+         the two copies do not compete for the same searches. The artwork is
+         custom SVG rather than stock, which is the same promise the "In the
+         room" section below makes with real photographs.
 
-         Kept in sync with the same four cards on blog.html. They drifted
-         once already: two excerpts were rewritten there and not here. -->
+         Kept in sync with the same four cards on blog.html, which runs them
+         two-across as a real index and adds dates. They drifted once already:
+         two excerpts were rewritten there and not here. -->
     <div class="grid grid-4">
-      <a class="post-card has-thumb is-external" href="https://thegrowthacademy.com.au/ndis-digital-marketing-strategy/" target="_blank" rel="noopener">
+      <a class="post-card has-thumb" href="blog/ndis-digital-marketing-strategy.html">
         <img class="post-thumb" src="img/blog/ndis-digital-marketing.svg" alt="" width="800" height="500" loading="lazy">
         <div class="post-body">
           <span class="eyebrow">Strategy</span>
           <h3>NDIS Digital Marketing &amp; Acceleration</h3>
           <p class="post-excerpt">Digital is how small and medium providers get found. Here is what belongs in the plan.</p>
-          <p class="card-more">Read more<span class="sr-only"> (opens thegrowthacademy.com.au in a new tab)</span></p>
+          <p class="card-more">Read more</p>
         </div>
       </a>
-      <a class="post-card has-thumb is-external" href="https://thegrowthacademy.com.au/attract-ndis-participants-with-google-ads/" target="_blank" rel="noopener">
+      <a class="post-card has-thumb" href="blog/attract-ndis-participants-with-google-ads.html">
         <img class="post-thumb" src="img/blog/ndis-google-ads.svg" alt="" width="800" height="500" loading="lazy">
         <div class="post-body">
           <span class="eyebrow">Ads</span>
           <h3>NDIS Google Ads</h3>
           <p class="post-excerpt">Reaching participants takes more than showing up. How Google Ads connects you with people actively searching for your services, from keyword selection to measuring what works.</p>
-          <p class="card-more">Read more<span class="sr-only"> (opens thegrowthacademy.com.au in a new tab)</span></p>
+          <p class="card-more">Read more</p>
         </div>
       </a>
-      <a class="post-card has-thumb is-external" href="https://thegrowthacademy.com.au/marketing-for-business-growth/" target="_blank" rel="noopener">
+      <a class="post-card has-thumb" href="blog/marketing-for-business-growth.html">
         <img class="post-thumb" src="img/blog/marketing-business-growth.svg" alt="" width="800" height="500" loading="lazy">
         <div class="post-body">
           <span class="eyebrow">Growth</span>
           <h3>How can you use marketing for business growth?</h3>
           <p class="post-excerpt">How marketing and referrals work together to grow a provider, and how to tell which one is doing the work.</p>
-          <p class="card-more">Read more<span class="sr-only"> (opens thegrowthacademy.com.au in a new tab)</span></p>
+          <p class="card-more">Read more</p>
         </div>
       </a>
-      <a class="post-card has-thumb is-external" href="https://thegrowthacademy.com.au/how-can-seo-grow-my-business/" target="_blank" rel="noopener">
+      <a class="post-card has-thumb" href="blog/how-can-seo-grow-my-business.html">
         <img class="post-thumb" src="img/blog/seo-grow-business.svg" alt="" width="800" height="500" loading="lazy">
         <div class="post-body">
           <span class="eyebrow">SEO</span>
           <h3>How can SEO grow my business?</h3>
           <p class="post-excerpt">SEO makes your website show up when someone searches for what you do. Here's how that compounds over time.</p>
-          <p class="card-more">Read more<span class="sr-only"> (opens thegrowthacademy.com.au in a new tab)</span></p>
+          <p class="card-more">Read more</p>
         </div>
       </a>
     </div>
@@ -737,25 +738,74 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "CL Growth Academy",
-  "description": "Founder-led marketing for NDIS and aged care providers in Australia.",
-  "url": "https://cl-growth-academy-website.vercel.app/",
-  "email": "chris@thegrowthacademy.com.au",
-  "telephone": "+61431584725",
-  "areaServed": "AU",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Sydney",
-    "addressRegion": "NSW",
-    "addressCountry": "AU"
-  },
-  "founder": {
-    "@type": "Person",
-    "name": "Chris Lapa",
-    "jobTitle": "Founder"
-  },
-  "knowsAbout": ["NDIS marketing", "Aged care marketing", "SEO", "Google Ads", "Email marketing", "Social media marketing"]
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "name": "CL Growth Academy",
+      "description": "Founder-led marketing for NDIS and aged care providers in Australia.",
+      "url": "https://cl-growth-academy-website.vercel.app/",
+      "email": "chris@thegrowthacademy.com.au",
+      "telephone": "+61431584725",
+      "areaServed": "AU",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Sydney",
+        "addressRegion": "NSW",
+        "addressCountry": "AU"
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "Chris Lapa",
+        "jobTitle": "Founder"
+      },
+      "knowsAbout": [
+        "NDIS marketing",
+        "Aged care marketing",
+        "SEO",
+        "Google Ads",
+        "Email marketing",
+        "Social media marketing"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://cl-growth-academy-website.vercel.app/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do you work with businesses outside NDIS and aged care?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. One sector only. That's the whole point. Your challenges are the brief, not a demographic I'm guessing at."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Am I locked into a contract?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No lock-in contracts. If the work isn't earning its place, you shouldn't be trapped paying for it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who actually does the work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "I do. An approach designed for you, built by me. One point of contact, start to finish."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How fast will I see results?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Depends on the channel, and anyone who tells you otherwise is selling. Ads can put you in front of people searching this week. SEO is a long game. It builds visibility that keeps paying after you stop spending. Running both covers the short term and the long term."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: four stages narrowing left to right, each one ticked,
+       with a single cream dot at the exit. The narrowing is the argument:
+       every stage loses people, and the plan is what decides how many.
+       For ndis-digital-marketing-strategy.html, section "What belongs in the
+       plan". Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Loaded via <img>, never
+       inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- The four stages. Each trapezoid is drawn from its own pair of half
+       heights so the taper is continuous across the set rather than four
+       unrelated shapes: 150, 116, 84, 56, 34. -->
+  <g fill="#9E2D24">
+    <path d="M80 100 L220 134 L220 366 L80 400 Z" opacity="0.95"/>
+    <path d="M232 134 L372 166 L372 334 L232 366 Z" opacity="0.8"/>
+    <path d="M384 166 L524 194 L524 306 L384 334 Z" opacity="0.65"/>
+    <path d="M536 194 L676 216 L676 284 L536 306 Z" opacity="0.5"/>
+  </g>
+
+  <!-- A tick above each stage. Same mark four times, translated, so the
+       stroke weight stays identical across the row. -->
+  <g fill="none" stroke="#D4A038" stroke-width="7" stroke-linecap="round"
+     stroke-linejoin="round">
+    <path d="M132 66 L146 80 L168 52"/>
+    <path d="M284 66 L298 80 L320 52"/>
+    <path d="M436 66 L450 80 L472 52"/>
+    <path d="M588 66 L602 80 L624 52"/>
+  </g>
+
+  <!-- The exit. One dot, deliberately small against the mouth of the first
+       stage, which is the whole point of the drawing. -->
+  <path d="M676 250 L706 250" stroke="#F2EADB" stroke-width="6"
+        stroke-linecap="round"/>
+  <circle cx="730" cy="250" r="22" fill="#F2EADB"/>
+</svg>

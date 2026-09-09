@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: two paths from the same starting point. The straight
+       paper line is what you get for spend you keep paying; the mustard curve
+       is what compounds. They cross, and the crossing is the point.
+       For marketing-for-business-growth.html, section "What compounds".
+       Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Loaded via <img>, never
+       inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Axes -->
+  <path d="M110 60 L110 420 L710 420" fill="none" stroke="#F2EADB"
+        stroke-width="3" opacity="0.35"/>
+
+  <!-- The straight line. Starts higher, because paid gets you moving on day
+       one, and that is the honest half of the comparison. -->
+  <path d="M110 400 L710 214" fill="none" stroke="#F2EADB" stroke-width="6"
+        stroke-linecap="round" opacity="0.7"/>
+
+  <!-- The compounding curve. Starts flatter and below, which is the part
+       everyone gives up on before it pays. -->
+  <path d="M110 400 C 300 396, 420 350, 520 268 C 600 202, 660 140, 710 90"
+        fill="none" stroke="#D4A038" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- The area the curve wins after the crossing, so the gap reads as a
+       quantity rather than as two lines that happen to diverge. -->
+  <path d="M523 264 C 600 202, 660 140, 710 90 L710 214 Z"
+        fill="#D4A038" opacity="0.18"/>
+
+  <!-- The crossing. Oxblood dot with an ink ring so it holds against both
+       lines running underneath it. -->
+  <circle cx="523" cy="264" r="17" fill="#9E2D24" stroke="#1A1310" stroke-width="5"/>
+
+  <!-- Where each finishes -->
+  <circle cx="710" cy="90" r="12" fill="#D4A038"/>
+  <circle cx="710" cy="214" r="10" fill="#F2EADB" opacity="0.7"/>
+
+  <!-- Time along the bottom -->
+  <g fill="#F2EADB" opacity="0.4">
+    <rect x="216" y="440" width="34" height="8" rx="4"/>
+    <rect x="366" y="440" width="34" height="8" rx="4"/>
+    <rect x="516" y="440" width="34" height="8" rx="4"/>
+    <rect x="666" y="440" width="34" height="8" rx="4"/>
+  </g>
+</svg>

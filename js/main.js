@@ -219,10 +219,23 @@
     var header = document.querySelector('.site-header');
     if (!header) return;
 
+    // The article pages' reading-progress bar rides this listener rather than
+    // registering a second one. Queried once here, so the pages without a bar
+    // pay one null check at boot and nothing per frame. Skipped entirely under
+    // reduced motion, where §30 hides it anyway.
+    var bar = reduceMotion ? null : document.querySelector('.article-progress span');
     var ticking = false;
 
     function update() {
       header.classList.toggle('is-scrolled', window.scrollY > 24);
+
+      if (bar) {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        var pct = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+        // scaleX rather than width, so this never triggers layout
+        bar.style.transform = 'scaleX(' + pct + ')';
+      }
+
       ticking = false;
     }
 

@@ -9,7 +9,10 @@ const { chromium } = require('playwright-core');
     const u = r.url(); const t = r.request().resourceType();
     try { const buf = await r.body(); by[t] = (by[t]||0) + buf.length; } catch(e){}
   });
-  await p.goto('http://localhost:3000/', { waitUntil:'networkidle' });
+  // Path is an argument now: the whole point of this script is measuring a
+  // specific page, and it could only ever measure the homepage.
+  const path = process.argv[3] || '/';
+  await p.goto('http://localhost:3000' + path, { waitUntil:'networkidle' });
   // scroll the whole page so lazy images fire
   await p.evaluate(async () => {
     for (let y = 0; y < document.body.scrollHeight; y += 400) {

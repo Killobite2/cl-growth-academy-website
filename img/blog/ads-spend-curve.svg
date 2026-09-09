@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: cost per enquiry falling as a campaign gets data, with
+       a floor it does not go below. The flat mustard line is the floor; the
+       oxblood area is what you pay on the way down.
+       For attract-ndis-participants-with-google-ads.html, section
+       "Measuring it". Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Loaded via <img>, never
+       inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Axes, as hairlines rather than a boxed chart -->
+  <path d="M110 60 L110 420 L710 420" fill="none" stroke="#F2EADB"
+        stroke-width="3" opacity="0.35"/>
+
+  <!-- The spend area under the curve. Closed back along the baseline so the
+       fill reads as accumulated cost, not as a band. -->
+  <path d="M110 110 C 250 110, 300 300, 430 330 C 550 358, 620 360, 710 362
+           L710 420 L110 420 Z" fill="#9E2D24" opacity="0.5"/>
+
+  <!-- The curve itself, at full strength over its own fill -->
+  <path d="M110 110 C 250 110, 300 300, 430 330 C 550 358, 620 360, 710 362"
+        fill="none" stroke="#F2EADB" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- The floor. Competition sets this, not the budget, which is why the
+       curve flattens onto it rather than crossing it. -->
+  <path d="M110 362 L710 362" stroke="#D4A038" stroke-width="4"
+        stroke-dasharray="16 12"/>
+
+  <!-- Where it lands -->
+  <circle cx="710" cy="362" r="13" fill="#D4A038" stroke="#1A1310" stroke-width="4"/>
+
+  <!-- Weeks along the bottom, as ticks. Four, because the FAQ says a few
+       weeks before the numbers mean anything. -->
+  <g stroke="#F2EADB" stroke-width="3" opacity="0.4">
+    <path d="M260 420 L260 440"/>
+    <path d="M410 420 L410 440"/>
+    <path d="M560 420 L560 440"/>
+    <path d="M710 420 L710 440"/>
+  </g>
+</svg>

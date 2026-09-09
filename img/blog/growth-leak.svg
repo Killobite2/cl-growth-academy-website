@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: a pipeline in three joined runs with one open gap, and
+       what the gap costs falling out of it. Answers the section's question
+       by showing that the weak channel is usually not the one being blamed.
+       For marketing-for-business-growth.html, section "Which one is doing the
+       work". Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Loaded via <img>, never
+       inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- The pipe, as three runs with a deliberate break between the second and
+       third. Squared caps so the break edges read as cut, not rounded off. -->
+  <g stroke="#9E2D24" stroke-width="46" fill="none">
+    <path d="M70 220 L300 220"/>
+    <path d="M300 220 L470 220"/>
+    <path d="M560 220 L730 220"/>
+  </g>
+
+  <!-- Paper hairline along the top of each run, so the pipe has a lit edge
+       and reads as a solid rather than a bar -->
+  <g stroke="#F2EADB" stroke-width="3" opacity="0.28">
+    <path d="M70 199 L470 199"/>
+    <path d="M560 199 L730 199"/>
+  </g>
+
+  <!-- The gap. Mustard edges mark it as the thing to look at. There is
+       deliberately no marker on the join at x=300: drawn in, it read as a
+       second fault rather than as a coupling that holds. -->
+  <g stroke="#D4A038" stroke-width="7" stroke-linecap="round">
+    <path d="M470 190 L470 250"/>
+    <path d="M560 190 L560 250"/>
+  </g>
+
+  <!-- What falls out of it. Three drops at falling opacity and falling size,
+       so the loss reads as continuing rather than as a single spill. -->
+  <g fill="#D4A038">
+    <circle cx="500" cy="296" r="15"/>
+    <circle cx="527" cy="348" r="11" opacity="0.65"/>
+    <circle cx="508" cy="396" r="8" opacity="0.4"/>
+  </g>
+
+  <!-- The floor the drops land on -->
+  <path d="M420 442 L620 442" stroke="#F2EADB" stroke-width="3" opacity="0.3"/>
+</svg>

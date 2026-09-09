@@ -35,9 +35,10 @@ Every script assumes `http://localhost:3000`.
 
 ## Checks
 
-### `rules.js` — the two hard rules
+### `rules.js` — the hard rules
 ```
 node rules.js
+BASE=https://cl-growth-academy-website.vercel.app node rules.js
 ```
 Crawls from the homepage, following internal links, and asserts:
 
@@ -47,8 +48,25 @@ Crawls from the homepage, following internal links, and asserts:
    a CSS `content:` declaration for weeks, rendering on every page, and no
    amount of searching the HTML would have found it.
 2. **No dead internal link.**
+3. **No console error or uncaught exception** on any crawled page.
+4. **Card markup matches where the card points.** An internal `.post-card`
+   must not carry `is-external`, `target="_blank"` or an `.sr-only` new-tab
+   announcement; an off-site one must carry all four. A half-converted card
+   is how the four blog cards went wrong once already.
+5. **Canonicals are off-domain only on the four article pages**, and `og:url`
+   is ours everywhere. See the blog note in `HANDOVER.md` for why.
+6. **Every `#anchor` resolves.** The crawler filters `#` links out of the
+   queue, so without this a broken contents-list anchor is invisible, and
+   each article ships seven of them.
+7. **Every JSON-LD block parses**, which catches a stray comma in a sixty-line
+   block that nothing else here can see.
+8. **None of the four article pages is orphaned** from the crawl.
 
-Exits non-zero if either fails. Because it discovers pages by crawling, new
+Exits non-zero if any of them fails.
+
+Note what it cannot see: the link collector drops absolute URLs, which is why
+the off-domain canonicals need no allowlist, and equally why a dead link to
+thegrowthacademy.com.au will not be caught. Check those with `curl` by hand. Because it discovers pages by crawling, new
 pages are covered the moment they are linked, and a page linked from
 *nowhere* shows up as a missing row in the crawl list. `newsletter.html` is
 deliberately unreachable, so it never appears and has to be checked by hand.
@@ -72,9 +90,15 @@ marquee always shows up here and is a false positive.
 ### `weight.js` — page weight
 ```
 node weight.js 360
+node weight.js 360 /blog/marketing-for-business-growth.html
 ```
 Bytes by resource type at the given width, DPR 2, after scrolling the whole
-page so lazy images fire. Written after a "70KB" change turned out to add
+page so lazy images fire. Second argument is the path, defaulting to the
+homepage.
+
+**In Git Bash, export `MSYS_NO_PATHCONV=1` first.** A bare leading `/` gets
+rewritten into a Windows path, and the error you get back is a confusing
+`Cannot navigate to invalid URL` on `http://localhost:3000C:/Program Files/Git/`. Written after a "70KB" change turned out to add
 176KB, because a portrait card fed landscape sources downloads the whole
 frame and throws away the crop.
 
@@ -105,10 +129,12 @@ each other, and a card stranded on its own grid row.
 ```
 python3 navfoot.py
 ```
-Rewrites the header and footer across all 13 pages that carry them.
+Rewrites the header and footer across every page that carries them, and
+prints the count from `len(PAGES)` rather than a hardcoded number, which is
+exactly the kind of thing that had gone stale before.
 
 **Use this rather than editing them by hand.** There is no include mechanism
-here, so those blocks exist as 13 copies, and hand-editing is what caused
+here, so those blocks exist as one copy per page, and hand-editing is what caused
 the drift that took a while to find: the nav said `managed=04` while every
 card grid said `managed=05`.
 
@@ -116,3 +142,19 @@ The channel order lives in the `MARKETING`, `GROWTH` and `TIER` tables at
 the top of the file. Change a label or a number there and re-run. Anything
 listing channels elsewhere (the two homepage grids, the hub, how-we-help)
 has to be updated to match, and a numbering check is worth re-running after.
+
+
+### `faqschema.py` — FAQPage JSON-LD
+```
+python3 faqschema.py
+```
+Regenerates the `FAQPage` node on every page that carries a disclosure-style
+FAQ, reading the questions and answers out of that page's own markup so the
+schema cannot drift away from what a visitor reads. It replaces any existing
+`FAQPage` node rather than appending a second one, so re-running is safe.
+
+Run it after editing any FAQ copy.
+
+The four article pages under `blog/` are deliberately excluded: their
+`FAQPage` `@id` has to sit on the off-domain canonical rather than on our own
+URL, so those are written by hand. See the note in `HANDOVER.md`.

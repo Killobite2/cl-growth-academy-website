@@ -43,6 +43,21 @@ def build_nav(root, ch, current):
     def cur(key, attr=' aria-current="page"'):
         return attr if current == key else ''
 
+    # An article under blog/ is not blog.html, so it must not claim
+    # aria-current="page" (two elements claiming it is the duplicate bug that
+    # was fixed once already). It gets "true" instead, the same section-marker
+    # treatment the NDIS Growth dropdown trigger gets below, which is what
+    # initNavIndicator's [aria-current]:not(.nav-cta) rests the bar on.
+    blog_attr = (' aria-current="page"' if current == 'blog.html'
+                 else ' aria-current="true"' if current == 'blog-child'
+                 else '')
+
+    # The reading-progress bar lives inside the sticky header so it travels
+    # with it and needs no stacking context of its own. Emitted here rather
+    # than hand-added, because the header is generated on every page.
+    progress = ('  <div class="article-progress" aria-hidden="true"><span></span></div>\n'
+                if current == 'blog-child' else '')
+
     marketing = ''.join(panel_link(n, h, t, d, ch, cur(h)) for n, h, t, d in MARKETING)
     growth = ''.join(panel_link(n, h, t, d, ch, cur(h)) for n, h, t, d in GROWTH)
     tier = panel_link(*TIER[:1], TIER[1], TIER[2], TIER[3], ch, cur(TIER[1]))
@@ -77,12 +92,12 @@ def build_nav(root, ch, current):
           </div>
         </div>
       </div>
-      <a href="{root}blog.html"{cur('blog.html')}>Blog</a>
+      <a href="{root}blog.html"{blog_attr}>Blog</a>
       <a href="{root}contact.html" class="btn btn-mustard nav-cta"{cur('contact.html')}>Get In Touch</a>
       <span class="nav-indicator" aria-hidden="true"></span>
     </div>
   </nav>
-</header>
+{progress}</header>
 
 '''
 
@@ -175,6 +190,15 @@ PAGES = {
     'ndis-marketing/referrals.html': ('../',  '',                'referrals.html'),
     'ndis-marketing/sales-process.html': ('../', '',             'sales-process.html'),
     'ndis-marketing/managed.html':   ('../',  '',                'managed.html'),
+
+    # Appended last on purpose. The loop below rewrites by string index and
+    # raises on the first file missing an anchor, having already rewritten
+    # every file before it. Keeping the newest files at the end means a typo
+    # in one of them cannot leave the thirteen known-good pages half-written.
+    'blog/ndis-digital-marketing-strategy.html':           ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/attract-ndis-participants-with-google-ads.html': ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/marketing-for-business-growth.html':             ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/how-can-seo-grow-my-business.html':              ('../', '../ndis-marketing/', 'blog-child'),
 }
 
 for path, (root, ch, key) in PAGES.items():
@@ -193,4 +217,4 @@ for path, (root, ch, key) in PAGES.items():
     io.open(path, 'w', encoding='utf-8', newline='').write(s)
     print(f'  {path}')
 
-print('\n  13 pages regenerated')
+print(f'\n  {len(PAGES)} pages regenerated')

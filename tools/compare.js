@@ -9,6 +9,10 @@ const PAGES = [
   ['home', '/index.html'],
   ['hub', '/ndis-marketing/index.html'],
   ['howwehelp', '/how-we-help.html'],
+  // blog.html exists live and is being restructured, so it is worth the
+  // side-by-side. This check is the one that caught the mismatched headings
+  // and the stranded card, both of which every automated rule passed clean.
+  ['blog', '/blog.html'],
 ];
 
 async function shoot(ctx, base, path, out) {
@@ -58,11 +62,15 @@ async function shoot(ctx, base, path, out) {
     await ctx.close();
   }
 
-  // The three new pages do not exist live at all
+  // Pages that do not exist live at all, so a 404 here is the expected result
   const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } });
   console.log('\n  new pages, checked against live:');
   for (const p of ['/ndis-marketing/social-ads.html', '/ndis-marketing/referrals.html',
-                   '/ndis-marketing/sales-process.html']) {
+                   '/ndis-marketing/sales-process.html',
+                   '/blog/ndis-digital-marketing-strategy.html',
+                   '/blog/attract-ndis-participants-with-google-ads.html',
+                   '/blog/marketing-for-business-growth.html',
+                   '/blog/how-can-seo-grow-my-business.html']) {
     const pg = await ctx.newPage();
     const r = await pg.goto(LIVE + p, { waitUntil: 'domcontentloaded' }).catch(() => null);
     console.log(`    ${p}  live: ${r ? r.status() : 'no response'}`);

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: one hub, five channels, all pulling different weights.
+       The spokes are deliberately unequal in length and their end caps
+       unequal in size, because a channel mix that looks balanced on a slide
+       almost never is in the account.
+       For ndis-digital-marketing-strategy.html, section "The channel mix".
+       Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Loaded via <img>, never
+       inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Spokes. Angles are even, lengths are not. -->
+  <g stroke="#D4A038" stroke-width="6" stroke-linecap="round">
+    <path d="M250 250 L610 108"/>
+    <path d="M250 250 L500 178" opacity="0.8"/>
+    <path d="M250 250 L660 250" opacity="0.9"/>
+    <path d="M250 250 L470 330" opacity="0.7"/>
+    <path d="M250 250 L560 396" opacity="0.85"/>
+  </g>
+
+  <!-- End caps, sized to the spoke that carries them. Paper rings rather
+       than solid dots so the hub stays the heaviest thing in the frame. -->
+  <g fill="#1A1310" stroke="#F2EADB" stroke-width="6">
+    <circle cx="610" cy="108" r="34"/>
+    <circle cx="500" cy="178" r="18"/>
+    <circle cx="660" cy="250" r="28"/>
+    <circle cx="470" cy="330" r="15"/>
+    <circle cx="560" cy="396" r="24"/>
+  </g>
+
+  <!-- The hub. Two rings plus a cream core, matching the bullseye centre on
+       the Google Ads card so the two graphics read as one family. -->
+  <circle cx="250" cy="250" r="86" fill="#9E2D24"/>
+  <circle cx="250" cy="250" r="58" fill="#1A1310"/>
+  <circle cx="250" cy="250" r="30" fill="#F2DFA8"/>
+</svg>

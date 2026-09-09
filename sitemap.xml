@@ -52,6 +52,12 @@
     <loc>https://cl-growth-academy-website.vercel.app/blog.html</loc>
     <priority>0.4</priority>
   </url>
+  <!-- The four article pages under /blog/ are deliberately absent. Each one
+       carries a canonical pointing at the original on thegrowthacademy.com.au,
+       so listing them here would be asking a crawler to index a page that
+       tells it to index a different one. They are linked from blog.html and
+       from the homepage, which is what they are for. Add them here only if
+       those canonicals are ever flipped to this domain. -->
   <url>
     <loc>https://cl-growth-academy-website.vercel.app/newsletter.html</loc>
     <priority>0.6</priority>

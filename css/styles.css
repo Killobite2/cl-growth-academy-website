@@ -41,6 +41,12 @@
   --fs-small: 0.875rem;
   --fs-micro: 0.75rem;
 
+  /* Article subheads. Deliberately smaller than --fs-h2/--fs-h3: a service
+     page carries four or five headings, an article carries a dozen, and the
+     display face at 2.4rem twelve times over reads as a shouting match. */
+  --fs-article-h2: clamp(1.5rem, 2.6vw, 1.9rem);
+  --fs-article-h3: clamp(1.15rem, 1.8vw, 1.35rem);
+
   --tracking-wide: 1px;
   --tracking-wider: 1.5px;
 
@@ -75,6 +81,15 @@
   --t-slow: 0.5s;
 
   --max-width: 1120px;
+
+  /* Height of the sticky .site-header, for scroll-margin-top on anchor
+     targets. Measured, not derived, because CSS cannot read it: .nav has
+     var(--space-4) padding top and bottom around a .brand with
+     min-height 44px, plus the header's 1px border-bottom.
+     16 + 44 + 16 + 1 = 77. If either the nav padding or the brand tap
+     target changes, this has to follow or every anchor jump lands under
+     the header again. */
+  --header-h: 77px;
 
   /* Workshop paper grain — inline SVG, no network request */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");
@@ -279,11 +294,18 @@ h3 { font-size: var(--fs-h3); }
 }
 
 /* 12px type gives a 14px-tall inline box. These are real navigation on the
-   five channel pages, so they get a tappable box rather than the line box. */
+   five channel pages, so they get a tappable box rather than the line box.
+
+   min-width matters as much as min-height once the label is short: the
+   article pages point back to "Blog", which is 37px wide at this size and
+   was the only tap target on the site under 44px. The box grows rightwards
+   from a flex-start default, so the label stays where it was and the extra
+   space lands before the separator. */
 .breadcrumb a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
+  min-width: 44px;
 }
 
 .breadcrumb a:hover { color: var(--cream); }
@@ -717,12 +739,16 @@ section { padding: var(--space-9) 0; }
   padding-top: var(--space-5);
 }
 
+/* Written for a hero that spread two items to the edges, then never used by
+   any page. The article pages use it as a byline, where three items pushed
+   apart across 1072px stop reading as one line, so it starts from the left
+   and the gap does the separating. Nothing else consumes it. */
 .hero-meta {
   display: flex;
-  justify-content: space-between;
+  align-items: baseline;
   flex-wrap: wrap;
-  gap: var(--space-3);
-  margin-top: var(--space-7);
+  gap: var(--space-3) var(--space-5);
+  margin-top: var(--space-6);
   font-weight: 700;
   text-transform: uppercase;
   font-size: var(--fs-micro);
@@ -893,7 +919,10 @@ a.post-card:focus-visible {
   color: var(--paper-muted);
 }
 
-/* Outbound arrow in place of the in-site → */
+/* Outbound arrow in place of the in-site →.
+   Still in use, though the four featured posts now have pages here: the
+   second band on blog.html lists the four articles that are still only on
+   thegrowthacademy.com.au. Delete this rule only if that band goes. */
 .post-card.is-external .card-more::after { content: '↗'; }
 
 /* ---------------------------------------------------------------
@@ -2588,6 +2617,11 @@ body.photo-hero .site-header.is-scrolled {
 
 @media print {
   .site-header, .nav-toggle, .brand-strip, .skip-link { display: none; }
+  /* The table of contents is navigation for a scrolling page, and the rule
+     below would print "(#what-it-costs)" beside every entry. The reading
+     progress bar needs no rule of its own: it lives inside .site-header,
+     which is already hidden. */
+  .article-toc { display: none; }
   body { background: #fff; color: #000; }
   section { padding: 12pt 0; }
   a::after { content: ' (' attr(href) ')'; font-size: 9pt; }
@@ -3203,6 +3237,15 @@ body.photo-hero .site-header.is-scrolled {
 
 .section-paper .points { color: var(--ink-muted); }
 
+/* The rule above sets the colour on the container, and the .points li rule
+   below sets it directly on the item. A declaration that matches the element
+   always beats an inherited value, whatever the specificity of the selector
+   it came from, so the light-surface variant never reached the text. Both
+   existing uses (managed.html) sit on a section-ink2 band, so this changes
+   nothing already shipped. It matters for the article pages, which put a
+   .points list on paper. */
+.section-paper .points li { color: var(--ink-muted); }
+
 /* Same mustard rule as the consult panel's points, so the two read as one
    system rather than two takes on a list */
 .showcase-points li,
@@ -3259,6 +3302,15 @@ body.photo-hero .site-header.is-scrolled {
   aspect-ratio: 4 / 5;
   object-fit: cover;
 }
+
+/* Landscape variant, used by the article pages. The 4:5 box above needs a
+   portrait source: feed it a landscape frame and the browser downloads the
+   whole file and object-fit throws away 47% of it, which is how a change
+   estimated at 70KB once shipped 176KB. Only two 4:5 crops exist on disk and
+   both are on the homepage, so rather than cut more, the article version runs
+   3:2 — which fits the 800x500 brand SVGs and the ~760x570 event photographs
+   with nothing discarded. */
+.showcase-wide .showcase-layer img { aspect-ratio: 3 / 2; }
 
 .showcase-back {
   position: absolute;
@@ -3360,4 +3412,430 @@ body.photo-hero .site-header.is-scrolled {
   .showcase-layer { transition: none; }
   .showcase.is-visible .showcase-back { transform: translateY(-30px); }
   .showcase.is-visible .showcase-front { transform: translateY(30px); }
+}
+
+/* ---------------------------------------------------------------
+   30. ARTICLE PAGE — long-form posts under blog/
+
+   Four posts that used to live only on thegrowthacademy.com.au now have
+   pages here. They run 1,300 to 2,800 words each, three to five times a
+   service page, and nothing in §1 to §29 was built for that: there was no
+   prose measure, no figure, no pull-quote, no contents list. This section
+   adds those and nothing else. Everything a channel page already provides
+   (the hero, .section-head, .points, .timeline, .faq, .post-card, the
+   closing CTA band) is reused as it stands.
+
+   The one component borrowed and modified is §29's .showcase, through the
+   .showcase-wide modifier, declared up there beside the rule it overrides.
+
+   No max-width on .article itself, on purpose: `section` is a bare element
+   selector carrying var(--space-9) of block padding, and the surface
+   colours have to bleed the full width of the viewport. The narrow measure
+   belongs to .prose inside the .wrap, which is the only thing that should
+   be 68ch.
+   --------------------------------------------------------------- */
+
+/* ---- Prose ----
+   68ch is not a new number: it is the measure .faq p and .timeline-summary
+   already use, so the site has one reading width rather than three. */
+.article .prose { max-width: 68ch; }
+
+/* Spaced with the owl rather than a margin on p, so a figure, list or
+   blockquote dropped into the flow spaces identically without its own rule */
+.article .prose > * + * { margin-top: var(--space-5); }
+
+/* margin-bottom rather than margin: 0. The global p rule in §2 sets a bottom
+   margin that has to go, but zeroing all four sides here would also beat the
+   owl above: `.article .prose p` is (0,2,1) and `.article .prose > * + *` is
+   (0,2,0), so a shorthand wins and every paragraph closes up against the
+   one before it. */
+.article .prose p { margin-bottom: 0; color: var(--paper-muted); }
+.section-paper .prose p { color: var(--ink-muted); }
+
+/* A subhead needs more air above it than a paragraph does, and it has to
+   out-specify the owl to get it */
+.article .prose > * + h3 { margin-top: var(--space-7); }
+
+/* Emphasis lifts to full brightness, which is the only contrast step left
+   once the body text is already muted */
+.article .prose strong { color: var(--paper); font-weight: 700; }
+.section-paper .prose strong { color: var(--ink); }
+
+.article .prose a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---- Subheads ----
+   Same escape hatch as the card titles in §3. The display face is uppercase
+   at every size, and a dozen uppercase Alfa Slab headings down a 2,800-word
+   page reads as shouting. Work Sans 800 keeps the weight without the volume.
+
+   The selectors are narrow on purpose. `.article h3` would be (0,1,1), the
+   same specificity as the .card h3 / .post-card h3 / .channel-note h3 /
+   .faq summary rule in §3, and it sits later in the file, so it would win
+   and silently retint every card, post card and FAQ summary on the page.
+   There are three such regions on every article. .article .prose h3 cannot
+   reach one, because a card is never inside .prose. */
+.article .section-head h2 {
+  font-family: var(--font-body);
+  font-size: var(--fs-article-h2);
+  font-weight: 800;
+  letter-spacing: var(--tracking-wide);
+  line-height: 1.2;
+}
+
+.article .prose h3 {
+  font-family: var(--font-body);
+  font-size: var(--fs-article-h3);
+  font-weight: 800;
+  /* Sentence case, one clear level below the uppercase h2, without adding a
+     fourth typeface to say so */
+  text-transform: none;
+  letter-spacing: normal;
+  line-height: 1.3;
+  color: var(--paper);
+}
+
+.section-paper .prose h3 { color: var(--ink); }
+
+/* ---- Figures ----
+   Values deliberately identical to .channel-media img in §27 and the 760px
+   cap on .wrap > .channel-media: 760px is the real pixel width of these
+   sources and anything wider upscales. The two devices are meant to look
+   the same, so they are built the same. */
+.article figure {
+  margin: var(--space-7) 0;
+  max-width: 760px;
+}
+
+.article figure img {
+  width: 100%;
+  /* height:auto again. The img carries width and height attributes for CLS
+     reservation, and with both definite the aspect-ratio would be ignored.
+     Fourth instance of the trap in this file. */
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  background: var(--ink-2);
+}
+
+/* The caption carries the meaning of the diagram above it. The artwork is
+   decorative (alt="") because text inside an img-loaded SVG is invisible to
+   search and unreadable to a screen reader, so this is where the idea gets
+   said in words. */
+.article figcaption {
+  margin-top: var(--space-4);
+  max-width: 62ch;
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--mustard);
+  font-size: var(--fs-small);
+  color: var(--paper-faint);
+}
+
+.section-paper figcaption { color: var(--ink-muted); }
+
+/* ---- Pull-quote ----
+   Mixed-case display face with a mustard rule. It has to read as a different
+   device from .section-callout in §25, which already owns
+   Alfa-Slab-uppercase-mustard as the site's emphasis block.
+
+   No content: declaration and no decorative quote glyph. tools/rules.js
+   walks the computed content of every ::before and ::after on every page
+   because an em-dash lived in one of them for weeks, and every string added
+   there is one more thing that has to be audited forever. */
+.article blockquote {
+  position: relative;
+  margin: var(--space-8) 0;
+  max-width: 62ch;
+  padding: var(--space-2) 0 var(--space-2) var(--space-6);
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  /* Alfa Slab One is uppercase globally in §3. At pull-quote length that is
+     unreadable, so this is one of the two places that opts out. */
+  text-transform: none;
+  line-height: 1.45;
+  color: var(--cream);
+}
+
+.section-paper blockquote { color: var(--oxblood); }
+
+/* The rule is a pseudo-element rather than a border so it can animate
+   independently of the text (see the entrance below) */
+.article blockquote::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--mustard);
+}
+
+.article blockquote p { margin: 0; }
+.article blockquote p + p { margin-top: var(--space-4); }
+
+.article blockquote cite {
+  display: block;
+  margin-top: var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: 800;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--mustard);
+}
+
+/* ---- Anchor targets ----
+   .site-header is sticky, so without this every jump from the contents list
+   lands with its heading hidden underneath the header. */
+.article section[id] { scroll-margin-top: calc(var(--header-h) + var(--space-5)); }
+
+/* Pre-existing on all fourteen pages, not only these four: the skip link
+   points at #main, and #main had no scroll margin either. */
+#main { scroll-margin-top: calc(var(--header-h) + var(--space-4)); }
+
+/* ---- Contents ---- */
+.article-toc { max-width: 68ch; }
+.article-toc .eyebrow { margin-bottom: var(--space-4); }
+
+.article-toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+  counter-reset: toc;
+}
+
+.article-toc li { counter-increment: toc; }
+
+.article-toc a {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  /* Standalone navigation rather than a link inside a sentence, so it needs
+     a real tap target, the same reason .breadcrumb a has one in §3 */
+  min-height: 44px;
+  font-size: var(--fs-small);
+  color: var(--paper-muted);
+  transition: color var(--t-fast) var(--ease);
+}
+
+/* A counter, so this is the one new content: string on the site and it can
+   never hold a dash of any kind */
+.article-toc a::before {
+  content: counter(toc, decimal-leading-zero);
+  flex: 0 0 auto;
+  font-size: var(--fs-micro);
+  font-weight: 800;
+  letter-spacing: var(--tracking-wide);
+  color: var(--mustard);
+}
+
+.article-toc a:hover,
+.article-toc a:focus-visible { color: var(--cream); }
+
+/* ---- Reading progress ----
+   Sits inside .site-header so it travels with it and needs no stacking
+   context of its own. Driven from initHeader's existing scroll listener. */
+.article-progress {
+  height: 3px;
+  background: rgba(var(--paper-rgb), 0.08);
+}
+
+.article-progress span {
+  display: block;
+  height: 100%;
+  background: var(--mustard);
+  /* scaleX rather than width: transform only, so none of the sixty frames a
+     second triggers layout */
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* ---- Entrance ----
+   On every other page .reveal sits on the <section>. Here it must not.
+   initReveals fires at threshold 0.1 and then unobserves, so a 2,500px
+   article band counts as visible as soon as its top 250px are on screen,
+   and every stagger inside it would finish while the reader is still in the
+   first paragraph. So .reveal goes on the effect-bearing element itself:
+   each .prose, each figure, each blockquote, each list, the .faq, the
+   showcase band, the closing CTA. Same observer, more targets, no new JS.
+
+   Do not tidy this by hoisting .reveal back onto the sections. It breaks
+   every stagger below, and it breaks them invisibly. */
+
+/* Where an element both fades itself and staggers its children, the parent's
+   own fade is suppressed so the children ARE the animation. Same reasoning
+   as .showcase.reveal in §29: running both reads as mush. */
+.article ul.points.reveal,
+.article ol.timeline.reveal,
+.article .faq.reveal,
+.article-toc ol.reveal { opacity: 1; transform: none; transition: none; }
+
+/* Contents entries */
+.article-toc ol.reveal li {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--t-slow) var(--ease), transform var(--t-slow) var(--ease);
+}
+.article-toc ol.reveal.is-visible li { opacity: 1; transform: none; }
+.article-toc ol.reveal.is-visible li:nth-child(1) { transition-delay: 0ms; }
+.article-toc ol.reveal.is-visible li:nth-child(2) { transition-delay: 45ms; }
+.article-toc ol.reveal.is-visible li:nth-child(3) { transition-delay: 90ms; }
+.article-toc ol.reveal.is-visible li:nth-child(4) { transition-delay: 135ms; }
+.article-toc ol.reveal.is-visible li:nth-child(5) { transition-delay: 180ms; }
+.article-toc ol.reveal.is-visible li:nth-child(6) { transition-delay: 225ms; }
+.article-toc ol.reveal.is-visible li:nth-child(7) { transition-delay: 270ms; }
+.article-toc ol.reveal.is-visible li:nth-child(8) { transition-delay: 315ms; }
+
+/* Points lists arrive from the left, so they read as items being set down
+   beside their mustard rule rather than as another block fading up */
+.article ul.points.reveal li {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity var(--t-slow) var(--ease), transform var(--t-slow) var(--ease);
+}
+.article ul.points.reveal.is-visible li { opacity: 1; transform: none; }
+.article ul.points.reveal.is-visible li:nth-child(1) { transition-delay: 0ms; }
+.article ul.points.reveal.is-visible li:nth-child(2) { transition-delay: 60ms; }
+.article ul.points.reveal.is-visible li:nth-child(3) { transition-delay: 120ms; }
+.article ul.points.reveal.is-visible li:nth-child(4) { transition-delay: 180ms; }
+.article ul.points.reveal.is-visible li:nth-child(5) { transition-delay: 240ms; }
+.article ul.points.reveal.is-visible li:nth-child(6) { transition-delay: 300ms; }
+
+/* Figures settle rather than fade: the artwork comes to rest from very
+   slightly oversized, and the caption lands just behind it. 1.2s is §29's
+   signature duration, reused so the page speaks one motion vocabulary. */
+.article figure.reveal { opacity: 1; transform: none; transition: none; }
+.article figure.reveal img {
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity 1.2s var(--ease), transform 1.2s var(--ease);
+}
+.article figure.reveal.is-visible img { opacity: 1; transform: none; }
+
+.article figure.reveal figcaption {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--t-slow) var(--ease), transform var(--t-slow) var(--ease);
+}
+.article figure.reveal.is-visible figcaption {
+  opacity: 1;
+  transform: none;
+  transition-delay: 120ms;
+}
+
+/* The pull-quote's mustard rule draws downward, then the words arrive */
+.article blockquote.reveal { opacity: 1; transform: none; transition: none; }
+.article blockquote.reveal::before {
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+  transition: transform 0.8s var(--ease);
+}
+.article blockquote.reveal.is-visible::before { transform: scaleY(1); }
+
+.article blockquote.reveal > * {
+  opacity: 0;
+  transition: opacity var(--t-slow) var(--ease);
+}
+.article blockquote.reveal.is-visible > * {
+  opacity: 1;
+  transition-delay: 150ms;
+}
+
+/* Timeline steps arrive down the spine */
+.article ol.timeline.reveal li {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--t-slow) var(--ease), transform var(--t-slow) var(--ease);
+}
+.article ol.timeline.reveal.is-visible li { opacity: 1; transform: none; }
+.article ol.timeline.reveal.is-visible li:nth-child(1) { transition-delay: 0ms; }
+.article ol.timeline.reveal.is-visible li:nth-child(2) { transition-delay: 70ms; }
+.article ol.timeline.reveal.is-visible li:nth-child(3) { transition-delay: 140ms; }
+.article ol.timeline.reveal.is-visible li:nth-child(4) { transition-delay: 210ms; }
+.article ol.timeline.reveal.is-visible li:nth-child(5) { transition-delay: 280ms; }
+.article ol.timeline.reveal.is-visible li:nth-child(6) { transition-delay: 350ms; }
+
+/* FAQ rows. Opacity and transform only: a <details> has to stay clickable
+   and keyboard-operable the whole way through its entrance. */
+.article .faq.reveal details {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--t-slow) var(--ease), transform var(--t-slow) var(--ease);
+}
+.article .faq.reveal.is-visible details { opacity: 1; transform: none; }
+.article .faq.reveal.is-visible details:nth-child(1) { transition-delay: 0ms; }
+.article .faq.reveal.is-visible details:nth-child(2) { transition-delay: 40ms; }
+.article .faq.reveal.is-visible details:nth-child(3) { transition-delay: 80ms; }
+.article .faq.reveal.is-visible details:nth-child(4) { transition-delay: 120ms; }
+.article .faq.reveal.is-visible details:nth-child(5) { transition-delay: 160ms; }
+.article .faq.reveal.is-visible details:nth-child(6) { transition-delay: 200ms; }
+.article .faq.reveal.is-visible details:nth-child(7) { transition-delay: 240ms; }
+.article .faq.reveal.is-visible details:nth-child(8) { transition-delay: 280ms; }
+
+/* The hero deliberately carries no .reveal. Its h1 is the LCP element on a
+   type-only hero, and putting the largest text on the page behind a fade
+   delays that measurement for no gain. The channel-page heroes do the same. */
+
+/* ---- Responsive ---- */
+@media (max-width: 700px) {
+  .article figure { margin: var(--space-6) 0; max-width: none; }
+  .article blockquote {
+    margin: var(--space-7) 0;
+    padding-left: var(--space-5);
+  }
+  .article .prose { max-width: none; }
+  .article-toc { max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* §23 zeroes transition-duration and never transition-delay. Every stagger
+     above therefore needs its delay zeroed by hand, and every animated
+     element needs a resting state, or it stays invisible forever. */
+  .article-toc ol.reveal li,
+  .article ul.points.reveal li,
+  .article ol.timeline.reveal li,
+  .article .faq.reveal details,
+  .article figure.reveal figcaption,
+  .article blockquote.reveal > * { opacity: 1; transform: none; }
+
+  .article figure.reveal img { opacity: 1; transform: none; }
+  .article blockquote.reveal::before { transform: none; }
+
+  .article-toc ol.reveal.is-visible li:nth-child(1),
+  .article-toc ol.reveal.is-visible li:nth-child(2),
+  .article-toc ol.reveal.is-visible li:nth-child(3),
+  .article-toc ol.reveal.is-visible li:nth-child(4),
+  .article-toc ol.reveal.is-visible li:nth-child(5),
+  .article-toc ol.reveal.is-visible li:nth-child(6),
+  .article-toc ol.reveal.is-visible li:nth-child(7),
+  .article-toc ol.reveal.is-visible li:nth-child(8),
+  .article ul.points.reveal.is-visible li:nth-child(1),
+  .article ul.points.reveal.is-visible li:nth-child(2),
+  .article ul.points.reveal.is-visible li:nth-child(3),
+  .article ul.points.reveal.is-visible li:nth-child(4),
+  .article ul.points.reveal.is-visible li:nth-child(5),
+  .article ul.points.reveal.is-visible li:nth-child(6),
+  .article ol.timeline.reveal.is-visible li:nth-child(1),
+  .article ol.timeline.reveal.is-visible li:nth-child(2),
+  .article ol.timeline.reveal.is-visible li:nth-child(3),
+  .article ol.timeline.reveal.is-visible li:nth-child(4),
+  .article ol.timeline.reveal.is-visible li:nth-child(5),
+  .article ol.timeline.reveal.is-visible li:nth-child(6),
+  .article .faq.reveal.is-visible details:nth-child(1),
+  .article .faq.reveal.is-visible details:nth-child(2),
+  .article .faq.reveal.is-visible details:nth-child(3),
+  .article .faq.reveal.is-visible details:nth-child(4),
+  .article .faq.reveal.is-visible details:nth-child(5),
+  .article .faq.reveal.is-visible details:nth-child(6),
+  .article .faq.reveal.is-visible details:nth-child(7),
+  .article .faq.reveal.is-visible details:nth-child(8),
+  .article figure.reveal.is-visible figcaption,
+  .article blockquote.reveal.is-visible > * { transition-delay: 0ms; }
+
+  /* Redundant with the scrollbar, and decoration rather than information.
+     initHeader also skips the writes under reduced motion, so this costs
+     nothing at runtime. */
+  .article-progress { display: none; }
 }

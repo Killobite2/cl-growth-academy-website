@@ -9,6 +9,13 @@ const PAGES = [
   '/ndis-marketing/index.html', '/ndis-marketing/seo.html', '/ndis-marketing/ads.html',
   '/ndis-marketing/email.html', '/ndis-marketing/managed.html', '/ndis-marketing/social.html',
   '/ndis-marketing/social-ads.html', '/ndis-marketing/referrals.html', '/ndis-marketing/sales-process.html',
+  // The long-form article pages. This list is hardcoded rather than crawled,
+  // so a page left out of it gets no mobile coverage at all and nobody finds
+  // out. New page here means a new line here.
+  '/blog/ndis-digital-marketing-strategy.html',
+  '/blog/attract-ndis-participants-with-google-ads.html',
+  '/blog/marketing-for-business-growth.html',
+  '/blog/how-can-seo-grow-my-business.html',
 ];
 const WIDTHS = [320, 360, 390, 430];
 

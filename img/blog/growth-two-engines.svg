@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: marketing and referrals as two cogs on one shared
+       axle, which is the argument: neither turns the business on its own.
+       The teeth sit tooth-to-tooth rather than interlocking, because at
+       eight and six teeth a true mesh needs the tooth counts to divide, and
+       forcing that would make the two engines the same size and lose the
+       point of the drawing.
+       Deliberately not a megaphone, because the card artwork for this post
+       already owns that image.
+       For marketing-for-business-growth.html, section "Two engines".
+       Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Loaded via <img>, never
+       inlined, so these ids cannot collide with another file's. They carry
+       the file slug anyway. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- One tooth per cog, reused around the circle. Written this way rather
+       than as fourteen rotated rectangles so the spacing is arithmetic and
+       the shape can only be changed in one place. -->
+  <defs>
+    <rect id="engines-tooth-lg" x="-19" y="-152" width="38" height="52" rx="5"/>
+    <rect id="engines-tooth-sm" x="-15" y="-116" width="30" height="42" rx="4"/>
+  </defs>
+
+  <!-- The shared axle, behind both cogs -->
+  <path d="M270 250 L530 250" stroke="#F2EADB" stroke-width="8"
+        stroke-linecap="round" opacity="0.45"/>
+
+  <!-- Left cog: eight teeth, oxblood. The bigger engine, and the one that
+       costs money to turn. -->
+  <g fill="#9E2D24" transform="translate(270 250)">
+    <use href="#engines-tooth-lg"/>
+    <use href="#engines-tooth-lg" transform="rotate(45)"/>
+    <use href="#engines-tooth-lg" transform="rotate(90)"/>
+    <use href="#engines-tooth-lg" transform="rotate(135)"/>
+    <use href="#engines-tooth-lg" transform="rotate(180)"/>
+    <use href="#engines-tooth-lg" transform="rotate(225)"/>
+    <use href="#engines-tooth-lg" transform="rotate(270)"/>
+    <use href="#engines-tooth-lg" transform="rotate(315)"/>
+    <circle r="112"/>
+  </g>
+  <circle cx="270" cy="250" r="46" fill="#1A1310"/>
+
+  <!-- Right cog: six teeth, mustard. Smaller and it turns faster, which is
+       the difference between the two engines. Referrals cost attention
+       rather than spend. -->
+  <g fill="#D4A038" transform="translate(552 250)">
+    <use href="#engines-tooth-sm"/>
+    <use href="#engines-tooth-sm" transform="rotate(60)"/>
+    <use href="#engines-tooth-sm" transform="rotate(120)"/>
+    <use href="#engines-tooth-sm" transform="rotate(180)"/>
+    <use href="#engines-tooth-sm" transform="rotate(240)"/>
+    <use href="#engines-tooth-sm" transform="rotate(300)"/>
+    <circle r="84"/>
+  </g>
+  <circle cx="552" cy="250" r="34" fill="#1A1310"/>
+</svg>

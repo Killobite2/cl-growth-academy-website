@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: a service area as nine tiles, three of them won. The
+       three are not adjacent, because coverage is built suburb by suburb on
+       the terms people actually type, not as a spreading blob.
+       For how-can-seo-grow-my-business.html, section "Suburb pages".
+       Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Loaded via <img>, never
+       inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- The nine tiles. Oxblood is unclaimed ground. -->
+  <g fill="#9E2D24" opacity="0.55">
+    <rect x="226" y="66" width="108" height="108" rx="8"/>
+    <rect x="346" y="66" width="108" height="108" rx="8"/>
+    <rect x="466" y="66" width="108" height="108" rx="8"/>
+    <rect x="226" y="186" width="108" height="108" rx="8"/>
+    <rect x="346" y="186" width="108" height="108" rx="8"/>
+    <rect x="466" y="186" width="108" height="108" rx="8"/>
+    <rect x="226" y="306" width="108" height="108" rx="8"/>
+    <rect x="346" y="306" width="108" height="108" rx="8"/>
+    <rect x="466" y="306" width="108" height="108" rx="8"/>
+  </g>
+
+  <!-- The three won. Drawn over the top rather than by omitting tiles above,
+       so the grid stays a complete nine whatever gets recoloured here. -->
+  <g fill="#D4A038">
+    <rect x="226" y="66" width="108" height="108" rx="8"/>
+    <rect x="466" y="186" width="108" height="108" rx="8"/>
+    <rect x="346" y="306" width="108" height="108" rx="8"/>
+  </g>
+
+  <!-- The pin, on the centre tile: the one you are standing in and have not
+       written a page for yet. -->
+  <g transform="translate(400 214)">
+    <path d="M0 66 C0 66 -34 26 -34 -2 A34 34 0 0 1 34 -2 C34 26 0 66 0 66 Z"
+          fill="#F2EADB" stroke="#1A1310" stroke-width="5"/>
+    <circle cx="0" cy="-2" r="13" fill="#1A1310"/>
+  </g>
+</svg>
