@@ -127,19 +127,39 @@
 
 <article class="article">
 
-<section class="hero hero-compact">
+<section class="hero hero-compact hero-split">
   <div class="wrap">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="../blog.html">Blog</a> / How can SEO grow my business?
-    </nav>
-    <span class="eyebrow">SEO</span>
-    <h1>How can SEO grow <span class="script">my business?</span></h1>
-    <p class="lead">SEO makes your website show up when somebody searches for what you do. It is slower than paid search, it is cheaper per enquiry over time, and it is the one channel that keeps working after you stop paying for it.</p>
-    <p class="hero-meta">
-      <span><time datetime="2024-03-21">21 March 2024</time></span>
-      <span>Chris Lapa</span>
-      <span>9 min read</span>
-    </p>
+    <div class="hero-copy">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../blog.html">Blog</a> / How can SEO grow my business?
+      </nav>
+      <span class="eyebrow">SEO</span>
+      <h1>How can SEO grow <span class="script">my business?</span></h1>
+      <p class="lead">SEO makes your website show up when somebody searches for what you do. It is slower than paid search, it is cheaper per enquiry over time, and it is the one channel that keeps working after you stop paying for it.</p>
+      <p class="hero-meta">
+        <span><time datetime="2024-03-21">21 March 2024</time></span>
+        <span>Chris Lapa</span>
+        <span>9 min read</span>
+      </p>
+    </div>
+    <!-- The hook. Above the fold, so it is the LCP element at every
+         width, hence eager + fetchpriority: the same treatment the
+         homepage and newsletter heroes get and the only other two
+         images on the site that qualify. No rel=preload (none exists
+         here, and it would have to restate the srcset) and no
+         decoding= (used nowhere).
+
+         This file also appears in the homepage corridor with alt="",
+         which is right there and wrong here: that corridor is
+         aria-hidden decoration. Alt describes the job an image does
+         in the document it is in, so the two differ on purpose. -->
+    <img class="hero-plate"
+         srcset="../img/room/session-room-full-380.jpg 380w, ../img/room/session-room-full.jpg 760w"
+         sizes="(max-width: 700px) calc(100vw - 32px), (max-width: 900px) 470px, 440px"
+         src="../img/room/session-room-full.jpg"
+         alt="NDIS and aged care providers talking at round tables in a full session room, part-way through a CL Growth Academy workshop in Sydney."
+         width="760" height="570"
+         loading="eager" fetchpriority="high">
   </div>
 </section>
 

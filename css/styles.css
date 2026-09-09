@@ -756,6 +756,102 @@ section { padding: var(--space-9) 0; }
   color: var(--cream);
 }
 
+/* ---- Split hero: a photograph beside the headline ----
+   The four article heroes under blog/ were type on a flat oxblood band with
+   nothing to look at, so nothing pulled a reader in off a search result.
+
+   Not full-bleed like §18. The event photographs are 760px wide on disk, and
+   a full-bleed hero would upscale them about 1.9x, which is the mistake the
+   760px cap on .wrap > .channel-media in §27 exists to prevent.
+
+   A modifier on the section rather than a `.article .hero .wrap` descendant
+   rule, for the same reason .hero-compact and .showcase-wide are modifiers:
+   it travels with the markup, it does not depend on an ancestor class two
+   elements up, and `grep hero-split` finds exactly the pages using it.
+   Scoping it this way is also what keeps the other fourteen heroes provably
+   untouched. Named .hero-plate rather than .hero-photo on purpose: §18 is six
+   hundred lines of .photo-hero and .photo-frame, and the two names side by
+   side in one stylesheet is a transposition bug waiting to happen. */
+.hero-split .wrap {
+  display: grid;
+  /* minmax(0, ...) on both tracks. A bare 1fr is minmax(auto, 1fr) and takes
+     its floor from min-content: "participants" in Alfa Slab One at --fs-h1 is
+     a ~250px word with nowhere to break. That is the bug §25 documents twice,
+     where one long word held the newsletter hero at 481px on every phone.
+
+     0.75fr is measured, not picked. The sharpness this site accepts is 0.87x
+     of the DPR2 requirement: the channel pages feed 900px sources into a
+     520px slot, and 900/1040 = 0.865. For a 760px source that means a 439px
+     slot. Across 1072px of wrap content less the 48px gap, 439/1024 needs
+     0.75fr against 1fr, which also leaves the headline 585px. Raise this
+     number and the photograph starts upscaling. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.75fr);
+  gap: var(--space-7);
+  /* end, not center. Every one of the four headlines makes the copy column
+     taller than the 293px plate, so centring leaves a symmetric band of empty
+     oxblood above and below the photograph, which reads as a mistake rather
+     than as space. Flushed down, the plate's lower edge and the byline row
+     form one line across the hero and the slack lands at top right, where
+     nobody is looking. If a much shorter headline ever arrives, check this. */
+  align-items: end;
+}
+
+.hero-plate {
+  width: 100%;
+  /* height:auto is load-bearing, and this is the fifth instance of the trap in
+     this file (.post-thumb §10, .founder-photo §13, .showcase-layer img §29,
+     .article figure img §30). The img carries height="570", which lands on
+     the CSS height property as a presentational hint; with width and height
+     both definite the aspect-ratio below is silently ignored, the three 4:3
+     frames render 4:3, and the four heroes stop matching each other. */
+  height: auto;
+  /* 3:2 is not a new ratio on these pages: .showcase-wide in §29 already crops
+     these same event photographs to it, further down the same articles. It
+     also normalises the set, which matters because the hero is the one band a
+     reader meets on all four. masterclass-slide is 760x507, natively 3:2, and
+     loses nothing. The other three are 760x570 and lose 11% of their height,
+     5.6% off each edge, which is ceiling at the top and carpet at the bottom
+     in all three. No face is near either edge, so no object-position is
+     needed. */
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  /* Holds the box while the file loads. Not var(--ink-2) like the figures in
+     §30: those sit on ink, this sits on oxblood, and a near-black plate
+     flashing inside a red band is louder than the photograph arriving. */
+  background: rgba(var(--ink-rgb), 0.22);
+}
+
+/* Below 900 the pair stops working rather than merely getting tight: the copy
+   column is a five-element stack against a photograph shrunk to ~345px, so
+   most of the hero is empty oxblood at top right. Same collapse point as
+   .founder and the card grids in §22. */
+@media (max-width: 900px) {
+  .hero-split .wrap {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  /* 470px is .showcase-media's cap from §29, reused rather than invented.
+     Uncapped, the plate runs the full 852px of wrap at the top of this query
+     and upscales a 760px source 1.12x. Left aligned, not centred: the whole
+     hero is left aligned, and a centred plate under left-aligned type reads
+     as a caption. */
+  .hero-plate { max-width: 470px; }
+}
+
+@media (max-width: 700px) {
+  /* .hero.hero-split, not .hero-split. §22 sets `.hero { padding:
+     var(--space-8) 0 }` inside its own 700px block, later in this file and as
+     a shorthand, so a (0,1,0) selector here would be reset straight back to
+     64px at both ends. (0,2,0) wins on specificity whatever the order. The
+     reason for the change: a photograph's lower edge does not need the air
+     that a line of 12px uppercase type does, and this is 16px straight off
+     the phone hero, where height is the whole problem. */
+  .hero.hero-split { padding-bottom: var(--space-7); }
+}
+
 /* ---------------------------------------------------------------
    9. GRIDS
    --------------------------------------------------------------- */
@@ -2622,6 +2718,13 @@ body.photo-hero .site-header.is-scrolled {
      progress bar needs no rule of its own: it lives inside .site-header,
      which is already hidden. */
   .article-toc { display: none; }
+  /* A 7.5in page is about 720px, wide enough that the 900px query never
+     fires, so without these the split hero prints its grid: a full-colour
+     room photograph beside a headline squeezed into 57% of the page. The
+     oxblood band is a background and browsers strip those by default, but a
+     foreground <img> prints whatever the user's setting. */
+  .hero-plate { display: none; }
+  .hero-split .wrap { display: block; }
   body { background: #fff; color: #000; }
   section { padding: 12pt 0; }
   a::after { content: ' (' attr(href) ')'; font-size: 9pt; }

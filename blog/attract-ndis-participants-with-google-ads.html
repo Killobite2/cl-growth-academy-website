@@ -132,19 +132,39 @@
 
 <article class="article">
 
-<section class="hero hero-compact">
+<section class="hero hero-compact hero-split">
   <div class="wrap">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="../blog.html">Blog</a> / NDIS Google Ads
-    </nav>
-    <span class="eyebrow">Ads</span>
-    <h1>Attract NDIS participants with <span class="script">Google Ads.</span></h1>
-    <p class="lead">Google Ads puts you in front of people who are already looking for a provider. Here is how the platform actually works, and where the budget goes if the account is set up badly.</p>
-    <p class="hero-meta">
-      <span><time datetime="2025-03-18">18 March 2025</time></span>
-      <span>Chris Lapa</span>
-      <span>6 min read</span>
-    </p>
+    <div class="hero-copy">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../blog.html">Blog</a> / NDIS Google Ads
+      </nav>
+      <span class="eyebrow">Ads</span>
+      <h1>Attract NDIS participants with <span class="script">Google Ads.</span></h1>
+      <p class="lead">Google Ads puts you in front of people who are already looking for a provider. Here is how the platform actually works, and where the budget goes if the account is set up badly.</p>
+      <p class="hero-meta">
+        <span><time datetime="2025-03-18">18 March 2025</time></span>
+        <span>Chris Lapa</span>
+        <span>6 min read</span>
+      </p>
+    </div>
+    <!-- The hook. Above the fold, so it is the LCP element at every
+         width, hence eager + fetchpriority: the same treatment the
+         homepage and newsletter heroes get and the only other two
+         images on the site that qualify. No rel=preload (none exists
+         here, and it would have to restate the srcset) and no
+         decoding= (used nowhere).
+
+         This file also appears in the homepage corridor with alt="",
+         which is right there and wrong here: that corridor is
+         aria-hidden decoration. Alt describes the job an image does
+         in the document it is in, so the two differ on purpose. -->
+    <img class="hero-plate"
+         srcset="../img/room/summit-room-380.jpg 380w, ../img/room/summit-room.jpg 760w"
+         sizes="(max-width: 700px) calc(100vw - 32px), (max-width: 900px) 470px, 440px"
+         src="../img/room/summit-room.jpg"
+         alt="Around thirty NDIS providers seated at round tables watching a presenter work through a slide at a CL Growth Academy summit in Sydney."
+         width="760" height="570"
+         loading="eager" fetchpriority="high">
   </div>
 </section>
 

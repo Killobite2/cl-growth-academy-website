@@ -127,19 +127,39 @@
 
 <article class="article">
 
-<section class="hero hero-compact">
+<section class="hero hero-compact hero-split">
   <div class="wrap">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="../blog.html">Blog</a> / NDIS Digital Marketing &amp; Acceleration
-    </nav>
-    <span class="eyebrow">Strategy</span>
-    <h1>NDIS digital marketing <span class="script">and acceleration.</span></h1>
-    <p class="lead">Digital is how small and medium providers get found now. This is what belongs in the plan, in the order I would build it, and the parts that get skipped and cost the most.</p>
-    <p class="hero-meta">
-      <span><time datetime="2025-03-23">23 March 2025</time></span>
-      <span>Chris Lapa</span>
-      <span>10 min read</span>
-    </p>
+    <div class="hero-copy">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../blog.html">Blog</a> / NDIS Digital Marketing &amp; Acceleration
+      </nav>
+      <span class="eyebrow">Strategy</span>
+      <h1>NDIS digital marketing <span class="script">and acceleration.</span></h1>
+      <p class="lead">Digital is how small and medium providers get found now. This is what belongs in the plan, in the order I would build it, and the parts that get skipped and cost the most.</p>
+      <p class="hero-meta">
+        <span><time datetime="2025-03-23">23 March 2025</time></span>
+        <span>Chris Lapa</span>
+        <span>10 min read</span>
+      </p>
+    </div>
+    <!-- The hook. Above the fold, so it is the LCP element at every
+         width, hence eager + fetchpriority: the same treatment the
+         homepage and newsletter heroes get and the only other two
+         images on the site that qualify. No rel=preload (none exists
+         here, and it would have to restate the srcset) and no
+         decoding= (used nowhere).
+
+         This file also appears in the homepage corridor with alt="",
+         which is right there and wrong here: that corridor is
+         aria-hidden decoration. Alt describes the job an image does
+         in the document it is in, so the two differ on purpose. -->
+    <img class="hero-plate"
+         srcset="../img/room/masterclass-slide-380.jpg 380w, ../img/room/masterclass-slide.jpg 760w"
+         sizes="(max-width: 700px) calc(100vw - 32px), (max-width: 900px) 470px, 440px"
+         src="../img/room/masterclass-slide.jpg"
+         alt="Chris Lapa at the screen walking a seated room of providers through the Journey To Ad Matrix slide at a CL Growth Academy masterclass in Sydney."
+         width="760" height="507"
+         loading="eager" fetchpriority="high">
   </div>
 </section>
 
