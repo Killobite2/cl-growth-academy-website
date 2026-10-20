@@ -116,7 +116,7 @@ Reach me directly:" and then gave the dead address. The honest fallback did not 
 
 | Repo | Deploys to | Note |
 |---|---|---|
-| `cl-growth-academy-website` | `cl-growth-academy-website.vercel.app` | the site |
+| `cl-growth-academy-website` | `thegrowthacademy.com.au` | the site |
 | `signup-website-chris` | `signup-website-chris.vercel.app` | the standalone newsletter page, Git-connected |
 | `website-sign-up` | nothing | **superseded**, older copy of the same page, no Vercel project |
 
