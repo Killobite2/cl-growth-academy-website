@@ -890,18 +890,22 @@
                 '<button type="submit" class="btn btn-mustard">Send it &rarr;</button>' +
                 '</div>' +
                 /* Web3Forms confirms the send, so this only shows on a
-                   real success. The direct email stays on it anyway for
-                   anyone who would rather not wait for a reply.
+                   real success. Kept to two words with the tick, same as
+                   contact.html: the success line is absolutely positioned
+                   inside the compact pill, and the longer sentence with
+                   the email address overflowed it in a broken stack.
 
-                   The address is @thegrowthacademy.com.au, NOT
+                   The address below is @thegrowthacademy.com.au, NOT
                    @clgrowthacademy.com.au. The latter has no MX records and
                    resolves to a link-local address, so mail to it bounces.
                    Do not switch domains until clgrowthacademy.com.au has
                    working mail. */
-                '<p class="form-pill-success" role="status">Message sent. ' +
-                'If you would rather not wait, I am on ' +
-                '<a href="mailto:chris@thegrowthacademy.com.au">chris@thegrowthacademy.com.au</a>' +
-                '.</p></div>' +
+                '<p class="form-pill-success" role="status">' +
+                '<svg class="form-tick" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+                '<circle cx="12" cy="12" r="10" opacity="0.35"/>' +
+                '<path class="form-tick-path" d="M7.5 12.5l3 3 6-6.5"/>' +
+                '</svg>' +
+                'Message sent.</p></div>' +
                 '<p class="form-error" role="alert" hidden>That did not send. ' +
                 'Please reach me directly on ' +
                 '<a href="mailto:chris@thegrowthacademy.com.au">chris@thegrowthacademy.com.au</a>' +
