@@ -2,7 +2,7 @@
 //   1. no rendered em-dash anywhere, including ::before/::after content
 //   2. no dead internal link
 //   3. every .post-card's markup matches where it actually points
-//   4. the off-domain canonicals are exactly the four article pages
+//   4. every canonical is on thegrowthacademy.com.au; articles self-canonicalise
 //   5. no broken #anchor, which the crawl in rule 2 cannot see
 //   6. every JSON-LD block parses
 //   7. no page is orphaned from the crawl
@@ -10,10 +10,10 @@ const { chromium } = require('playwright-core');
 
 const BASE = process.env.BASE || 'http://localhost:3000';
 
-// The article pages canonicalise to the live WordPress copies so the two do
-// not compete for the same searches. That is deliberate and unusual, so it is
-// asserted here rather than left to a comment somebody deletes.
-const OFF_DOMAIN_CANONICAL = 'https://thegrowthacademy.com.au/';
+// The site has lived at thegrowthacademy.com.au since 20 October 2026. Every
+// canonical must be on it, and the four articles (which used to canonicalise
+// to their WordPress copies) must now point at themselves.
+const SITE = 'https://thegrowthacademy.com.au/';
 const ARTICLES = [
   '/blog/ndis-digital-marketing-strategy.html',
   '/blog/attract-ndis-participants-with-google-ads.html',
@@ -100,25 +100,21 @@ const ARTICLES = [
     });
     cardHits.forEach(m => cards.push({ path, m }));
 
-    // --- rule 4: canonical, off-domain only where intended ---
+    // --- rule 4: canonical on our domain, articles self-canonical ---
     const canonHit = await page.evaluate(() => {
       const l = document.querySelector('link[rel="canonical"]');
       const og = document.querySelector('meta[property="og:url"]');
       return { canonical: l ? l.href : null, ogUrl: og ? og.content : null };
     });
-    const wantOff = ARTICLES.includes(path);
-    const isOff = !!canonHit.canonical && canonHit.canonical.startsWith(OFF_DOMAIN_CANONICAL);
     if (!canonHit.canonical) {
       canon.push({ path, m: 'no canonical at all' });
-    } else if (wantOff && !isOff) {
-      canon.push({ path, m: `article should canonicalise off-domain, got ${canonHit.canonical}` });
-    } else if (!wantOff && isOff) {
-      canon.push({ path, m: `unexpected off-domain canonical: ${canonHit.canonical}` });
+    } else if (!canonHit.canonical.startsWith(SITE)) {
+      canon.push({ path, m: `canonical not on ${SITE}: ${canonHit.canonical}` });
+    } else if (ARTICLES.includes(path) && canonHit.canonical !== SITE + path.slice(1)) {
+      canon.push({ path, m: `article should self-canonicalise, got ${canonHit.canonical}` });
     }
-    // og:url is a sharing address and must always be ours, even where the
-    // canonical is not.
-    if (canonHit.ogUrl && canonHit.ogUrl.startsWith(OFF_DOMAIN_CANONICAL)) {
-      canon.push({ path, m: `og:url points off-domain: ${canonHit.ogUrl}` });
+    if (canonHit.ogUrl && !canonHit.ogUrl.startsWith(SITE)) {
+      canon.push({ path, m: `og:url not on ${SITE}: ${canonHit.ogUrl}` });
     }
 
     // --- rule 5: #anchors resolve ---
