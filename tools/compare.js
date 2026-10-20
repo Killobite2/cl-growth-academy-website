@@ -2,7 +2,7 @@
 // and phone width, so the two builds can be put next to each other.
 const { chromium } = require('playwright-core');
 
-const LIVE = 'https://cl-growth-academy-website.vercel.app';
+const LIVE = 'https://thegrowthacademy.com.au';
 const LOCAL = 'http://localhost:3000';
 
 const PAGES = [

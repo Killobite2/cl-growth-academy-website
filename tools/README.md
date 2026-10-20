@@ -38,7 +38,7 @@ Every script assumes `http://localhost:3000`.
 ### `rules.js` — the hard rules
 ```
 node rules.js
-BASE=https://cl-growth-academy-website.vercel.app node rules.js
+BASE=https://thegrowthacademy.com.au node rules.js
 ```
 Crawls from the homepage, following internal links, and asserts:
 
@@ -74,7 +74,7 @@ deliberately unreachable, so it never appears and has to be checked by hand.
 ### `spacing.js` — vertical gaps between blocks
 ```
 node spacing.js
-BASE=https://cl-growth-academy-website.vercel.app node spacing.js
+BASE=https://thegrowthacademy.com.au node spacing.js
 ```
 Walks the direct children of every `.wrap`, `.prose`, `.channel-row > div`,
 `.channel-note`, `.card` and `.article-toc`, and measures the gap between each

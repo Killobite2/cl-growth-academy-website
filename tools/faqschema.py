@@ -12,7 +12,7 @@ import io, os, re, json, html
 
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-SITE = 'https://cl-growth-academy-website.vercel.app'
+SITE = 'https://thegrowthacademy.com.au'
 
 # page -> the #id the FAQ block sits under, for the FAQPage @id
 PAGES = {
