@@ -331,7 +331,7 @@
   var FILM_CARD_AR = 0.75;   // focused card is 3:4
   var FILM_GAP = 0.038;      // gap / card width
   var FILM_PAD = 0.017;      // page gutter / stage width
-  var FILM_DELAY = 5000;     // autoplay step, ms
+  var FILM_DELAY = 3000;     // autoplay step, ms
   var FILM_WHEEL = 60;       // horizontal wheel distance that commits a step
   var FILM_COOLDOWN = 420;   // lockout after a wheel step, ms
 
@@ -497,10 +497,16 @@
       timer = setTimeout(function () { go(index === last ? 0 : index + 1); }, FILM_DELAY);
     }
 
-    stage.addEventListener('pointerenter', function (e) {
+    /* Hover pause is scoped to the strip, NOT the stage. The stage is a
+       full-bleed band 560 to 860px tall, so a reader's cursor rests over it
+       almost permanently and autoplay never got to fire: the carousel looked
+       broken and had to be clicked. Pausing only over the thumbnails keeps
+       the half of the behaviour that matters, which is that a card does not
+       slide out from under a pointer reaching for it. */
+    strip.addEventListener('pointerenter', function (e) {
       if (e.pointerType === 'mouse') { hovered = true; schedule(); }
     });
-    stage.addEventListener('pointerleave', function () { hovered = false; schedule(); });
+    strip.addEventListener('pointerleave', function () { hovered = false; schedule(); });
     stage.addEventListener('focusin', function () { focused = true; schedule(); });
     stage.addEventListener('focusout', function (e) {
       if (!stage.contains(e.relatedTarget)) { focused = false; schedule(); }
