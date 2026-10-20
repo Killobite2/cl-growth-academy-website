@@ -1,5 +1,6 @@
 {
   "redirects": [
+    {"source": "/", "has": [{"type": "host", "value": "cl-growth-academy-website.vercel.app"}], "destination": "https://thegrowthacademy.com.au/", "permanent": true},
     {"source": "/:path*", "has": [{"type": "host", "value": "cl-growth-academy-website.vercel.app"}], "destination": "https://thegrowthacademy.com.au/:path*", "permanent": true},
     {"source": "/ndis-social-media-marketing-services/", "destination": "/ndis-marketing/social.html", "permanent": true},
     {"source": "/ndis-social-media-marketing-services", "destination": "/ndis-marketing/social.html", "permanent": true},
