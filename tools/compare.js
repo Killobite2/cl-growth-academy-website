@@ -31,8 +31,8 @@ async function shoot(ctx, base, path, out) {
       }
       window.scrollTo(0, 0);
       document.querySelectorAll('.reveal').forEach(e => e.classList.add('is-visible'));
-      // stop the filmstrip autoplay and marquee so the two captures are comparable
-      document.querySelectorAll('.marquee-track').forEach(e => {
+      // stop the corridor and marquee so the two captures are comparable
+      document.querySelectorAll('.corridor-wall, .marquee-track').forEach(e => {
         e.style.animationPlayState = 'paused';
       });
     });

@@ -107,7 +107,7 @@ html {
 }
 
 /* A backstop, not the fix. Every known overflow source is dealt with at its
-   origin (the .form-pill stack in the 480px tier, the photo reel,
+   origin (the .form-pill stack in the 480px tier, the corridor offsets,
    overflow-wrap on headings and long email tokens). This catches the next
    one, so a single wide child cannot rock the whole document sideways — a
    failure mode the site had on every page.
@@ -1252,7 +1252,7 @@ a.post-card:focus-visible {
 
 .form-row.stack { flex-direction: column; }
 
-input, textarea {
+input, select, textarea {
   font-family: var(--font-body);
   font-size: var(--fs-body);
   padding: var(--space-4);
@@ -1270,24 +1270,67 @@ input, textarea {
    overflow and does the same to the contact form. */
 textarea { resize: vertical; }
 
+/* The only <select> on the site. appearance:none strips the UA chrome so it
+   matches the text fields: left native it renders as system grey on the cream
+   contact page and as a white slab on the dark consult dialog, neither of
+   which is a field on this site. The right padding clears the chevron. */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 44px;
+  padding-right: var(--space-8);
+  cursor: pointer;
+}
+
+/* The chevron needs a wrapper: a <select> cannot carry a pseudo-element, and
+   drawing it as a background-image would be wiped by the `background:`
+   shorthand in the light-surface override below. The wrapper hugs the control
+   on its own, so 50% here is the control's own middle. currentColor means the
+   one rule serves both the dark dialog and the cream page. */
+.form-select { position: relative; display: block; }
+
+.form-select::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: var(--space-4);
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  /* -65%, not -50%: the mass of a chevron sits below the box it is drawn in,
+     so centring the box leaves it looking low. */
+  transform: translateY(-65%) rotate(45deg);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* The popup list is drawn by the OS and inherits nothing, so it has to be
+   told the surface it belongs to or the dark dialog opens a white menu. */
+select option { background: var(--ink-2); color: var(--paper); }
+
 input::placeholder, textarea::placeholder { color: var(--paper-faint); }
-input:hover, textarea:hover { border-color: rgba(var(--paper-rgb), 0.5); }
+input:hover, select:hover, textarea:hover { border-color: rgba(var(--paper-rgb), 0.5); }
 
 /* Inputs on light surfaces. Scoped to the surface itself rather than
    the section — the homepage panel sits inside .section-oxblood, so a
    .section-paper-scoped rule missed it and rendered a near-black
    field on cream. */
-.section-paper input, .section-paper textarea,
-.lead-panel input, .lead-panel textarea {
+.section-paper input, .section-paper select, .section-paper textarea,
+.lead-panel input, .lead-panel select, .lead-panel textarea {
   background: #FFFDF8;
   color: var(--ink);
   border-color: rgba(var(--ink-rgb), 0.2);
 }
 
+.section-paper select option,
+.lead-panel select option { background: #FFFDF8; color: var(--ink); }
+
 .section-paper input::placeholder, .lead-panel input::placeholder,
 .section-paper textarea::placeholder { color: var(--ink-muted); }
 
 .section-paper input:hover, .lead-panel input:hover,
+.section-paper select:hover, .lead-panel select:hover,
 .section-paper textarea:hover { border-color: rgba(var(--ink-rgb), 0.45); }
 
 label {
@@ -1761,288 +1804,95 @@ body.photo-hero .site-header.is-scrolled {
 }
 
 /* ---------------------------------------------------------------
-   19b. FILMSTRIP — one focused photograph standing in a row of halves
-   Built by initFilmstrip in main.js. Every card shares one top edge; the
-   focused card is full height, its neighbours clipped to half, and the
-   backdrop is the focused photo re-graded to that slide's accent. JS
-   measures the stage and sets --film-* on it; every size below is a ratio
-   of the stage, so it holds from a phone to a 4K display.
+   19b. PHOTO CORRIDOR — two walls receding to one vanishing point
    --------------------------------------------------------------- */
 
-/* No-JS fallback: the slides as a plain grid, aligned to the column */
-.film-list {
-  list-style: none;
-  max-width: var(--max-width);
-  margin: var(--space-7) auto 0;
-  padding: 0 var(--space-5);
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-3);
-}
-
-.film-list img {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-}
-
-.film.is-built .film-list { display: none; }
-
-.film.is-built {
+.corridor {
   position: relative;
-  height: clamp(560px, 82vh, 860px);
+  height: 460px;
   margin-top: var(--space-7);
   overflow: hidden;
-  background: var(--ink);
-  color: var(--paper);
-  user-select: none;
-  -webkit-user-select: none;
-  /* cqh units below follow the stage height, as the original's
-     measured ratios did */
-  container-type: size;
-  /* Horizontal swipes belong to the strip, vertical ones to the page */
-  touch-action: pan-y;
+  perspective: 1100px;
+  perspective-origin: 50% 48%;
 }
 
-.film:focus-visible { outline: 2px solid var(--mustard); outline-offset: -2px; }
+/* --span is TEN card depths, matching the ten unique cards written twice
+   in the markup. Flying exactly that far means card 11 lands where card 1
+   started, so the loop has no seam. Change one and you must change both:
+   --span must always equal (unique cards) x --gap-z.
 
-/* ---- Backdrop: the focused photo, blown up and re-hued to its accent ---- */
-
-.film-bg {
+   The duration scales with the span too, or the fly-through simply gets
+   faster as cards are added. 32s covered 1920px; 53s covers 3200px at the
+   same perceived speed. */
+.corridor-wall {
+  --gap-z: 320px;
+  --span: 3200px;
   position: absolute;
   inset: 0;
-  opacity: 0;
-  transition: opacity 0.7s ease-out;
+  transform-style: preserve-3d;
+  animation: corridor-fly 53s linear infinite;
 }
 
-.film-bg.is-in { opacity: 1; }
+@keyframes corridor-fly {
+  from { transform: translateZ(0); }
+  to { transform: translateZ(var(--span)); }
+}
 
-/* The backdrop is a 760px photograph filling a band over 2000 device pixels
-   wide. It was then scaled a further 1.42 to 1.28 for the drift, which put
-   the effective upscale at about 2.7x and made every frame look soft.
+/* Deliberately NOT paused on hover. The marquee pauses because its tiles are
+   real buttons and clicking a moving target is hostile; this corridor is
+   aria-hidden decoration — plain divs, alt="" images, nothing focusable or
+   clickable inside — so there is no target to protect, and a full-width band
+   that freezes under the pointer just reads as a stalled page. Motion
+   sensitivity is handled by the prefers-reduced-motion block below, which
+   rebuilds this as a static grid rather than relying on hover. Do not copy
+   the marquee's pause rule back onto it. */
 
-   The drift now travels just above cover instead, which takes roughly a
-   fifth off that and is enough for the slide text in the photographs to read
-   again. Blur was tried here to hide the softness and removed: it cost more
-   than it bought on a band whose whole claim is that these are real rooms.
-   If full-resolution originals of the twenty frames ever land, this can go
-   back up. */
-.film-bg img {
+.corridor-card {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.14);
-  transition: transform 6s linear;
-}
-
-.film-bg.is-in img { transform: scale(1.04); }
-
-/* Keep the photo's luminance, take the accent's hue */
-.film-bg::before,
-.film-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-}
-
-.film-bg::before { mix-blend-mode: color; }
-.film-bg::after { mix-blend-mode: multiply; opacity: 0.55; }
-
-/* Legibility wash and grain, above the swap so they never flicker */
-.film-wash {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(to bottom,
-    rgba(var(--ink-rgb), 0.55),
-    rgba(var(--ink-rgb), 0.05) 45%,
-    rgba(var(--ink-rgb), 0.6));
-}
-
-.film-wash::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: var(--grain);
-  background-size: 180px 180px;
-  mix-blend-mode: overlay;
-  opacity: 0.35;
-}
-
-/* ---- Headline block, sitting just above the strip's top edge ---- */
-
-.film-head {
-  position: absolute;
-  inset: 0 0 50% 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--space-2) 6vw;
-  padding: 0 var(--film-pad, 24px) 2.8cqh;
-  pointer-events: none;
-}
-
-.film-title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: max(28px, 6.7cqh);
-  line-height: 0.92;
-  text-transform: uppercase;
-  color: var(--paper);
-}
-
-/* Each line wipes up from behind its own edge */
-.film-title > span { display: block; overflow: hidden; padding-bottom: 0.04em; }
-.film-title > span > span {
-  display: block;
-  animation: film-wipe 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.film-title > span:nth-child(2) > span { animation-delay: 70ms; }
-
-@keyframes film-wipe {
-  from { transform: translateY(110%); }
-  to { transform: none; }
-}
-
-.film-label {
-  margin: 0;
-  font-family: var(--font-body);
-  font-weight: 800;
-  font-size: max(10px, 1.1cqh);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wider);
-  color: var(--paper-muted);
-  white-space: nowrap;
-  animation: film-rise 0.45s var(--ease) both;
-}
-
-.film-meta {
-  margin-left: auto;
-  display: flex;
-  gap: max(16px, 5.5cqw);
-}
-
-.film-meta .film-label:nth-child(2) { animation-delay: 60ms; }
-
-@keyframes film-rise {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
-}
-
-/* ---- The strip: one shared top edge, the focused card twice as tall ---- */
-
-.film-strip {
-  position: absolute;
-  inset: 50% 0 auto 0;
-  height: var(--film-full);
-  cursor: grab;
-}
-
-.film.is-dragging .film-strip { cursor: grabbing; }
-
-.film-track {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--film-gap);
-  will-change: transform;
-  transition: transform 0.55s var(--ease);
-}
-
-.film.is-dragging .film-track { transition: none; }
-
-.film-card {
-  position: relative;
-  flex: none;
-  width: var(--film-card-w);
-  height: var(--film-half);
-  padding: 0;
-  border: 0;
+  top: 50%;
+  left: 50%;
+  width: 380px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  background: rgba(var(--paper-rgb), 0.05);
-  cursor: inherit;
-  transition: height 0.55s var(--ease);
+  box-shadow: var(--shadow-lg);
+  backface-visibility: hidden;
 }
 
-.film-card[aria-current="true"] { height: var(--film-full); }
+.corridor-card img { width: 100%; height: auto; display: block; }
 
-.film-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* The focused card shows the whole frame; this only picks which band a
-     half-height neighbour keeps. Below centre, because these are rooms
-     shot from the back: the top half of most of them is ceiling. */
-  object-position: 50% 62%;
-  pointer-events: none;
+/* Each wall angles inward so the two converge. translateZ is negative and
+   grows with --i, putting later cards further down the corridor. */
+.corridor-left .corridor-card {
+  transform: translate3d(-450px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
 }
 
-/* Unfocused cards sit back a touch without going grey */
-.film-card::after {
+.corridor-right .corridor-card {
+  transform: translate3d(70px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
+}
+
+/* Fades the far end into the page so cards arrive out of the dark rather
+   than popping into existence at the vanishing point */
+.corridor::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--ink);
-  opacity: 0.18;
-  transition: opacity 0.55s var(--ease);
-}
-
-.film-card[aria-current="true"]::after { opacity: 0; }
-
-.film-card:focus-visible { outline: 2px solid var(--mustard); outline-offset: 2px; }
-
-/* ---- Position rail ---- */
-
-.film-rail {
-  position: absolute;
-  left: var(--film-pad, 24px);
-  bottom: max(14px, 2.2cqh);
-  width: max(140px, 20cqw);
-}
-
-.film-count {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 800;
-  font-size: max(10px, 1.1cqh);
-  letter-spacing: var(--tracking-wide);
-  font-variant-numeric: tabular-nums;
-  color: var(--paper-muted);
-}
-
-.film-bar {
-  position: relative;
-  height: 1px;
-  margin-top: var(--space-2);
-  background: rgba(var(--paper-rgb), 0.25);
-}
-
-.film-bar span {
-  position: absolute;
-  inset: 0 auto 0 0;
-  background: var(--mustard);
-  transition: left 0.55s var(--ease);
-}
-
-@media (max-width: 700px) {
-  .film-list { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0 var(--space-4); }
-  .film.is-built { height: 560px; }
-  .film-meta { margin-left: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .film-bg, .film-bg img, .film-track, .film-card, .film-card::after, .film-bar span { transition: none; }
-  .film-bg img, .film-bg.is-in img { transform: scale(1.28); }
-  .film-title > span > span, .film-label { animation: none; }
+  pointer-events: none;
+  /* Kept deliberately tight. A wide radial reads as a haze over the whole
+     corridor and dims the near photographs, which are the ones anyone
+     actually looks at — this only has to swallow the vanishing point. */
+  background:
+    radial-gradient(15% 30% at 50% 48%,
+      rgba(var(--ink-rgb), 0.9) 0%,
+      rgba(var(--ink-rgb), 0.55) 45%,
+      rgba(var(--ink-rgb), 0) 80%),
+    linear-gradient(to right,
+      var(--ink) 0%,
+      rgba(var(--ink-rgb), 0) 11%,
+      rgba(var(--ink-rgb), 0) 89%,
+      var(--ink) 100%);
 }
 
 /* ---------------------------------------------------------------
-   19c. GRAIN CTA/* ---------------------------------------------------------------
    19c. GRAIN CTA — animated closing band
    --------------------------------------------------------------- */
 
@@ -2657,7 +2507,48 @@ body.photo-hero .site-header.is-scrolled {
 
   .hero-proof { margin-top: var(--space-5); gap: var(--space-4) var(--space-6); }
 
-  /* Side by side leaves neither panel usable  /* Side by side leaves neither panel usable at this width */
+  /* Shallower corridor and smaller cards, or the walls fly past the
+     edges of a phone viewport before they reach the vanishing point.
+
+     900px, not 700: a shallower perspective foreshortens harder, so the
+     near cards grew fast and crowded out the receding ones behind them,
+     leaving little to read as a corridor. Raising it flattens the growth
+     curve. Note that a card does sweep across the whole band once per
+     cycle as it passes the camera — that is the fly-through effect and it
+     happens identically at 1280px, so it is not something to design out.
+
+     The duration is overridden here because --span is: the invariant above
+     says they scale together, and 53s was authored for 3200px. Leaving it
+     ran the phone fly-through 31% slow. */
+  .corridor { height: 320px; perspective: 900px; }
+  .corridor-card { width: 200px; }
+  .corridor-wall { --gap-z: 220px; --span: 2200px; animation-duration: 36s; }
+  .corridor-left .corridor-card {
+    transform: translate3d(-215px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
+  }
+  .corridor-right .corridor-card {
+    transform: translate3d(15px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
+  }
+
+  /* The centre radial is what swallows the vanishing point, and at this
+     width it covers proportionally far more of the band — it was erasing
+     the receding cards that make the corridor legible as a corridor, and
+     leaving a dead black gutter between two slabs. Lightened, and the edge
+     fade widened to take over the job of hiding the near cards' cropping. */
+  .corridor::after {
+    background:
+      radial-gradient(13% 24% at 50% 50%,
+        rgba(var(--ink-rgb), 0.7) 0%,
+        rgba(var(--ink-rgb), 0.35) 45%,
+        rgba(var(--ink-rgb), 0) 82%),
+      linear-gradient(to right,
+        var(--ink) 0%,
+        rgba(var(--ink-rgb), 0) 16%,
+        rgba(var(--ink-rgb), 0) 84%,
+        var(--ink) 100%);
+  }
+
+  /* Side by side leaves neither panel usable at this width */
   .consult-grid {
     grid-template-columns: 1fr;
     /* Stacked, so the whole thing scrolls as one column rather than the
@@ -2721,7 +2612,21 @@ body.photo-hero .site-header.is-scrolled {
      width it should span the column like every other stacked control */
   .form-pill-compact { display: flex; }
 
-  /* Cards carry the same padding at 320px  /* Cards carry the same padding at 320px as at 1440px, which spends 48px
+  /* Tighter again below 480. The walls have to sit closer to the centre or
+     they leave a black gutter down the middle with a cropped slab either
+     side, which is the opposite of a corridor. Span, gap and duration stay
+     locked to each other per the invariant in §19b. */
+  .corridor { height: 260px; perspective: 800px; }
+  .corridor-card { width: 160px; }
+  .corridor-wall { --gap-z: 180px; --span: 1800px; animation-duration: 30s; }
+  .corridor-left .corridor-card {
+    transform: translate3d(-168px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
+  }
+  .corridor-right .corridor-card {
+    transform: translate3d(8px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
+  }
+
+  /* Cards carry the same padding at 320px as at 1440px, which spends 48px
      of a 288px measure on air */
   .card { padding: var(--space-5) var(--space-4); }
   .post-body { padding: var(--space-5); }
@@ -2757,7 +2662,57 @@ body.photo-hero .site-header.is-scrolled {
   .form-pill.is-submitted .form-tick-path { animation: none; stroke-dashoffset: 0; }
   .form-pill.is-submitted .form-pill-fields { transform: none; }
 
-  .grain-cta::before { animation: none; }  .grain-cta::before { animation: none; }
+  /* The corridor cannot simply be frozen: a stopped 3D corridor leaves half
+     the photographs edge-on and unreadable, and the far ones invisible. It
+     flattens to a plain grid instead, which is the only version of this
+     section where every photo is actually legible. */
+  .corridor {
+    height: auto;
+    perspective: none;
+    overflow: visible;
+    /* The 3D version bleeds to the viewport edge on purpose; a flat grid
+       doing that just looks unaligned against every other section */
+    max-width: var(--max-width);
+    margin: var(--space-7) auto 0;
+    padding: 0 var(--space-5);
+  }
+  .corridor::after { display: none; }
+  .corridor-wall {
+    position: static;
+    animation: none;
+    transform: none;
+    transform-style: flat;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  .corridor-wall + .corridor-wall { margin-top: var(--space-3); }
+  .corridor-card {
+    position: static;
+    width: auto;
+    box-shadow: none;
+  }
+  /* Only the first copy of each set — the duplicate exists solely to make
+     the fly-through loop seamless, and stacked in a grid it is just repeats.
+     n + 11 because each wall holds TEN unique cards written twice; this said
+     n + 7 from when it was six, which silently dropped four real photographs
+     for every reduced-motion visitor. If the card count changes again, this
+     number and --span both follow it. */
+  .corridor-card:nth-child(n + 11) { display: none; }
+  .corridor-left .corridor-card,
+  .corridor-right .corridor-card { transform: none; }
+
+  /* Three columns of a twenty-photo grid is roughly 83px per photo at
+     320px — legible as colour, not as a room. This has to be nested rather
+     than added to the 600px block in §22, because that block sits earlier
+     in the file and media queries carry no specificity, so the rule above
+     would win. */
+  @media (max-width: 700px) {
+    .corridor { padding: 0 var(--space-4); }
+    .corridor-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  .grain-cta::before { animation: none; }
 
   /* Static wrapping wall — JS also skips cloning under reduced
      motion, but belt and braces in case the class is already set */

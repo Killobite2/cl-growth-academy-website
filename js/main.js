@@ -310,316 +310,6 @@
     }
   }
 
-  /* ---------------- Filmstrip ----------------
-
-     Ported from a React "hero carousel". Every card shares one top edge;
-     the focused card stands at full height while its neighbours stay
-     clipped to half, so the strip reads as a row of cropped frames with one
-     whole photograph in the middle of it. Changing focus re-grades the
-     backdrop to that slide's photo and accent.
-
-     Geometry is measured, never hard-coded: a ResizeObserver reads the
-     stage and every size is a ratio of it, written to --film-* on the
-     stage. The track slides to centre the focused card; cards never move
-     themselves.
-
-     The wheel only steps the strip on a horizontal gesture. The original
-     took vertical wheel too and handed it back at the ends, which on a
-     twenty-slide strip in the middle of a long page is a scroll trap. */
-
-  var FILM_CARD_H = 0.264;   // focused card height / stage height
-  var FILM_CARD_AR = 0.75;   // focused card is 3:4
-  var FILM_GAP = 0.038;      // gap / card width
-  var FILM_PAD = 0.017;      // page gutter / stage width
-  var FILM_DELAY = 3000;     // autoplay step, ms
-  var FILM_WHEEL = 60;       // horizontal wheel distance that commits a step
-  var FILM_COOLDOWN = 420;   // lockout after a wheel step, ms
-
-  function initFilmstrip() {
-    var stage = document.querySelector('.film');
-    if (!stage || !('ResizeObserver' in window)) return;
-
-    var slides = Array.prototype.map.call(stage.querySelectorAll('.film-list li'), function (li) {
-      var img = li.querySelector('img');
-      return {
-        title: (li.getAttribute('data-title') || '').split('|'),
-        meta: (li.getAttribute('data-meta') || '').split('|').filter(Boolean),
-        accent: li.getAttribute('data-accent') || '#9E2D24',
-        small: img.getAttribute('src'),
-        large: img.getAttribute('data-large') || img.getAttribute('src'),
-        alt: img.getAttribute('alt') || ''
-      };
-    });
-    if (slides.length < 2) return;
-
-    var last = slides.length - 1;
-    var index = 0;
-    var geo = null;
-    var bg = null;
-
-    function el(tag, cls) {
-      var node = document.createElement(tag);
-      if (cls) node.className = cls;
-      return node;
-    }
-
-    var wash = el('div', 'film-wash');
-    var head = el('div', 'film-head');
-    head.setAttribute('aria-live', 'polite');
-    var strip = el('div', 'film-strip');
-    var track = el('div', 'film-track');
-    var rail = el('div', 'film-rail');
-    var count = el('div', 'film-count');
-    var now = el('span');
-    var total = el('span');
-    var bar = el('div', 'film-bar');
-    var thumb = el('span');
-    total.textContent = String(slides.length).padStart(2, '0');
-    thumb.style.width = (100 / slides.length) + '%';
-    count.append(now, total);
-    bar.appendChild(thumb);
-    rail.append(count, bar);
-    strip.appendChild(track);
-
-    var cards = slides.map(function (slide, i) {
-      var card = el('button', 'film-card');
-      card.type = 'button';
-      card.setAttribute('aria-label', slide.title.join(' ') + ': ' + slide.alt);
-      var img = el('img');
-      img.src = slide.small;
-      img.alt = '';
-      img.draggable = false;
-      img.loading = 'lazy';
-      card.appendChild(img);
-      card.addEventListener('click', function () {
-        if (suppressClick) return;
-        go(i);
-      });
-      track.appendChild(card);
-      return card;
-    });
-
-    // Only the focused card is a tab stop; arrows move between the rest
-    function xFor(i) {
-      return geo.w / 2 - (i * geo.step + geo.cardW / 2);
-    }
-
-    function place(x) {
-      track.style.transform = 'translate3d(' + x.toFixed(2) + 'px,0,0)';
-    }
-
-    function swapBackdrop(slide) {
-      var next = el('div', 'film-bg');
-      next.style.setProperty('--accent', slide.accent);
-      var img = el('img');
-      img.src = slide.large;
-      img.alt = '';
-      next.appendChild(img);
-      stage.insertBefore(next, wash);
-      // Two frames so the starting opacity and scale are painted first
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { next.classList.add('is-in'); });
-      });
-      var old = bg;
-      bg = next;
-      if (old) {
-        old.classList.remove('is-in');
-        setTimeout(function () { old.remove(); }, reduceMotion ? 0 : 750);
-      }
-    }
-
-    function renderHead(slide) {
-      var title = el('h3', 'film-title');
-      slide.title.forEach(function (line) {
-        var outer = el('span');
-        var inner = el('span');
-        inner.textContent = line;
-        outer.appendChild(inner);
-        title.appendChild(outer);
-      });
-      var credit = el('p', 'film-label');
-      credit.textContent = 'CL Growth Academy';
-      var meta = el('div', 'film-meta');
-      slide.meta.forEach(function (fact) {
-        var span = el('span', 'film-label');
-        span.textContent = fact;
-        meta.appendChild(span);
-      });
-      head.replaceChildren(title, credit, meta);
-    }
-
-    function go(next, force) {
-      next = Math.min(last, Math.max(0, next));
-      if (next === index && !force) {
-        if (geo) place(xFor(index));
-        return;
-      }
-      index = next;
-      cards.forEach(function (card, i) {
-        var on = i === index;
-        card.setAttribute('aria-current', on ? 'true' : 'false');
-        card.tabIndex = on ? 0 : -1;
-      });
-      if (geo) place(xFor(index));
-      now.textContent = String(index + 1).padStart(2, '0');
-      thumb.style.left = (index / slides.length * 100) + '%';
-      swapBackdrop(slides[index]);
-      renderHead(slides[index]);
-      schedule();
-    }
-
-    function measure() {
-      var w = stage.clientWidth;
-      var h = stage.clientHeight;
-      var full = Math.min(360, Math.max(96, h * FILM_CARD_H));
-      var cardW = full * FILM_CARD_AR;
-      var gap = Math.max(4, Math.round(cardW * FILM_GAP));
-      geo = { w: w, full: full, cardW: cardW, step: cardW + gap };
-      stage.style.setProperty('--film-full', full + 'px');
-      stage.style.setProperty('--film-half', full / 2 + 'px');
-      stage.style.setProperty('--film-card-w', cardW + 'px');
-      stage.style.setProperty('--film-gap', gap + 'px');
-      stage.style.setProperty('--film-pad', Math.max(16, Math.round(w * FILM_PAD)) + 'px');
-      place(xFor(index));
-    }
-
-    /* Autoplay: pauses on hover, focus, drag, and whenever the stage is off
-       screen. Off entirely under reduced motion. */
-    var timer = 0;
-    var hovered = false;
-    var focused = false;
-    var dragging = false;
-    var visible = false;
-
-    function schedule() {
-      clearTimeout(timer);
-      if (reduceMotion || hovered || focused || dragging || !visible) return;
-      timer = setTimeout(function () { go(index === last ? 0 : index + 1); }, FILM_DELAY);
-    }
-
-    /* Hover pause is scoped to the strip, NOT the stage. The stage is a
-       full-bleed band 560 to 860px tall, so a reader's cursor rests over it
-       almost permanently and autoplay never got to fire: the carousel looked
-       broken and had to be clicked. Pausing only over the thumbnails keeps
-       the half of the behaviour that matters, which is that a card does not
-       slide out from under a pointer reaching for it. */
-    strip.addEventListener('pointerenter', function (e) {
-      if (e.pointerType === 'mouse') { hovered = true; schedule(); }
-    });
-    strip.addEventListener('pointerleave', function () { hovered = false; schedule(); });
-    stage.addEventListener('focusin', function () { focused = true; schedule(); });
-    stage.addEventListener('focusout', function (e) {
-      if (!stage.contains(e.relatedTarget)) { focused = false; schedule(); }
-    });
-
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        visible = entries[0].isIntersecting;
-        schedule();
-      }, { threshold: 0.4 }).observe(stage);
-    }
-
-    stage.addEventListener('keydown', function (e) {
-      var keys = { ArrowLeft: index - 1, ArrowRight: index + 1, Home: 0, End: last };
-      if (!(e.key in keys)) return;
-      e.preventDefault();
-      go(keys[e.key]);
-      cards[index].focus({ preventScroll: true });
-    });
-
-    /* Drag. The track follows the pointer, and on release lands on the card
-       nearest where it sits, nudged by throw velocity so a flick clears
-       more than one. A drag past a few pixels swallows the click that
-       follows, or every drag would also select the card under the pointer. */
-    var startX = 0;
-    var startPos = 0;
-    var lastX = 0;
-    var lastT = 0;
-    var velocity = 0;
-    var moved = false;
-    var suppressClick = false;
-    var pointer = null;
-
-    strip.addEventListener('pointerdown', function (e) {
-      if (e.button !== 0 || !geo) return;
-      pointer = e.pointerId;
-      startX = lastX = e.clientX;
-      lastT = e.timeStamp;
-      startPos = xFor(index);
-      velocity = 0;
-      moved = false;
-      suppressClick = false;
-    });
-
-    strip.addEventListener('pointermove', function (e) {
-      if (e.pointerId !== pointer) return;
-      var dx = e.clientX - startX;
-      if (!moved) {
-        if (Math.abs(dx) < 6) return;
-        moved = true;
-        dragging = true;
-        stage.classList.add('is-dragging');
-        strip.setPointerCapture(pointer);
-        schedule();
-      }
-      var dt = e.timeStamp - lastT;
-      if (dt > 0) velocity = (e.clientX - lastX) / dt * 1000;
-      lastX = e.clientX;
-      lastT = e.timeStamp;
-      // Light resistance past either end, as dragElastic did
-      var x = startPos + dx;
-      var min = xFor(last);
-      var max = xFor(0);
-      if (x > max) x = max + (x - max) * 0.08;
-      if (x < min) x = min + (x - min) * 0.08;
-      place(x);
-    });
-
-    function release(e) {
-      if (e.pointerId !== pointer) return;
-      pointer = null;
-      if (!moved) return;
-      suppressClick = true;
-      setTimeout(function () { suppressClick = false; }, 0);
-      dragging = false;
-      stage.classList.remove('is-dragging');
-      var thrown = startPos + (lastX - startX) + velocity * 0.12;
-      go(Math.round((geo.w / 2 - thrown - geo.cardW / 2) / geo.step));
-      schedule();
-    }
-
-    strip.addEventListener('pointerup', release);
-    strip.addEventListener('pointercancel', release);
-
-    var acc = 0;
-    var until = 0;
-    stage.addEventListener('wheel', function (e) {
-      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
-      var delta = e.deltaX;
-      if ((delta > 0 && index === last) || (delta < 0 && index === 0)) { acc = 0; return; }
-      e.preventDefault();
-      if (e.timeStamp < until) return;
-      acc += delta;
-      if (Math.abs(acc) < FILM_WHEEL) return;
-      go(index + Math.sign(acc));
-      acc = 0;
-      until = e.timeStamp + FILM_COOLDOWN;
-    }, { passive: false });
-
-    stage.append(wash, head, strip, rail);
-    stage.classList.add('is-built');
-
-    // No slide-in from 0 on first paint: place the track, then enable the
-    // transition
-    track.style.transition = 'none';
-    new ResizeObserver(measure).observe(stage);
-    measure();
-    go(0, true);
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { track.style.transition = ''; });
-    });
-  }
-
   /* ---------------- Hero video ----------------
 
      Decorative background motion. Under reduced motion, never start it —
@@ -749,11 +439,46 @@
 
   function lockForm(form) {
     // Nothing left to resubmit once the fields have faded out.
-    // textarea is in this list because the enquiry forms have one;
-    // without it the message stays editable after the form completes.
-    form.querySelectorAll('input, textarea, button').forEach(function (el) {
+    // textarea and select are in this list because the enquiry forms have
+    // one of each; without them the message and the "How did you find me?"
+    // answer stay editable after the form completes.
+    form.querySelectorAll('input, select, textarea, button').forEach(function (el) {
       el.disabled = true;
     });
+  }
+
+  /* ---- "How did you find me?" ----
+
+     Two follow-up questions that only exist for their own answer. Hiding them
+     is not enough on its own: a hidden `required` control still takes part in
+     native constraint validation, and the browser then refuses to submit while
+     showing nothing at all, because it cannot focus the control to hang the
+     validation bubble off. Disabling it exempts it from validation AND drops
+     it from FormData, so an irrelevant question never reaches the email
+     either. The `required` attribute can therefore stay in the markup.
+
+     Bound off the select rather than the page, because the two forms arrive
+     differently: contact.html ships it in the markup, the consult dialog
+     builds it at first open. */
+
+  function initSourceField(form) {
+    var select = form.querySelector('select[name="source"]');
+    if (!select) return;
+    var extras = form.querySelectorAll('.js-source-extra');
+
+    function sync() {
+      extras.forEach(function (wrap) {
+        var show = wrap.dataset.source === select.value;
+        wrap.hidden = !show;
+        wrap.querySelectorAll('input').forEach(function (field) {
+          field.disabled = !show;
+          if (!show) field.value = '';
+        });
+      });
+    }
+
+    select.addEventListener('change', sync);
+    sync(); // a back/forward restore hands the select back already answered
   }
 
   function sendEnquiry(form, pill) {
@@ -802,6 +527,10 @@
   function bindWaitlistForm(form) {
     if (form.dataset.bound) return;
     form.dataset.bound = '1';
+
+    // Before the YOUR_FORM_ID bail below: the conditional fields are plain UI
+    // and should work even on a form that is not wired up to send.
+    initSourceField(form);
 
     if (form.action.indexOf('YOUR_FORM_ID') !== -1) {
       console.warn(
@@ -889,6 +618,29 @@
               '<input id="c-email" type="email" name="email" autocomplete="email" required></div>' +
               '<div><label for="c-phone">Phone (optional)</label>' +
               '<input id="c-phone" type="tel" name="phone" autocomplete="tel"></div>' +
+              '<div><label for="c-source">How did you find me?</label>' +
+              '<div class="form-select"><select id="c-source" name="source" required>' +
+                '<option value="" selected disabled>Please choose</option>' +
+                '<option>Google search</option>' +
+                '<option>LinkedIn</option>' +
+                '<option>Instagram</option>' +
+                '<option>Facebook</option>' +
+                '<option>Referral (someone sent me)</option>' +
+                '<option>Event or workshop</option>' +
+                '<option>Podcast</option>' +
+                '<option>Newsletter</option>' +
+                '<option>Other</option>' +
+              '</select></div></div>' +
+              /* Same two follow-ups as contact.html, same names so both forms
+                 produce the same email. initSourceField() is reached through
+                 bindWaitlistForm() at the bottom of this function, which runs
+                 after the dialog is in the document. */
+              '<div class="js-source-extra" data-source="Referral (someone sent me)" hidden>' +
+              '<label for="c-referred-by">Who sent you?</label>' +
+              '<input id="c-referred-by" type="text" name="referred_by" autocomplete="off" required disabled></div>' +
+              '<div class="js-source-extra" data-source="Other" hidden>' +
+              '<label for="c-source-other">Where did you hear about me?</label>' +
+              '<input id="c-source-other" type="text" name="source_other" autocomplete="off" required disabled></div>' +
               '<div><label for="c-msg">What is going on with your marketing?</label>' +
               '<textarea id="c-msg" name="message" rows="4" required></textarea></div>' +
               '<div>' +
@@ -1095,7 +847,6 @@
     initHeader();
     initReveals();
     initLogoWall();
-    initFilmstrip();
     initHeroVideo();
     initPhotoHeroVideo();
     initWaitlistForms();

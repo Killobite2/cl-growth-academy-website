@@ -170,6 +170,35 @@
               <input id="phone" type="tel" name="phone" autocomplete="tel">
             </div>
             <div>
+              <label for="source">How did you find me?</label>
+              <div class="form-select">
+                <select id="source" name="source" required>
+                  <option value="" selected disabled>Please choose</option>
+                  <option>Google search</option>
+                  <option>LinkedIn</option>
+                  <option>Instagram</option>
+                  <option>Facebook</option>
+                  <option>Referral (someone sent me)</option>
+                  <option>Event or workshop</option>
+                  <option>Podcast</option>
+                  <option>Newsletter</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <!-- Shown only for the answer that needs them. data-source matches the
+                 option text exactly, and initSourceField() in main.js disables the
+                 input whenever it is hidden: a hidden `required` field still takes
+                 part in native validation and would deadlock the submit silently. -->
+            <div class="js-source-extra" data-source="Referral (someone sent me)" hidden>
+              <label for="referred-by">Who sent you?</label>
+              <input id="referred-by" type="text" name="referred_by" autocomplete="off" required disabled>
+            </div>
+            <div class="js-source-extra" data-source="Other" hidden>
+              <label for="source-other">Where did you hear about me?</label>
+              <input id="source-other" type="text" name="source_other" autocomplete="off" required disabled>
+            </div>
+            <div>
               <label for="message">What's going on with your marketing?</label>
               <textarea id="message" name="message" rows="5" required></textarea>
             </div>
