@@ -479,7 +479,15 @@ h3 { font-size: var(--fs-h3); }
   box-shadow: inset 0 -2px 0 var(--mustard);
 }
 
-.nav-links a.nav-cta[aria-current="page"] { box-shadow: none; }
+/* The CTA is a filled mustard button, so the active-page rule above was
+   painting its label in its own background colour and the words vanished
+   entirely on contact.html, the one page where it IS the current page.
+   It keeps the button's own ink, and needs no underline because the fill
+   already marks it out. */
+.nav-links a.nav-cta[aria-current="page"] {
+  color: var(--ink);
+  box-shadow: none;
+}
 
 /* ---- Sliding indicator ----
    A single bar positioned by JS from each item's offsetLeft/offsetWidth,
