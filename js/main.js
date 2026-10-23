@@ -481,6 +481,39 @@
     sync(); // a back/forward restore hands the select back already answered
   }
 
+  var THANK_YOU = '/thank-you';
+
+  /* Reports a confirmed enquiry, then moves the visitor on.
+
+     Only ever called from the success branch below, after Web3Forms has
+     said the send went through, so a failed enquiry reports nothing and
+     the visitor stays on the page with the error line.
+
+     The GA4 event and the dataLayer push carry the same payload on
+     purpose: gtag reaches the GA4 property directly, the push is what GTM
+     can build its own tags off, and having them agree means the two never
+     tell different stories about the same enquiry.
+
+     The short wait before leaving is doing real work. gtag sends on a
+     beacon that survives navigation, but a GTM tag listening for the
+     dataLayer push has no such guarantee, and the success tick is worth
+     showing before the page changes under the reader. */
+  function reportLead(form) {
+    var name = form.getAttribute('data-lead-name') || 'enquiry';
+    var picked = form.querySelector('select[name="source"]');
+    var source = picked && picked.value ? picked.value : 'not answered';
+
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'generate_lead', { form_name: name, lead_source: source });
+    }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'generate_lead', form_name: name, lead_source: source });
+
+    window.setTimeout(function () {
+      window.location.assign(THANK_YOU);
+    }, 700);
+  }
+
   function sendEnquiry(form, pill) {
     var btn = form.querySelector('button[type="submit"]');
     var err = form.querySelector('.form-error');
@@ -512,6 +545,7 @@
       .then(function () {
         if (pill) pill.classList.add('is-submitted');
         lockForm(form);
+        reportLead(form);
       })
       .catch(function (e) {
         console.warn('Enquiry did not send:', e);
@@ -605,7 +639,8 @@
           '<span class="eyebrow">Free growth audit</span>' +
           '<h2>Straight to me.</h2>' +
           '<p class="consult-sub">Tell me what you are trying to grow. I will tell you straight whether I can help.</p>' +
-          '<form class="js-waitlist" action="' + CONSULT_ACTION + '" method="POST">' +
+          '<form class="js-waitlist" data-lead-name="growth_audit_popup" ' +
+          'action="' + CONSULT_ACTION + '" method="POST">' +
             '<input type="hidden" name="access_key" value="' + W3F_KEY + '">' +
             '<input type="hidden" name="subject" value="New Free Growth Audit request">' +
             '<input type="hidden" name="from_name" value="The Growth Academy Website">' +
