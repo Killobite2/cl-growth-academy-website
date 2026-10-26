@@ -46,10 +46,10 @@
     {"source": "/founder-issues-impacting-your-business-growth", "destination": "/blog.html", "permanent": true},
     {"source": "/sitemap_index.xml", "destination": "/sitemap.xml", "permanent": true},
     {"source": "/wp-login.php", "destination": "/", "permanent": true},
-    {"source": "/wp-admin/:path*", "destination": "/", "permanent": true}
+    {"source": "/wp-admin/:path*", "destination": "/", "permanent": true},
+    {"source": "/thank-you/", "destination": "/thank-you", "permanent": true}
   ],
   "rewrites": [
-    {"source": "/thank-you", "destination": "/thank-you.html"},
-    {"source": "/thank-you/", "destination": "/thank-you.html"}
+    {"source": "/thank-you", "destination": "/thank-you.html"}
   ]
 }
