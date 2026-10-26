@@ -107,7 +107,7 @@ html {
 }
 
 /* A backstop, not the fix. Every known overflow source is dealt with at its
-   origin (the .form-pill stack in the 480px tier, the corridor offsets,
+   origin (the .form-pill stack in the 480px tier, the gallery's hidden overflow,
    overflow-wrap on headings and long email tokens). This catches the next
    one, so a single wide child cannot rock the whole document sideways — a
    failure mode the site had on every page.
@@ -1812,91 +1812,103 @@ body.photo-hero .site-header.is-scrolled {
 }
 
 /* ---------------------------------------------------------------
-   19b. PHOTO CORRIDOR — two walls receding to one vanishing point
+   19b. CURVED GALLERY — one row on a shallow concave curve
    --------------------------------------------------------------- */
 
-.corridor {
+/* Knobs, read by initGallery(). They live here so a breakpoint can retune
+   the band in CSS without touching the script.
+
+   --turn and --depth are what make the curve: a card's rotation runs
+   linearly with how far it sits from the middle of the band, and its
+   depth with the square of it, which is a parabola standing in for a
+   shallow circular arc. Both reach their stated value at the band's edge.
+   A card is FLAT — it is turned, never bent — which is the only reason a
+   single radius can round all four of its corners. */
+.gallery {
+  --card-w: 300px;  /* a card's width; its height follows the 4:3 below */
+  --gap: 14px;      /* space between cards */
+  --turn: 42;       /* degrees a card is turned by at the band's edge */
+  --depth: 130;     /* pixels a card comes forward by at the band's edge */
+  --speed: 26;      /* pixels per second the row travels */
+  --fade: 7;        /* width of each end fade, % of the band */
   position: relative;
-  height: 460px;
+  height: 330px;
   margin-top: var(--space-7);
   overflow: hidden;
-  perspective: 1100px;
-  perspective-origin: 50% 48%;
+  /* Horizontal drags belong to the row, vertical ones to the page. Without
+     this a swipe down the page is swallowed by the card under the thumb. */
+  touch-action: pan-y;
+  cursor: grab;
+  /* A drag across photographs would otherwise sweep a text selection along
+     with it, and the browser would offer to drag the image itself. */
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-/* --span is TEN card depths, matching the ten unique cards written twice
-   in the markup. Flying exactly that far means card 11 lands where card 1
-   started, so the loop has no seam. Change one and you must change both:
-   --span must always equal (unique cards) x --gap-z.
+.gallery img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
 
-   The duration scales with the span too, or the fly-through simply gets
-   faster as cards are added. 32s covered 1920px; 53s covers 3200px at the
-   same perceived speed. */
-.corridor-wall {
-  --gap-z: 320px;
-  --span: 3200px;
+.gallery.is-dragging { cursor: grabbing; }
+
+/* Held back until the first frame is placed, so a row laid out at its
+   unplaced default never gets on screen. */
+.gallery-track {
   position: absolute;
   inset: 0;
-  transform-style: preserve-3d;
-  animation: corridor-fly 53s linear infinite;
+  opacity: 0;
+  transition: opacity var(--t-slow) var(--ease);
+  /* The perspective belongs HERE, not on .gallery. It only ever applies to
+     an element's direct children, and the cards are children of the track,
+     so from one level up it reached nothing: every card stayed exactly its
+     laid-out size however far forward it was pushed, and the curve read as
+     a row of flat rectangles leaning slightly.
+
+     Near enough that coming forward is worth a fifth in size and a turn
+     foreshortens visibly; far enough that nothing balloons. */
+  perspective: 900px;
+  perspective-origin: 50% 50%;
 }
 
-@keyframes corridor-fly {
-  from { transform: translateZ(0); }
-  to { transform: translateZ(var(--span)); }
-}
+.gallery.is-live .gallery-track { opacity: 1; }
 
-/* Deliberately NOT paused on hover. The marquee pauses because its tiles are
-   real buttons and clicking a moving target is hostile; this corridor is
-   aria-hidden decoration — plain divs, alt="" images, nothing focusable or
-   clickable inside — so there is no target to protect, and a full-width band
-   that freezes under the pointer just reads as a stalled page. Motion
-   sensitivity is handled by the prefers-reduced-motion block below, which
-   rebuilds this as a static grid rather than relying on hover. Do not copy
-   the marquee's pause rule back onto it. */
-
-.corridor-card {
+.gallery-card {
   position: absolute;
   top: 50%;
-  left: 50%;
-  width: 380px;
-  border-radius: var(--radius-md);
+  left: 0;
+  width: var(--card-w);
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
   overflow: hidden;
+  background: var(--ink-2);
   box-shadow: var(--shadow-lg);
-  backface-visibility: hidden;
+  /* JS writes the transform every frame; nothing here may add one, or the
+     two will fight and the card will jump. */
+  will-change: transform;
 }
 
-.corridor-card img { width: 100%; height: auto; display: block; }
-
-/* Each wall angles inward so the two converge. translateZ is negative and
-   grows with --i, putting later cards further down the corridor. */
-.corridor-left .corridor-card {
-  transform: translate3d(-450px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
+/* height:auto is load-bearing. With width and height attributes present on
+   the img, aspect-ratio is silently ignored without it. */
+.gallery-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.corridor-right .corridor-card {
-  transform: translate3d(70px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
-}
-
-/* Fades the far end into the page so cards arrive out of the dark rather
-   than popping into existence at the vanishing point */
-.corridor::after {
+/* Softens the two edges so a card slides out of the band rather than being
+   cut off against it. */
+.gallery::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  /* Kept deliberately tight. A wide radial reads as a haze over the whole
-     corridor and dims the near photographs, which are the ones anyone
-     actually looks at — this only has to swallow the vanishing point. */
   background:
-    radial-gradient(15% 30% at 50% 48%,
-      rgba(var(--ink-rgb), 0.9) 0%,
-      rgba(var(--ink-rgb), 0.55) 45%,
-      rgba(var(--ink-rgb), 0) 80%),
     linear-gradient(to right,
       var(--ink) 0%,
-      rgba(var(--ink-rgb), 0) 11%,
-      rgba(var(--ink-rgb), 0) 89%,
+      rgba(var(--ink-rgb), 0) calc(var(--fade) * 1%),
+      rgba(var(--ink-rgb), 0) calc(100% - var(--fade) * 1%),
       var(--ink) 100%);
 }
 
@@ -2515,45 +2527,16 @@ body.photo-hero .site-header.is-scrolled {
 
   .hero-proof { margin-top: var(--space-5); gap: var(--space-4) var(--space-6); }
 
-  /* Shallower corridor and smaller cards, or the walls fly past the
-     edges of a phone viewport before they reach the vanishing point.
-
-     900px, not 700: a shallower perspective foreshortens harder, so the
-     near cards grew fast and crowded out the receding ones behind them,
-     leaving little to read as a corridor. Raising it flattens the growth
-     curve. Note that a card does sweep across the whole band once per
-     cycle as it passes the camera — that is the fly-through effect and it
-     happens identically at 1280px, so it is not something to design out.
-
-     The duration is overridden here because --span is: the invariant above
-     says they scale together, and 53s was authored for 3200px. Leaving it
-     ran the phone fly-through 31% slow. */
-  .corridor { height: 320px; perspective: 900px; }
-  .corridor-card { width: 200px; }
-  .corridor-wall { --gap-z: 220px; --span: 2200px; animation-duration: 36s; }
-  .corridor-left .corridor-card {
-    transform: translate3d(-215px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
-  }
-  .corridor-right .corridor-card {
-    transform: translate3d(15px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
-  }
-
-  /* The centre radial is what swallows the vanishing point, and at this
-     width it covers proportionally far more of the band — it was erasing
-     the receding cards that make the corridor legible as a corridor, and
-     leaving a dead black gutter between two slabs. Lightened, and the edge
-     fade widened to take over the job of hiding the near cards' cropping. */
-  .corridor::after {
-    background:
-      radial-gradient(13% 24% at 50% 50%,
-        rgba(var(--ink-rgb), 0.7) 0%,
-        rgba(var(--ink-rgb), 0.35) 45%,
-        rgba(var(--ink-rgb), 0) 82%),
-      linear-gradient(to right,
-        var(--ink) 0%,
-        rgba(var(--ink-rgb), 0) 16%,
-        rgba(var(--ink-rgb), 0) 84%,
-        var(--ink) 100%);
+  /* Wider cards on a narrower band means fewer of them reach the frame,
+     which is the point: three small photographs read as a filmstrip, two
+     larger ones read as photographs. The curve eases off with the band,
+     because the same turn over a shorter span foreshortens much harder. */
+  .gallery {
+    --card-w: 260px;
+    --gap: 12px;
+    --turn: 30;
+    --depth: 90;
+    height: 290px;
   }
 
   /* Side by side leaves neither panel usable at this width */
@@ -2620,18 +2603,13 @@ body.photo-hero .site-header.is-scrolled {
      width it should span the column like every other stacked control */
   .form-pill-compact { display: flex; }
 
-  /* Tighter again below 480. The walls have to sit closer to the centre or
-     they leave a black gutter down the middle with a cropped slab either
-     side, which is the opposite of a corridor. Span, gap and duration stay
-     locked to each other per the invariant in §19b. */
-  .corridor { height: 260px; perspective: 800px; }
-  .corridor-card { width: 160px; }
-  .corridor-wall { --gap-z: 180px; --span: 1800px; animation-duration: 30s; }
-  .corridor-left .corridor-card {
-    transform: translate3d(-168px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(34deg);
-  }
-  .corridor-right .corridor-card {
-    transform: translate3d(8px, -50%, calc(var(--i) * var(--gap-z) * -1)) rotateY(-34deg);
+  /* Gentler again, and down to about two cards across. */
+  .gallery {
+    --card-w: 230px;
+    --gap: 10px;
+    --turn: 22;
+    --depth: 66;
+    height: 250px;
   }
 
   /* Cards carry the same padding at 320px as at 1440px, which spends 48px
@@ -2669,56 +2647,6 @@ body.photo-hero .site-header.is-scrolled {
   .form-pill.is-submitted .form-pill-success { transition-delay: 0s; transform: none; }
   .form-pill.is-submitted .form-tick-path { animation: none; stroke-dashoffset: 0; }
   .form-pill.is-submitted .form-pill-fields { transform: none; }
-
-  /* The corridor cannot simply be frozen: a stopped 3D corridor leaves half
-     the photographs edge-on and unreadable, and the far ones invisible. It
-     flattens to a plain grid instead, which is the only version of this
-     section where every photo is actually legible. */
-  .corridor {
-    height: auto;
-    perspective: none;
-    overflow: visible;
-    /* The 3D version bleeds to the viewport edge on purpose; a flat grid
-       doing that just looks unaligned against every other section */
-    max-width: var(--max-width);
-    margin: var(--space-7) auto 0;
-    padding: 0 var(--space-5);
-  }
-  .corridor::after { display: none; }
-  .corridor-wall {
-    position: static;
-    animation: none;
-    transform: none;
-    transform-style: flat;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-3);
-  }
-  .corridor-wall + .corridor-wall { margin-top: var(--space-3); }
-  .corridor-card {
-    position: static;
-    width: auto;
-    box-shadow: none;
-  }
-  /* Only the first copy of each set — the duplicate exists solely to make
-     the fly-through loop seamless, and stacked in a grid it is just repeats.
-     n + 11 because each wall holds TEN unique cards written twice; this said
-     n + 7 from when it was six, which silently dropped four real photographs
-     for every reduced-motion visitor. If the card count changes again, this
-     number and --span both follow it. */
-  .corridor-card:nth-child(n + 11) { display: none; }
-  .corridor-left .corridor-card,
-  .corridor-right .corridor-card { transform: none; }
-
-  /* Three columns of a twenty-photo grid is roughly 83px per photo at
-     320px — legible as colour, not as a room. This has to be nested rather
-     than added to the 600px block in §22, because that block sits earlier
-     in the file and media queries carry no specificity, so the rule above
-     would win. */
-  @media (max-width: 700px) {
-    .corridor { padding: 0 var(--space-4); }
-    .corridor-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
 
   .grain-cta::before { animation: none; }
 

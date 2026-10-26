@@ -121,7 +121,7 @@ const WIDTHS = [320, 360, 390, 430];
   const boxSeen = new Set();
   let anyBox = false;
   for (const r of results) {
-    const rows = r.offenders.filter(o => !/corridor/.test(o.cls));
+    const rows = r.offenders.filter(o => !/gallery/.test(o.cls));
     if (!rows.length) continue;
     anyBox = true;
     console.log(`\n  ${r.w}px  ${r.path}`);
@@ -131,7 +131,7 @@ const WIDTHS = [320, 360, 390, 430];
       console.log(`      ${o.tag}.${o.cls}  L${o.left} R${o.right} w${o.w}`);
     });
   }
-  if (!anyBox) console.log('  none (excluding the aria-hidden corridor, reported separately)');
+  if (!anyBox) console.log('  none (excluding the aria-hidden gallery, reported separately)');
 
   console.log('\n===== TAP TARGETS < 44px (at 1280px) =====');
   const seen = new Set();
