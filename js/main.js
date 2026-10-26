@@ -310,6 +310,188 @@
     }
   }
 
+  /* ---------------- Curved gallery ----------------
+
+     One row of photographs on a shallow concave curve. A card is FLAT and
+     only ever turned, never bent, which is what lets a single radius round
+     all four of its corners and keeps every photograph legible edge to
+     edge — there is no vanishing point here and nothing shrinks away.
+
+     Each card is placed from one number: how far its centre sits from the
+     middle of the band, as a share of half the band's width. Rotation runs
+     linearly with that, depth with its square, so the row reads as a
+     shallow arc that brings its ends toward the reader.
+
+     The row is cyclic rather than duplicated. Twenty cards sit at
+     multiples of one pitch along a strip exactly twenty pitches long, and
+     their position is taken modulo that length, so the card leaving at one
+     edge IS the card arriving at the other and the loop cannot show a
+     seam. Nothing is ever re-ordered or re-pointed at a new photograph.
+
+     Everything that moves the row moves the same `offset`: the clock, a
+     drag, nothing at all under reduced motion. */
+
+  function initGallery() {
+    var band = document.querySelector('.gallery');
+    if (!band) return;
+    var track = band.querySelector('.gallery-track');
+    var cards = track ? [].slice.call(track.querySelectorAll('.gallery-card')) : [];
+    if (!cards.length) return;
+
+    var offset = 0;          // px the row has travelled
+    var hovered = false;
+    var dragging = false;
+    var dragFrom = 0;        // pointer x when the drag began
+    var dragBase = 0;        // offset when the drag began
+    var last = 0;            // previous frame's timestamp
+    var painted = null;      // offset the DOM currently shows
+    var metrics = null;
+    var running = false;
+
+    function read() {
+      var cs = getComputedStyle(band);
+      var num = function (name, fallback) {
+        var v = parseFloat(cs.getPropertyValue(name));
+        return isNaN(v) ? fallback : v;
+      };
+      var cardW = num('--card-w', 300);
+      var pitch = cardW + num('--gap', 14);
+      return {
+        cardW: cardW,
+        pitch: pitch,
+        total: pitch * cards.length,
+        turn: num('--turn', 34),
+        depth: num('--depth', 90),
+        speed: num('--speed', 26),
+        width: band.clientWidth
+      };
+    }
+
+    function place(force) {
+      var m = metrics;
+      if (!m || !m.width) return;
+      if (!force && painted === offset) return;
+      painted = offset;
+
+      var half = m.width / 2;
+      for (var i = 0; i < cards.length; i++) {
+        // + pitch before the modulo so a card on its way out keeps a real
+        // negative position instead of wrapping to the far end mid-exit
+        var x = (((i * m.pitch + offset + m.pitch) % m.total) + m.total) % m.total - m.pitch;
+        var card = cards[i];
+        if (x > m.width) {
+          if (card.style.display !== 'none') card.style.display = 'none';
+          continue;
+        }
+        if (card.style.display === 'none') card.style.display = '';
+
+        var t = (x + m.cardW / 2 - half) / half;
+        // Clamped so a card just outside the band does not keep turning
+        // past the angle its neighbour at the edge is already at.
+        if (t > 1.25) t = 1.25;
+        else if (t < -1.25) t = -1.25;
+
+        card.style.transform =
+          'translate3d(' + x.toFixed(2) + 'px, -50%, ' +
+          (m.depth * t * t).toFixed(2) + 'px) rotateY(' +
+          (-m.turn * t).toFixed(3) + 'deg)';
+      }
+    }
+
+    function frame(now) {
+      if (!running) return;
+      var dt = last ? Math.min((now - last) / 1000, 0.1) : 0;
+      last = now;
+      // Reduced motion stops the clock, not the row: a drag still works,
+      // and what is on screen stays exactly where the reader left it.
+      if (!hovered && !dragging && !reduceMotion && metrics) {
+        offset -= metrics.speed * dt;
+        if (offset <= -metrics.total) offset += metrics.total;
+      }
+      place(false);
+      requestAnimationFrame(frame);
+    }
+
+    function start() {
+      if (running) return;
+      running = true;
+      last = 0;
+      requestAnimationFrame(frame);
+    }
+
+    function stop() { running = false; }
+
+    function measure() {
+      metrics = read();
+      painted = null;        // geometry moved, so repaint whatever the offset
+      place(true);
+      band.classList.add('is-live');
+    }
+
+    // Mouse only. A touch "hover" fires on tap and would leave the row
+    // stopped for good on a phone.
+    band.addEventListener('pointerenter', function (e) {
+      if (e.pointerType === 'mouse') hovered = true;
+    });
+    band.addEventListener('pointerleave', function (e) {
+      if (e.pointerType === 'mouse') hovered = false;
+    });
+
+    band.addEventListener('pointerdown', function (e) {
+      if (e.button !== undefined && e.button !== 0) return;
+      /* An <img> is draggable by default, so without this the browser
+         starts its own native image drag the moment the pointer moves,
+         swallows every pointermove, and the row sits there while the
+         cursor carries a ghost of the photograph around. */
+      e.preventDefault();
+      dragging = true;
+      dragFrom = e.clientX;
+      dragBase = offset;
+      band.classList.add('is-dragging');
+      if (band.setPointerCapture) band.setPointerCapture(e.pointerId);
+    });
+
+    band.addEventListener('pointermove', function (e) {
+      if (!dragging || !metrics) return;
+      offset = dragBase + (e.clientX - dragFrom);
+      // Kept inside one strip length so the number cannot drift away over
+      // a long session of dragging.
+      offset = ((offset % metrics.total) + metrics.total) % metrics.total - metrics.total;
+      place(false);
+    });
+
+    function endDrag(e) {
+      if (!dragging) return;
+      dragging = false;
+      band.classList.remove('is-dragging');
+      if (band.releasePointerCapture && e && e.pointerId !== undefined) {
+        try { band.releasePointerCapture(e.pointerId); } catch (err) {}
+      }
+    }
+    band.addEventListener('pointerup', endDrag);
+    band.addEventListener('pointercancel', endDrag);
+
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(measure).observe(band);
+    } else {
+      window.addEventListener('resize', measure);
+    }
+
+    /* The band sits well below the fold, and a loop painting twenty
+       transforms a frame is not worth running at a section nobody has
+       reached. It is measured once up front so the row is already in place
+       when it does come into view. */
+    measure();
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) start();
+        else stop();
+      }, { rootMargin: '200px 0px' }).observe(band);
+    } else {
+      start();
+    }
+  }
+
   /* ---------------- Hero video ----------------
 
      Decorative background motion. Under reduced motion, never start it —
@@ -882,6 +1064,7 @@
     initHeader();
     initReveals();
     initLogoWall();
+    initGallery();
     initHeroVideo();
     initPhotoHeroVideo();
     initWaitlistForms();

@@ -31,8 +31,8 @@ async function shoot(ctx, base, path, out) {
       }
       window.scrollTo(0, 0);
       document.querySelectorAll('.reveal').forEach(e => e.classList.add('is-visible'));
-      // stop the corridor and marquee so the two captures are comparable
-      document.querySelectorAll('.corridor-wall, .marquee-track').forEach(e => {
+      // Belt and braces on top of the reduced-motion context above
+      document.querySelectorAll('.marquee-track').forEach(e => {
         e.style.animationPlayState = 'paused';
       });
     });
@@ -55,6 +55,12 @@ async function shoot(ctx, base, path, out) {
     const ctx = await b.newContext({
       viewport: { width: w, height: 900 },
       isMobile: w < 700, hasTouch: w < 700, deviceScaleFactor: 1,
+      // Everything that moves has to be still, or the two captures differ
+      // by whatever frame each happened to land on. Asking for reduced
+      // motion stops the gallery's own loop, which reads the same query,
+      // and collapses every CSS animation through the blanket rule in the
+      // stylesheet — more than pausing one selector by hand ever covered.
+      reducedMotion: 'reduce',
     });
     for (const [name, path] of PAGES) {
       const a = await shoot(ctx, LIVE, path, `cmp-${name}-${label}-live.png`);
@@ -67,7 +73,7 @@ async function shoot(ctx, base, path, out) {
   }
 
   // Pages that do not exist live at all, so a 404 here is the expected result
-  const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } });
+  const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
   console.log('\n  new pages, checked against live:');
   for (const p of ['/ndis-marketing/social-ads.html', '/ndis-marketing/referrals.html',
                    '/ndis-marketing/sales-process.html',
