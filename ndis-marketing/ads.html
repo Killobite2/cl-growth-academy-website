@@ -346,20 +346,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="footer-signup-title">Get the weekly note</p>
         <p class="note">One short read for NDIS and aged care providers, and one thing to do before next week.</p>
       </div>
-      <form class="js-waitlist" action="https://clgrowth.beehiiv.com/subscribe" method="POST">
+      <form class="js-waitlist" action="https://clgrowth.beehiiv.com/subscribe" method="GET" target="_blank" rel="noopener">
         <label class="sr-only" for="footer-email">Your email address</label>
         <div class="form-pill">
           <div class="form-pill-fields">
-            <input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@yourprovider.com.au" required>
-            <button type="submit" class="btn btn-mustard">Subscribe</button>
+            <input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@yourprovider.com.au">
+            <button type="submit" class="btn btn-mustard">Subscribe<span class="sr-only"> (opens in a new tab)</span></button>
           </div>
-          <p class="form-pill-success" role="status">
-            <svg class="form-tick" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <circle cx="12" cy="12" r="10" opacity="0.35"/>
-              <path class="form-tick-path" d="M7.5 12.5l3 3 6-6.5"/>
-            </svg>
-            You're in. Watch your inbox.
-          </p>
         </div>
         <p class="form-note">Free. Weekly. You can leave any time.</p>
       </form>

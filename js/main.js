@@ -591,11 +591,18 @@
      Two kinds of form share the .js-waitlist class, and they are sent
      differently.
 
-     NEWSLETTER (Beehiiv). A plain cross-origin POST would navigate the
-     visitor away to Beehiiv's own confirmation page, so the on-page
-     success copy would never show. Intercept submit, fire the POST via a
-     no-cors fetch instead (the response is opaque, so this optimistically
-     assumes success once the request is sent), then morph the pill.
+     NEWSLETTER (Beehiiv). Not sent from here at all. These are plain GET
+     forms that open the Beehiiv hosted signup page in a new tab, where the
+     subscription is actually completed, so nothing on this site reports an
+     outcome it cannot see. They are deliberately left un-intercepted
+     below, which also means they keep working with the script switched off.
+
+     This replaced a no-cors POST that morphed the pill to "You're in"
+     whichever way the request went. The response was opaque so there was
+     nothing to check, and the endpoint had stopped accepting the post, so
+     the message was simply untrue. A stopgap until the Beehiiv API key is
+     ready on 7 November 2026, at which point this can be a real confirmed
+     send like the enquiry path below.
 
      ENQUIRY (Web3Forms): the consult dialog and contact.html. Web3Forms
      answers CORS and returns JSON, so these sends are CONFIRMED, not
@@ -757,36 +764,28 @@
       return;
     }
 
+    /* STOPGAP until the beehiiv API key lands on 7 November 2026.
+
+       The newsletter forms used to be posted from here with mode:'no-cors'
+       and then shown a success state regardless. The response was opaque,
+       so there was nothing to check, and the endpoint had in fact stopped
+       accepting the post: every visitor who typed an email was told
+       "You're in" and subscribed to nothing.
+
+       They are now plain GET forms that open the beehiiv hosted signup
+       page in a new tab, so the subscription is completed on beehiiv's own
+       page and this site never claims anything about it. That needs no
+       JavaScript, which is why they are left un-intercepted here — and it
+       means the newsletter keeps working even if this script does not. */
+    if (form.action.indexOf('api.web3forms.com') === -1) return;
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
       // Native constraint validation has already passed by the time a
       // submit event fires, so there is nothing to re-check here
-      var pill = form.querySelector('.form-pill');
-
-      if (form.action.indexOf('api.web3forms.com') !== -1) {
-        sendEnquiry(form, pill);
-        return;
-      }
-
-        fetch(form.action, {
-          method: 'POST',
-          mode: 'no-cors',
-          body: new URLSearchParams(new FormData(form))
-        }).catch(function () {});
-
-        // Known limitation, stated rather than hidden: no-cors makes the
-        // response opaque, so success here is assumed, not confirmed — a
-        // failed send still shows the success state. Tolerable for a
-        // newsletter; for the consult enquiry it is why that success
-        // message keeps Chris's email and phone visible, so a silent
-        // failure still leaves the reader a way through.
-
-        // The pill carries the state, not the form: the form has to stay
-        // in the layout for the morph to happen in place
-        if (pill) pill.classList.add('is-submitted');
-        lockForm(form);
-      });
+      sendEnquiry(form, form.querySelector('.form-pill'));
+    });
   }
 
   function initWaitlistForms() {
