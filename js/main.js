@@ -591,18 +591,21 @@
      Two kinds of form share the .js-waitlist class, and they are sent
      differently.
 
-     NEWSLETTER (Beehiiv). Not sent from here at all. These are plain GET
-     forms that open the Beehiiv hosted signup page in a new tab, where the
-     subscription is actually completed, so nothing on this site reports an
-     outcome it cannot see. They are deliberately left un-intercepted
-     below, which also means they keep working with the script switched off.
+     NEWSLETTER (Beehiiv): subscribe(), posting to our own /api/subscribe.
+     That function holds the Beehiiv key server side — it is never in a
+     page or in this file — and answers {ok:true} only once Beehiiv has
+     confirmed the subscription. So these sends are CONFIRMED too, and the
+     success state only shows on ok:true; anything else shows the failure
+     line and hands the form back.
 
-     This replaced a no-cors POST that morphed the pill to "You're in"
-     whichever way the request went. The response was opaque so there was
-     nothing to check, and the endpoint had stopped accepting the post, so
-     the message was simply untrue. A stopgap until the Beehiiv API key is
-     ready on 7 November 2026, at which point this can be a real confirmed
-     send like the enquiry path below.
+     Two earlier versions got this wrong and are worth remembering. The
+     first posted straight to Beehiiv with mode:'no-cors', which makes the
+     response unreadable by design, and showed "You're in" whatever came
+     back — including the months when the endpoint had stopped accepting
+     the post at all. The second stopped lying by sending visitors to
+     Beehiiv's own page in a new tab, correct but a dead end. The rule both
+     were measured against is the one above: never report an outcome this
+     code cannot see.
 
      ENQUIRY (Web3Forms): the consult dialog and contact.html. Web3Forms
      answers CORS and returns JSON, so these sends are CONFIRMED, not
@@ -747,6 +750,78 @@
       });
   }
 
+  /* Newsletter signup. Posts to our own /api/subscribe, which holds the
+     beehiiv key server side and answers {ok:true} ONLY once beehiiv has
+     confirmed the subscription.
+
+     The success state is therefore earned, not assumed. The version this
+     replaced posted straight to beehiiv with mode:'no-cors', which makes
+     the response unreadable by design, and showed "You're in" whatever
+     happened — including the months when the endpoint had stopped
+     accepting the post at all. Nothing here may claim a signup on
+     anything weaker than ok:true. */
+  function subscribe(form) {
+    var btn = form.querySelector('button[type="submit"]');
+    var err = form.querySelector('.form-error');
+    var pill = form.querySelector('.form-pill');
+    var field = form.querySelector('input[type="email"]');
+
+    if (form.dataset.sending) return;
+    form.dataset.sending = '1';
+    if (err) err.hidden = true;
+
+    var label = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+    }
+
+    function fail() {
+      delete form.dataset.sending;
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = label;
+      }
+      if (err) err.hidden = false;
+    }
+
+    // Whatever brought them to this page travels with the signup, so a
+    // campaign can be told apart from a visitor who simply found the site.
+    var params = new URLSearchParams(window.location.search);
+    var body = {
+      email: field ? field.value : '',
+      utm_source: params.get('utm_source') || '',
+      utm_medium: params.get('utm_medium') || '',
+      utm_campaign: params.get('utm_campaign') || '',
+      referring_site: window.location.href
+    };
+    var honey = form.querySelector('input[name="botcheck"]');
+    if (honey && honey.checked) body.botcheck = 'on';
+    var name = form.querySelector('input[name="first_name"]');
+    if (name && name.value) body.first_name = name.value;
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(body)
+    })
+      .then(function (res) {
+        return res.json().catch(function () { return null; }).then(function (json) {
+          // Both have to agree. A 200 carrying ok:false is still a failure,
+          // and so is a body that never arrived.
+          if (!res.ok || !json || json.ok !== true) throw new Error('not confirmed');
+        });
+      })
+      .then(function () {
+        if (pill) pill.classList.add('is-submitted');
+        lockForm(form);
+      })
+      .catch(function (e) {
+        console.warn('Subscription did not go through:', e);
+        fail();
+      });
+  }
+
   function bindWaitlistForm(form) {
     if (form.dataset.bound) return;
     form.dataset.bound = '1';
@@ -764,20 +839,13 @@
       return;
     }
 
-    /* STOPGAP until the beehiiv API key lands on 7 November 2026.
-
-       The newsletter forms used to be posted from here with mode:'no-cors'
-       and then shown a success state regardless. The response was opaque,
-       so there was nothing to check, and the endpoint had in fact stopped
-       accepting the post: every visitor who typed an email was told
-       "You're in" and subscribed to nothing.
-
-       They are now plain GET forms that open the beehiiv hosted signup
-       page in a new tab, so the subscription is completed on beehiiv's own
-       page and this site never claims anything about it. That needs no
-       JavaScript, which is why they are left un-intercepted here — and it
-       means the newsletter keeps working even if this script does not. */
-    if (form.action.indexOf('api.web3forms.com') === -1) return;
+    if (form.action.indexOf('/api/subscribe') !== -1) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        subscribe(form);
+      });
+      return;
+    }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
