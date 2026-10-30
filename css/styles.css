@@ -1350,11 +1350,25 @@ label {
   margin-bottom: var(--space-2);
 }
 
+/* Dark surface by default, light surfaces overridden below — the same way
+   round as every input rule above, and the way round the markup actually
+   uses it: most of these sit under the footer signup, on --ink.
+
+   It had --ink-muted as its base, which is the LIGHT-surface colour. On
+   the footer that put #5C4E42 on #221A14: 2.14:1, against the 4.5:1 that
+   small text needs, and the small print under every newsletter form on
+   the site was effectively invisible. */
 .form-note {
   font-size: var(--fs-micro);
-  color: var(--ink-muted);
+  color: var(--paper-muted);
   margin-top: var(--space-4);
 }
+
+/* Scoped to the surface rather than the section, for the same reason the
+   input rules are: the homepage panel sits inside .section-oxblood, so a
+   .section-paper-scoped rule misses it. */
+.section-paper .form-note,
+.lead-panel .form-note { color: var(--ink-muted); }
 
 /* ---- Waitlist pill ----
    One rounded surface holding the field and its button, which on submit
