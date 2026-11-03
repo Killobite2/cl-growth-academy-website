@@ -2323,6 +2323,18 @@ body.photo-hero .site-header.is-scrolled {
   opacity: 0.8;
 }
 
+/* Room for two lines on a row whose labels need it, so one long label does
+   not drop its own card's heading and body below the other three. 3.1em is
+   two lines at the inherited 1.55 line-height, in em rather than px so it
+   follows --fs-micro if that ever moves.
+
+   On the row, not on .way-eyebrow itself: the same cards are on the homepage
+   with a one-line "Ongoing", and reserving the space there put 18px of empty
+   space above all four of its headings to fix a gap that row does not have.
+   Only the four-column layout needs it; reset at 900, where .ways goes to two
+   columns and every label fits on one line again. */
+.ways-two-line-labels .way-eyebrow { min-height: 3.1em; }
+
 /* The CTA sits at the card foot regardless of copy length */
 .way-cta {
   display: inline-flex;
@@ -2401,6 +2413,9 @@ body.photo-hero .site-header.is-scrolled {
   .grid-5, .grid-4, .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .founder { grid-template-columns: 200px 1fr; gap: var(--space-6); }
   .ways { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Two columns onward every label fits on one line, so the reserved
+     second line would just be a gap above each heading. */
+  .ways-two-line-labels .way-eyebrow { min-height: 0; }
 }
 
 @media (max-width: 800px) {
