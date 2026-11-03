@@ -1,8 +1,11 @@
 const { chromium } = require('playwright-core');
+const notrack = require('./notrack');
 (async () => {
   const b = await chromium.launch({ channel:'msedge' });
+  const tracking = notrack.collector();
   for (const p0 of ['/index.html', '/newsletter.html']) {
     const c = await b.newContext({ viewport:{width:1280,height:900} });
+    await tracking.block(c);
     const p = await c.newPage();
     const errs = [];
     p.on('pageerror', e => errs.push(String(e)));
@@ -42,4 +45,5 @@ const { chromium } = require('playwright-core');
     await c.close();
   }
   await b.close();
+  tracking.report();
 })();

@@ -24,6 +24,7 @@
 //      its photograph "overlap" by 293px and that is correct. Pairs whose
 //      horizontal ranges barely overlap are side by side, not stacked.
 const { chromium } = require('playwright-core');
+const notrack = require('./notrack');
 
 const BASE = process.env.BASE || 'http://localhost:3000';
 
@@ -55,6 +56,7 @@ const WARN_UNDER = 20;  // tight, sometimes deliberate (.note owns 16px)
   const fails = [];
   const warns = [];
   const unreachable = [];
+  const tracking = notrack.collector();
 
   for (const width of WIDTHS) {
     const ctx = await browser.newContext({
@@ -63,6 +65,7 @@ const WARN_UNDER = 20;  // tight, sometimes deliberate (.note owns 16px)
       hasTouch: width < 700,
       deviceScaleFactor: 1,
     });
+    await tracking.block(ctx);
 
     for (const path of PAGES) {
       const page = await ctx.newPage();
@@ -155,7 +158,10 @@ const WARN_UNDER = 20;  // tight, sometimes deliberate (.note owns 16px)
   else console.log('  none');
 
   console.log(`\n  ${PAGES.length} pages x ${WIDTHS.length} widths`);
+
+  const escaped = tracking.report();
+
   // Unreachable pages fail the run too. A pass that silently checked nothing
-  // is worse than a failure that says why.
-  process.exit(fails.length || unreachable.length ? 1 : 0);
+  // is worse than a failure that says why. Same for a tracker that got out.
+  process.exit(fails.length || unreachable.length || escaped ? 1 : 0);
 })();

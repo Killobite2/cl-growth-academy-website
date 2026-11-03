@@ -2,6 +2,7 @@
 // the installed Edge, because headless Edge on its own lays out at desktop
 // width regardless of --window-size.
 const { chromium } = require('playwright-core');
+const notrack = require('./notrack');
 
 const BASE = 'http://localhost:3000';
 const PAGES = [
@@ -22,6 +23,10 @@ const WIDTHS = [320, 360, 390, 430];
 (async () => {
   const browser = await chromium.launch({ channel: 'msedge' });
   const results = [];
+  // One collector for the run, blocked on each context as it is made: four
+  // widths x 18 pages is 72 page loads, every one of which used to report
+  // itself to GA4 as a visit.
+  const tracking = notrack.collector();
 
   for (const w of WIDTHS) {
     const ctx = await browser.newContext({
@@ -30,6 +35,7 @@ const WIDTHS = [320, 360, 390, 430];
       isMobile: true,
       hasTouch: true,
     });
+    await tracking.block(ctx);
     for (const path of PAGES) {
       const page = await ctx.newPage();
       const errors = [];
@@ -149,4 +155,6 @@ const WIDTHS = [320, 360, 390, 430];
   const errs = results.filter(r => r.errors.length);
   if (!errs.length) console.log('  none');
   errs.forEach(r => console.log(`  ${r.w}px ${r.path}: ${r.errors.join(' | ')}`));
+
+  tracking.report();
 })();

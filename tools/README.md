@@ -33,6 +33,62 @@ Every script assumes `http://localhost:3000`.
 
 ---
 
+## `notrack.js` — tracking is blocked in every run
+
+Every script here drives a real browser against a real build, so for months
+every run loaded the real GTM container and fired real hits into the live GA4
+property. `rules.js` crawls all twenty pages; `audit.js` loads seventy-two.
+That traffic sat in the client's reporting looking exactly like visitors, and
+`compare.js` made it worse by doing it on the production domain.
+
+Each script now blocks Google Tag Manager, Google Analytics and the Meta Pixel
+and says so at the end of its output:
+
+```
+===== THIRD-PARTY TRACKING =====
+  blocked 40 request(s):
+      20x  connect.facebook.net
+      20x  www.googletagmanager.com
+```
+
+Adding a script? Two lines:
+
+```js
+const notrack = require('./notrack');
+const tracking = notrack.collector();   // once per run
+await tracking.block(ctx);              // once per BrowserContext
+...
+tracking.report();                      // prints; returns the escape count
+```
+
+**No globs.** The previous attempt at this was `'**/googletagmanager.com/**'`,
+which never matched anything, because a glob path segment wants a slash before
+the host and the URL is `www.googletagmanager.com` — a dot. The handler never
+ran, the real container loaded every time, and the run still printed `ok`: a
+route that matches nothing looks identical to a route with nothing to match.
+Hosts are compared by parsing the URL and checking the hostname, which a
+subdomain or query string cannot fool.
+
+**It reports escapes, and they fail the run.** Any response from a tracker host
+that did not come from the stub is counted and printed. That check is the part
+that would have caught the bug above on day one, instead of months later.
+
+Run the matcher's own self-test after touching the host list:
+
+```
+node notrack.js
+```
+
+It asserts twenty-two URLs, including the ones the old glob missed and the
+lookalike hosts (`googletagmanager.com.evil.test`) that must stay allowed.
+`facebook.com` is deliberately *not* blocked wholesale, only `/tr` — a link to
+a Facebook page is content, not tracking.
+
+`ALLOW_TRACKERS=1` turns the blocking off for a run that genuinely needs the
+real thing. It prints a loud warning, because that run reports to GA4.
+
+---
+
 ## Checks
 
 ### `rules.js` — the hard rules
@@ -126,6 +182,13 @@ node weight.js 360 /blog/marketing-for-business-growth.html
 Bytes by resource type at the given width, DPR 2, after scrolling the whole
 page so lazy images fire. Second argument is the path, defaulting to the
 homepage.
+
+The total is **first-party only**, because tracking is blocked like everywhere
+else, and that does change the number: GTM and GA4 together are roughly 900KB
+on a cold load, against 988KB for the whole homepage. This measures what the
+site itself ships, which is the figure to judge our own work by and the only
+one that does not cost a fake pageview to obtain. For what a first-time
+visitor actually downloads, run with `ALLOW_TRACKERS=1`.
 
 **In Git Bash, export `MSYS_NO_PATHCONV=1` first.** A bare leading `/` gets
 rewritten into a Windows path, and the error you get back is a confusing
