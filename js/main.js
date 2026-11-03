@@ -999,7 +999,7 @@
 
   /* ---------------- Newsletter nudge ----------------
 
-     Slides in ten seconds after load. Built here rather than in the markup
+     Slides in three seconds after load. Built here rather than in the markup
      for the same reason as the consult dialog: it is identical on every
      page, and eleven hand-maintained copies is how the nav drifted.
 
@@ -1013,7 +1013,7 @@
      part of the temporary-URL problem. */
 
   var NUDGE_KEY = 'cl-nudge-dismissed';
-  var NUDGE_DELAY = 10000;
+  var NUDGE_DELAY = 3000;
 
   /* sessionStorage, not localStorage, and deliberately so: dismissing it
      should hold for the current browsing session and no longer, so the
