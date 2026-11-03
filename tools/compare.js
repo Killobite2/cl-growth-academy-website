@@ -1,6 +1,7 @@
 // Captures the same page from the live site and from localhost, at desktop
 // and phone width, so the two builds can be put next to each other.
 const { chromium } = require('playwright-core');
+const notrack = require('./notrack');
 
 const LIVE = 'https://thegrowthacademy.com.au';
 const LOCAL = 'http://localhost:3000';
@@ -50,6 +51,11 @@ async function shoot(ctx, base, path, out) {
 (async () => {
   const b = await chromium.launch({ channel: 'msedge' });
   const results = [];
+  // This is the only tool that loads the PRODUCTION site, so its runs landed
+  // in GA4 as real visits from a real domain, indistinguishable from traffic.
+  // Trackers are invisible, so blocking them cannot change what a screenshot
+  // shows; it only removes the hits and the frame-to-frame variance.
+  const tracking = notrack.collector();
 
   for (const [w, label] of [[1280, 'desktop'], [390, 'phone']]) {
     const ctx = await b.newContext({
@@ -62,6 +68,7 @@ async function shoot(ctx, base, path, out) {
       // stylesheet — more than pausing one selector by hand ever covered.
       reducedMotion: 'reduce',
     });
+    await tracking.block(ctx);
     for (const [name, path] of PAGES) {
       const a = await shoot(ctx, LIVE, path, `cmp-${name}-${label}-live.png`);
       const c = await shoot(ctx, LOCAL, path, `cmp-${name}-${label}-new.png`);
@@ -74,6 +81,7 @@ async function shoot(ctx, base, path, out) {
 
   // Pages that do not exist live at all, so a 404 here is the expected result
   const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+  await tracking.block(ctx);
   console.log('\n  new pages, checked against live:');
   for (const p of ['/ndis-marketing/social-ads.html', '/ndis-marketing/referrals.html',
                    '/ndis-marketing/sales-process.html',
@@ -88,4 +96,6 @@ async function shoot(ctx, base, path, out) {
   }
   await ctx.close();
   await b.close();
+
+  tracking.report();
 })();

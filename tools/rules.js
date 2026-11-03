@@ -6,7 +6,11 @@
 //   5. no broken #anchor, which the crawl in rule 2 cannot see
 //   6. every JSON-LD block parses
 //   7. no page is orphaned from the crawl
+//
+// The crawl visits every page in the site, so without the blocker below it
+// was the single biggest source of fake traffic in the live GA4 property.
 const { chromium } = require('playwright-core');
+const notrack = require('./notrack');
 
 const BASE = process.env.BASE || 'http://localhost:3000';
 
@@ -25,6 +29,8 @@ const ARTICLES = [
 (async () => {
   const browser = await chromium.launch({ channel: 'msedge' });
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const tracking = notrack.collector();
+  await tracking.block(ctx);
 
   // Crawl from the homepage so new pages are discovered automatically
   const seen = new Set(['/index.html']);
@@ -186,6 +192,11 @@ const ARTICLES = [
   console.log('\n===== ORPHANED ARTICLES =====');
   console.log(orphans.length ? orphans.map(o => '  unreachable: ' + o).join('\n') : '  none');
 
+  // A tracker that reached the network fails the run. Letting it pass with a
+  // warning is how the last one survived unnoticed for months.
+  const escaped = tracking.report();
+
   process.exit(dead.length || emdash.length || errors.length || cards.length ||
-               canon.length || anchors.length || jsonld.length || orphans.length ? 1 : 0);
+               canon.length || anchors.length || jsonld.length || orphans.length ||
+               escaped ? 1 : 0);
 })();
