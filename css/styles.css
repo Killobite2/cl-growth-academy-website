@@ -3872,6 +3872,65 @@ body.photo-hero .site-header.is-scrolled {
 
 .section-paper figcaption { color: var(--ink-muted); }
 
+/* ---- Lists in article prose ----
+   The four posts that existed before this one contain no list at all, so a
+   <ul> or <ol> here inherits the UA defaults: a full browser indent, and li
+   text at the body's --paper rather than the muted colour every paragraph
+   beside it uses. On a .section-paper section that is --paper on cream. */
+.article .prose ul,
+.article .prose ol { padding-left: var(--space-6); }
+
+.article .prose li { color: var(--paper-muted); }
+.article .prose li + li { margin-top: var(--space-3); }
+.article .prose li::marker { color: var(--mustard); }
+
+.section-paper .prose li { color: var(--ink-muted); }
+
+/* ---- Comparison table ----
+   The first table on the site, so it is a component rather than a restyle of
+   something existing. It scrolls sideways inside its own box instead of
+   widening the page: at 320px a three-column comparison cannot be made to fit
+   without shrinking the type past readable, and a scrolling table is honest
+   about that where a squashed one is not. */
+.table-scroll {
+  margin-top: var(--space-7);
+  overflow-x: auto;
+}
+
+.copy-table {
+  width: 100%;
+  /* Below this the columns wrap into unreadable stacks of single words, which
+     is what .table-scroll exists to avoid. */
+  min-width: 560px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--fs-small);
+}
+
+.copy-table th,
+.copy-table td {
+  padding: var(--space-4);
+  border-bottom: var(--border-hairline);
+  vertical-align: top;
+}
+
+.copy-table thead th {
+  font-size: var(--fs-micro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--mustard);
+}
+
+.copy-table tbody th { font-weight: 700; color: var(--paper); }
+.copy-table td { color: var(--paper-muted); }
+
+.copy-table tbody tr:last-child th,
+.copy-table tbody tr:last-child td { border-bottom: 0; }
+
+.section-paper .copy-table tbody th { color: var(--ink); }
+.section-paper .copy-table td { color: var(--ink-muted); }
+
 /* ---- Pull-quote ----
    Mixed-case display face with a mustard rule. It has to read as a different
    device from .section-callout in §25, which already owns

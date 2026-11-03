@@ -19,6 +19,7 @@ const ARTICLES = [
   '/blog/attract-ndis-participants-with-google-ads.html',
   '/blog/marketing-for-business-growth.html',
   '/blog/how-can-seo-grow-my-business.html',
+  '/blog/grow-your-business-through-social-media.html',
 ];
 
 (async () => {
