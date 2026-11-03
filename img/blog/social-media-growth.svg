@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Blog card artwork: a phone held in portrait, playing, with reach
+       carrying out of it and three posts stacking up. Palette hardcoded
+       because an <img>-loaded SVG cannot read the page's :root tokens.
+
+       Shapes only, like the other four card thumbnails. It has to read apart
+       from them at card size: the SEO card owns bars, the growth card owns a
+       megaphone with a trend line, so this one is built on the phone outline,
+       which none of them use. The arcs echo the megaphone's sound waves on
+       purpose, since both cards are about reach, but they come off a
+       rectangle rather than a cone. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- The phone: body, then a cream screen inset so the play mark has
+       something to sit on that is not the page background. -->
+  <rect x="150" y="90" width="210" height="320" rx="26" fill="#9E2D24"/>
+  <rect x="172" y="124" width="166" height="252" rx="10" fill="#F2EADB"/>
+
+  <!-- Play. Built on the screen's own centre (255, 250) so it reads as
+       centred rather than nearly centred. -->
+  <path d="M 234 212 L 234 288 L 292 250 Z" fill="#9E2D24"/>
+
+  <!-- Reach carrying out to the right, falling off with distance the way it
+       does in practice. -->
+  <g fill="none" stroke="#D4A038" stroke-linecap="round">
+    <path d="M 404 190 A 110 110 0 0 1 404 310" stroke-width="13" opacity="0.6"/>
+    <path d="M 452 150 A 160 160 0 0 1 452 350" stroke-width="13" opacity="0.34"/>
+    <path d="M 500 110 A 210 210 0 0 1 500 390" stroke-width="13" opacity="0.16"/>
+  </g>
+
+  <!-- Three posts stacking, each one shorter: the point is a rhythm kept up,
+       not one big push. -->
+  <g fill="#F2EADB">
+    <rect x="556" y="196" width="180" height="18" rx="9" opacity="0.9"/>
+    <rect x="556" y="241" width="140" height="18" rx="9" opacity="0.65"/>
+    <rect x="556" y="286" width="100" height="18" rx="9" opacity="0.4"/>
+  </g>
+</svg>

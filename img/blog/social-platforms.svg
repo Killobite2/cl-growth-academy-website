@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: the three platforms and who each one actually reaches.
+       Text only and no people, as the brief asks, because the whole argument
+       is that the audiences are different and the writing has to be too. For
+       blog/grow-your-business-through-social-media.html, section "Which
+       social media platforms reach participants, families and referrers?".
+       Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. The font stack is generic for
+       the same reason: Work Sans is loaded by the page, not by this file.
+       The full table is in the markup beside this figure, so nothing here is
+       the only place a fact appears. Loaded via <img>, never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- One band per platform. The split is at x=330 in all three so the eye
+       reads two columns rather than three unrelated blocks. -->
+  <g fill="#9E2D24">
+    <rect x="60" y="70" width="680" height="110" rx="6" opacity="0.9"/>
+    <rect x="60" y="195" width="680" height="110" rx="6" opacity="0.7"/>
+    <rect x="60" y="320" width="680" height="110" rx="6" opacity="0.5"/>
+  </g>
+
+  <!-- A mustard rule at the column split, carried down all three bands. -->
+  <g stroke="#D4A038" stroke-width="3" opacity="0.5">
+    <line x1="330" y1="88" x2="330" y2="162"/>
+    <line x1="330" y1="213" x2="330" y2="287"/>
+    <line x1="330" y1="338" x2="330" y2="412"/>
+  </g>
+
+  <g font-family="Helvetica, Arial, sans-serif">
+    <!-- Platform names -->
+    <g fill="#D4A038" font-size="28" font-weight="700">
+      <text x="100" y="135">Facebook</text>
+      <text x="100" y="260">Instagram</text>
+      <text x="100" y="385">LinkedIn</text>
+    </g>
+    <!-- Who each one reaches, two lines per band -->
+    <g fill="#F2EADB" font-size="21">
+      <text x="370" y="117">Families, carers and</text>
+      <text x="370" y="148">participants</text>
+      <text x="370" y="242">Participants and younger</text>
+      <text x="370" y="273">family members</text>
+      <text x="370" y="367">Support coordinators, plan</text>
+      <text x="370" y="398">managers, allied health</text>
+    </g>
+  </g>
+</svg>
