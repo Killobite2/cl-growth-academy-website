@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Service figure: the five rungs of the LinkedIn posting ladder, rising
+       left to right, each one a step further than most people get. Text only
+       and no people, as the brief asks, because the point is the sequence
+       rather than anyone doing it. For ndis-marketing/linkedin.html, section
+       "What should I post on LinkedIn as an NDIS provider?". Drawn for an ink
+       surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document and
+       cannot read the page's :root tokens. The font stack is generic for the
+       same reason: Work Sans is loaded by the page, not by this file, so it
+       would not resolve here and the labels would fall back unpredictably.
+       Loaded via <img>, never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- The rungs. Each step is the same bar translated up and right, so the
+       rise reads as one staircase rather than five separate blocks. Opacity
+       climbs with the step: the higher rungs are where the work shows. -->
+  <g fill="#9E2D24">
+    <rect x="60" y="392" width="470" height="52" rx="4" opacity="0.45"/>
+    <rect x="88" y="320" width="470" height="52" rx="4" opacity="0.58"/>
+    <rect x="116" y="248" width="470" height="52" rx="4" opacity="0.71"/>
+    <rect x="144" y="176" width="470" height="52" rx="4" opacity="0.84"/>
+    <rect x="172" y="104" width="470" height="52" rx="4" opacity="0.97"/>
+  </g>
+
+  <!-- Step numbers, in mustard so the sequence is readable before the words. -->
+  <g fill="#D4A038" font-family="Helvetica, Arial, sans-serif" font-size="21"
+     font-weight="700">
+    <text x="82" y="425">01</text>
+    <text x="110" y="353">02</text>
+    <text x="138" y="281">03</text>
+    <text x="166" y="209">04</text>
+    <text x="194" y="137">05</text>
+  </g>
+
+  <!-- The rungs themselves, shortened from the page copy so each one sits on
+       a single line at this width. -->
+  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="22">
+    <text x="126" y="425">Complete your profile</text>
+    <text x="154" y="353">React and comment</text>
+    <text x="182" y="281">Connect with a note</text>
+    <text x="210" y="209">Send photos from events</text>
+    <text x="238" y="137">Post your own thinking</text>
+  </g>
+
+  <!-- The exit line at the top rung: the only one that travels past the
+       ladder, because an original post is the one that reaches people who
+       have never heard of you. -->
+  <path d="M654 130 L706 130" stroke="#F2EADB" stroke-width="5"
+        stroke-linecap="round"/>
+  <circle cx="730" cy="130" r="16" fill="#F2EADB"/>
+</svg>
