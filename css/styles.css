@@ -1582,6 +1582,25 @@ label {
   color: var(--paper);
 }
 
+/* In running copy rather than the footer's link list, so it carries its own
+   affordance: a step brighter than the .note above it, the arrow, and the
+   same hover-to-mustard every other footer link uses. --paper-muted, not
+   --paper-faint, because this sits on --ink-2 where faint falls under 4.5:1. */
+.footer-signup-link {
+  display: inline-block;
+  margin-top: var(--space-3);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--paper-muted);
+  transition: color var(--t-fast) var(--ease);
+}
+.footer-signup-link:hover,
+.footer-signup-link:focus-visible {
+  color: var(--mustard);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .footer-signup .form-pill { margin-top: 0; }
 
 .footer-signup .form-note { margin-top: var(--space-3); }
