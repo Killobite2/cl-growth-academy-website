@@ -3257,6 +3257,79 @@ body.photo-hero .site-header.is-scrolled {
 .section-paper .timeline p,
 .section-paper .channel-row p { color: var(--ink-muted); }
 
+/* ---- Comparison table ----
+   The first table on the site, so it is a component rather than a restyle of
+   something existing. It scrolls sideways inside its own box instead of
+   widening the page: at 320px a four-column comparison cannot be made to fit
+   without shrinking the type past readable, and a scrolling table is honest
+   about that where a squashed one is not. */
+.table-scroll {
+  margin-top: var(--space-7);
+  overflow-x: auto;
+}
+
+.copy-table {
+  width: 100%;
+  /* Below this the columns wrap into unreadable stacks of single words, which
+     is what .table-scroll exists to avoid. */
+  min-width: 560px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--fs-small);
+}
+
+.copy-table th,
+.copy-table td {
+  padding: var(--space-4);
+  border-bottom: var(--border-hairline);
+  vertical-align: top;
+}
+
+.copy-table thead th {
+  font-size: var(--fs-micro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--mustard);
+}
+
+.copy-table tbody th { font-weight: 700; color: var(--paper); }
+.copy-table td { color: var(--paper-muted); }
+
+.copy-table tbody tr:last-child th,
+.copy-table tbody tr:last-child td { border-bottom: 0; }
+
+.section-paper .copy-table tbody th { color: var(--ink); }
+.section-paper .copy-table td { color: var(--ink-muted); }
+
+/* ---- Figure ----
+   The same treatment .article figure gets in section 30, under its own class
+   rather than by widening that selector, so the four blog posts keep
+   rendering exactly as they do. */
+.copy-figure {
+  margin: var(--space-8) 0 0;
+  max-width: 760px;
+}
+
+.copy-figure img {
+  width: 100%;
+  /* height:auto, with width and height attributes on the img for CLS
+     reservation. Same trap as every other image rule in this file. */
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  background: var(--ink-2);
+}
+
+.copy-figure figcaption {
+  margin-top: var(--space-4);
+  max-width: 62ch;
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--mustard);
+  font-size: var(--fs-small);
+  color: var(--paper-faint);
+}
+
 @media (max-width: 700px) {
   .channel-row { grid-template-columns: 1fr; gap: var(--space-5); }
   /* Photo first on a phone: it orients the reader before the copy */
