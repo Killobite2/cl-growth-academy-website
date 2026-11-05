@@ -1370,6 +1370,15 @@ label {
 .form-note a,
 .footer-bottom a { text-decoration: underline; text-underline-offset: 3px; }
 
+/* 12px type gives the footer's Privacy Policy link a 14px-tall box, under
+   the 44px tap minimum audit.js holds every link to. The padding builds the
+   box and the matching negative margin keeps the footer line where it was. */
+.footer-bottom a {
+  display: inline-block;
+  padding: 15px 0;
+  margin: -15px 0;
+}
+
 /* ---- Waitlist pill ----
    One rounded surface holding the field and its button, which on submit
    fills mustard in place rather than being swapped out for a separate
