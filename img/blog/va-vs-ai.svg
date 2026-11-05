@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Blog card artwork for virtual-assistant-vs-ai.html: two overlapping
+       circles, a person and a tool, with the overlap filled, because the
+       post's answer is both, chosen task by task. Shapes only. Palette
+       hardcoded because an <img>-loaded SVG cannot read :root tokens. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+  <defs>
+    <clipPath id="left"><circle cx="320" cy="250" r="150"/></clipPath>
+  </defs>
+  <circle cx="320" cy="250" r="150" fill="#9E2D24"/>
+  <circle cx="480" cy="250" r="150" fill="none" stroke="#D4A038" stroke-width="12"/>
+  <!-- The overlap, where the post lands -->
+  <circle cx="480" cy="250" r="150" fill="#F2EADB" clip-path="url(#left)"/>
+  <!-- A head and shoulders on the person side, a spark on the tool side -->
+  <circle cx="250" cy="225" r="30" fill="#F2EADB"/>
+  <path d="M 200 310 A 50 50 0 0 1 300 310 Z" fill="#F2EADB"/>
+  <path d="M 560 200 L 572 238 L 610 250 L 572 262 L 560 300 L 548 262 L 510 250 L 548 238 Z" fill="#D4A038"/>
+  <!-- Tick in the overlap -->
+  <path d="M 372 252 L 394 274 L 432 230" fill="none" stroke="#9E2D24" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

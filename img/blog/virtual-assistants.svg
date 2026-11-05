@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Blog card artwork for grow-your-business-with-virtual-assistants.html:
+       a task list handed across from one screen to another. Shapes only, like
+       the other card thumbnails, and built on a pair of screens, which none
+       of them use. Palette hardcoded because an <img>-loaded SVG cannot read
+       the page's :root tokens. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Two screens: yours on the left, the assistant's on the right -->
+  <rect x="90" y="120" width="230" height="170" rx="14" fill="#9E2D24"/>
+  <rect x="108" y="138" width="194" height="134" rx="6" fill="#F2EADB"/>
+  <rect x="180" y="290" width="50" height="34" fill="#9E2D24"/>
+  <rect x="150" y="324" width="110" height="14" rx="7" fill="#9E2D24"/>
+
+  <rect x="480" y="120" width="230" height="170" rx="14" fill="#9E2D24"/>
+  <rect x="498" y="138" width="194" height="134" rx="6" fill="#F2EADB"/>
+  <rect x="570" y="290" width="50" height="34" fill="#9E2D24"/>
+  <rect x="540" y="324" width="110" height="14" rx="7" fill="#9E2D24"/>
+
+  <!-- Your list empties as theirs fills: the tasks move, the work stays done -->
+  <g fill="#9E2D24">
+    <rect x="130" y="164" width="110" height="14" rx="7" opacity="0.25"/>
+    <rect x="130" y="198" width="80" height="14" rx="7" opacity="0.25"/>
+    <rect x="130" y="232" width="130" height="14" rx="7"/>
+  </g>
+  <g fill="#9E2D24">
+    <circle cx="526" cy="171" r="9"/>
+    <rect x="546" y="164" width="110" height="14" rx="7"/>
+    <circle cx="526" cy="205" r="9"/>
+    <rect x="546" y="198" width="80" height="14" rx="7"/>
+    <circle cx="526" cy="239" r="9" opacity="0.35"/>
+    <rect x="546" y="232" width="120" height="14" rx="7" opacity="0.35"/>
+  </g>
+
+  <!-- The handover -->
+  <g fill="none" stroke="#D4A038" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 350 205 L 440 205"/>
+    <path d="M 418 183 L 444 205 L 418 227"/>
+  </g>
+</svg>

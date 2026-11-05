@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Blog card artwork for key-areas-for-business-growth.html: six tiles,
+       one per area, each with its own gauge, and the trend they add up to.
+       Shapes only. Palette hardcoded because an <img>-loaded SVG cannot read
+       the page's :root tokens. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+  <!-- Six areas, three by two. The fill bar in each is its number. -->
+  <g fill="#9E2D24">
+    <rect x="90" y="110" width="150" height="120" rx="10"/>
+    <rect x="260" y="110" width="150" height="120" rx="10"/>
+    <rect x="430" y="110" width="150" height="120" rx="10"/>
+    <rect x="90" y="250" width="150" height="120" rx="10"/>
+    <rect x="260" y="250" width="150" height="120" rx="10"/>
+    <rect x="430" y="250" width="150" height="120" rx="10"/>
+  </g>
+  <g fill="#F2EADB">
+    <rect x="110" y="196" width="100" height="14" rx="7"/>
+    <rect x="280" y="196" width="70" height="14" rx="7"/>
+    <rect x="450" y="196" width="110" height="14" rx="7"/>
+    <rect x="110" y="336" width="55" height="14" rx="7"/>
+    <rect x="280" y="336" width="90" height="14" rx="7"/>
+    <rect x="450" y="336" width="40" height="14" rx="7"/>
+  </g>
+  <g fill="#F2EADB" opacity="0.3">
+    <rect x="110" y="196" width="110" height="14" rx="7"/>
+    <rect x="280" y="196" width="110" height="14" rx="7"/>
+    <rect x="450" y="196" width="110" height="14" rx="7"/>
+    <rect x="110" y="336" width="110" height="14" rx="7"/>
+    <rect x="280" y="336" width="110" height="14" rx="7"/>
+    <rect x="450" y="336" width="110" height="14" rx="7"/>
+  </g>
+  <!-- The trend the six add up to -->
+  <path d="M 620 340 L 660 290 L 690 305 L 730 200" fill="none" stroke="#D4A038" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 700 196 L 734 194 L 732 228" fill="none" stroke="#D4A038" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

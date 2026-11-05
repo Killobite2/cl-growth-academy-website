@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Blog card artwork for founder-issues-impacting-your-business-growth.html:
+       work queued up on the left, squeezing through one narrow point, with
+       little getting out the other side. The narrow point is the owner.
+       Shapes only. Palette hardcoded because an <img>-loaded SVG cannot read
+       the page's :root tokens. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+  <!-- The bottle: wide body, one narrow neck -->
+  <path d="M 90 120 L 330 120 Q 380 120 400 210 L 410 230 L 410 270 L 400 290 Q 380 380 330 380 L 90 380 Z" fill="#9E2D24"/>
+  <rect x="410" y="230" width="60" height="40" fill="#9E2D24"/>
+  <!-- Work waiting inside -->
+  <g fill="#F2EADB">
+    <rect x="120" y="160" width="130" height="18" rx="9"/>
+    <rect x="140" y="200" width="170" height="18" rx="9"/>
+    <rect x="120" y="240" width="200" height="18" rx="9"/>
+    <rect x="150" y="280" width="150" height="18" rx="9"/>
+    <rect x="120" y="320" width="110" height="18" rx="9"/>
+  </g>
+  <!-- The one point everything has to pass -->
+  <circle cx="440" cy="250" r="14" fill="#D4A038"/>
+  <!-- What gets out: a trickle -->
+  <g fill="#D4A038">
+    <rect x="510" y="241" width="60" height="18" rx="9" opacity="0.85"/>
+    <rect x="600" y="241" width="40" height="18" rx="9" opacity="0.55"/>
+    <rect x="670" y="241" width="24" height="18" rx="9" opacity="0.3"/>
+  </g>
+</svg>
