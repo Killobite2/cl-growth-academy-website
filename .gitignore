@@ -8,3 +8,4 @@ tools/*.png
 tools/package*.json
 # Chris's internal drafts: never committed, never published
 _briefs/
+_round2-content/
