@@ -1046,12 +1046,6 @@ a.post-card:focus-visible {
   color: var(--paper-muted);
 }
 
-/* Outbound arrow in place of the in-site →.
-   Still in use, though the four featured posts now have pages here: the
-   second band on blog.html lists the four articles that are still only on
-   thegrowthacademy.com.au. Delete this rule only if that band goes. */
-.post-card.is-external .card-more::after { content: '↗'; }
-
 /* ---------------------------------------------------------------
    11. SOCIAL PROOF
    --------------------------------------------------------------- */
@@ -3830,14 +3824,27 @@ body.photo-hero .site-header.is-scrolled {
    plain text, since links are colour: inherit site-wide. */
 .lead a { text-decoration: underline; text-underline-offset: 3px; }
 
-/* aged-care-marketing.html cites its sources inline, in plain paragraphs
-   and lists outside .prose, where links would otherwise read as body text.
-   Opt-in by class so no existing service page changes. Its one h3, a
-   subhead inside a section, takes the article subhead treatment. */
-.copy-page .wrap > p a:not(.btn),
-.copy-page .wrap li a,
-.copy-page .channel-row p a { text-decoration: underline; text-underline-offset: 3px; }
+/* Links in body copy, site-wide. Links are colour: inherit everywhere, so
+   without this an in-text link reads as plain text. Scoped to text inside
+   <main> (paragraphs, list items, table cells, captions, quotes), which
+   leaves the nav and footer alone; buttons are excluded by class, and
+   whole-card links never sit inside a <p> or <li>.
 
+   :where() keeps it at (0,1,1) so the exceptions below can switch it off
+   without a specificity fight: the in-page TOC and the homepage's engine
+   panel are lists of navigation, and a form's error line is part of the
+   form, not copy. */
+:where(main) :where(p, li, td, figcaption, blockquote) a:not(.btn) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.article-toc a,
+.engine-links a,
+.form-error a { text-decoration: none; }
+
+/* aged-care-marketing.html's one h3, a subhead inside a section, takes the
+   article subhead treatment. */
 .copy-page .wrap > h3 {
   margin: var(--space-7) 0 var(--space-3);
   font-family: var(--font-body);
