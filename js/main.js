@@ -952,6 +952,8 @@
                 'Please reach me directly on ' +
                 '<a href="mailto:chris@thegrowthacademy.com.au">chris@thegrowthacademy.com.au</a>' +
                 ' or <a href="tel:+61431584725">+61 431 584 725</a>.</p>' +
+                '<p class="form-note">We handle your details as set out in our ' +
+                '<a href="/privacy.html">Privacy Policy</a>.</p>' +
               '</div>' +
             '</div>' +
           '</form>' +

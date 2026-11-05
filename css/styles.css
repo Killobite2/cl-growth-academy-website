@@ -1370,6 +1370,12 @@ label {
 .section-paper .form-note,
 .lead-panel .form-note { color: var(--ink-muted); }
 
+/* The privacy line under every form, and the footer link to the policy.
+   Links are colour: inherit site-wide, so without the underline neither
+   would read as a link at all. */
+.form-note a,
+.footer-bottom a { text-decoration: underline; text-underline-offset: 3px; }
+
 /* ---- Waitlist pill ----
    One rounded surface holding the field and its button, which on submit
    fills mustard in place rather than being swapped out for a separate
@@ -3806,6 +3812,20 @@ body.photo-hero .site-header.is-scrolled {
 .section-paper .prose strong { color: var(--ink); }
 
 .article .prose a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* privacy.html is the one .article page whose subheads are h2 inside the
+   prose rather than a .section-head per section: ten short sections at
+   var(--space-9) of padding each would be a very long walk for a policy.
+   Same face and size as .article .section-head h2. */
+.article .prose h2 {
+  font-family: var(--font-body);
+  font-size: var(--fs-article-h2);
+  font-weight: 800;
+  letter-spacing: var(--tracking-wide);
+  line-height: 1.2;
+}
+
+.article .prose > * + h2 { margin-top: var(--space-7); }
 
 /* ---- Subheads ----
    Same escape hatch as the card titles in §3. The display face is uppercase
