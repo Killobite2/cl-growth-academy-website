@@ -1773,14 +1773,26 @@ label {
   background: rgba(var(--ink-rgb), 0.9);
 }
 
+/* Round 2's H1 is twice the length of the one --fs-display was set for.
+   At that size it ran to eight lines on a 390px phone and pushed both
+   CTAs below the fold, so it steps down a size and takes a wider measure. */
 .photo-hero-content h1 {
   margin-top: var(--space-5);
-  font-size: var(--fs-display);
-  max-width: 22ch;
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  max-width: 26ch;
+}
+
+.photo-hero-content .hero-subhead {
+  margin-top: var(--space-4);
+  font-weight: 700;
+  font-size: var(--fs-h3);
+  line-height: 1.35;
+  color: var(--paper);
+  max-width: 40ch;
 }
 
 .photo-hero-content .lead {
-  margin-top: var(--space-5);
+  margin-top: var(--space-4);
   color: var(--paper);
 }
 
@@ -3812,6 +3824,11 @@ body.photo-hero .site-header.is-scrolled {
 .section-paper .prose strong { color: var(--ink); }
 
 .article .prose a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Round 2 put the first in-text links inside .lead paragraphs (the
+   homepage and hub link to each other). Without this they read as
+   plain text, since links are colour: inherit site-wide. */
+.lead a { text-decoration: underline; text-underline-offset: 3px; }
 
 /* privacy.html is the one .article page whose subheads are h2 inside the
    prose rather than a .section-head per section: ten short sections at
