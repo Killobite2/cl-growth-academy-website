@@ -1,14 +1,14 @@
-# Handover: 5 November 2026
+# Handover: 6 November 2026
 
 Where the site stands after round 2, how it is set up, and what is waiting on whom.
 This file is in `.vercelignore`, so it is never deployed.
 
 ---
 
-## Read this first: round 2 is on a branch, not live
+## Read this first: round 2 is live
 
-All round 2 work is on `round-2-2026-11`, pushed to GitHub and **not merged**. `main`
-is still what is live. Each commit on the branch names the task it covers.
+Round 2 was built on `round-2-2026-11` and merged into `main` on 6 November 2026.
+Each commit names the task it covers, so `git log` reads as the change list.
 
 Preview builds sit behind Vercel's login (a 302 to `vercel.com/sso-api`), so open
 them while signed in to Vercel. The preview address for a commit comes from:
@@ -18,8 +18,7 @@ gh api repos/Killobite2/cl-growth-academy-website/deployments --jq '.[0] | {id, 
 gh api repos/Killobite2/cl-growth-academy-website/deployments/<id>/statuses --jq '.[0].environment_url'
 ```
 
-To ship it: `git checkout main && git merge round-2-2026-11 && git push origin main`,
-then run the IndexNow command below.
+After any production deploy, run the IndexNow command below.
 
 ---
 
@@ -122,23 +121,22 @@ submission.
 
 ---
 
+## Defaults set at go-live, 6 November 2026
+
+Chris had not answered these, so Dreau set defaults that Chris can change later:
+
+- **Aged care is in the footer only**, in every page's Services list, not the NDIS
+  Growth nav.
+- **The site says "eight channels"** everywhere it used to say seven: the hub (meta,
+  `og:` and `twitter:` descriptions, hero intro, "I run all eight", "needs all
+  eight"), How We Help, `llms.txt`, and the Google Ads, SEO and NDIS digital
+  marketing posts.
+- **The homepage shows six marketing channels**: "How you get found" says "Six
+  channels" and carries a LinkedIn card at 06, as two rows of three (`grid-3`).
+- **C04's `datePublished` is 2024-02-01.** The content file only had "2024-02".
+
 ## Waiting on Dreau
 
-- **Where the aged care page goes in the nav.** It is in every footer's Services list.
-  The NDIS Growth dropdown holds only NDIS channels, so it has no obvious slot there.
-- **Homepage numbering skips 06.** "How you get found" shows 01 to 05, then the engine
-  panel shows 07 and 08. There is no LinkedIn card on the homepage because the
-  approved C10 copy says "Five channels". How We Help and the hub both have a
-  LinkedIn card at 06.
-- **"Seven channels" or "eight"**, being confirmed with Chris. Every place it appears:
-  - Hub: meta description, `og:description` and `twitter:description`; the hero
-    intro ("across seven channels"); "I run all seven"; "Not every provider needs all
-    seven".
-  - How We Help: "The seven channels I run".
-  - `llms.txt`: "how the seven channels work together".
-  - Google Ads post and SEO post: "one channel of seven".
-  - NDIS digital marketing post: "There are seven channels..." and "run all seven at
-    once".
 - **The privacy line on `newsletter.html` needs mirroring into
   `signup-website-chris`.** That repo deploys straight to production on push.
 
@@ -153,18 +151,16 @@ submission.
   - the Loom library and AI settings screenshots (C04, C05)
 - **Whether the published rates should be public** (carried over from September).
   The service pages still show real numbers, for example `$1,500 to $3,000` a month
-  ad spend. They are his own figures, but once live they are a rate card competitors
+  ad spend. They are Chris's own figures, but once live they are a rate card competitors
   can read.
 - **Longer copy for Referrals and Sales Process** (carried over from September; not
-  rechecked in round 2). Longer versions need his words, not invented ones.
+  rechecked in round 2). Longer versions need Chris's words, not invented ones.
 
 ## Known loose ends
 
 - **`tools/rules.js` only knows five of the nine posts.** Its `ARTICLES` list (line
   21) drives the self-canonical and orphaned-article checks. Add the four round 2
   posts so those checks cover them. Every other check already crawls them.
-- **C04's `datePublished` is `"2024-02"`**, a month with no day. It is as given in the
-  content file. Google's Rich Results test may flag it.
 
 ---
 
