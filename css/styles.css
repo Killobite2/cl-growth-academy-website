@@ -3830,6 +3830,24 @@ body.photo-hero .site-header.is-scrolled {
    plain text, since links are colour: inherit site-wide. */
 .lead a { text-decoration: underline; text-underline-offset: 3px; }
 
+/* aged-care-marketing.html cites its sources inline, in plain paragraphs
+   and lists outside .prose, where links would otherwise read as body text.
+   Opt-in by class so no existing service page changes. Its one h3, a
+   subhead inside a section, takes the article subhead treatment. */
+.copy-page .wrap > p a:not(.btn),
+.copy-page .wrap li a,
+.copy-page .channel-row p a { text-decoration: underline; text-underline-offset: 3px; }
+
+.copy-page .wrap > h3 {
+  margin: var(--space-7) 0 var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--fs-article-h3);
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: normal;
+  line-height: 1.3;
+}
+
 /* privacy.html is the one .article page whose subheads are h2 inside the
    prose rather than a .section-head per section: ten short sections at
    var(--space-9) of padding each would be a very long walk for a policy.

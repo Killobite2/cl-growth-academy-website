@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Service figure for aged-care-marketing.html, section "Why doesn't
+       'aged care' work as a home care keyword?": the provider-shopping terms
+       a home care campaign bids on, beside the residential searches it
+       excludes, struck through. Text only, as C02 asks. The terms are the
+       page's own list, shortened only where a line would not fit.
+
+       Same conventions as linkedin-posting-ladder.svg: palette hardcoded
+       because an <img>-loaded SVG cannot read the page's tokens, generic
+       font stack because Work Sans is loaded by the page, not by this file.
+       Drawn for an ink surface. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <g font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="16" letter-spacing="2">
+    <text x="60" y="78" fill="#D4A038">BID ON</text>
+    <text x="500" y="78" fill="#D4A038">EXCLUDE</text>
+  </g>
+
+  <!-- Bid-on terms: oxblood chips, full strength -->
+  <g fill="#9E2D24">
+    <rect x="60" y="102" width="390" height="52" rx="4"/>
+    <rect x="60" y="168" width="390" height="52" rx="4"/>
+    <rect x="60" y="234" width="390" height="52" rx="4"/>
+    <rect x="60" y="300" width="390" height="52" rx="4"/>
+    <rect x="60" y="366" width="390" height="52" rx="4"/>
+  </g>
+  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="20">
+    <text x="80" y="135">Support at Home provider + area</text>
+    <text x="80" y="201">Home Care Package provider</text>
+    <text x="80" y="267">nursing led home care</text>
+    <text x="80" y="333">post-hospital support at home</text>
+    <text x="80" y="399">dementia care specialists</text>
+  </g>
+
+  <!-- Negative keywords: outlined, dimmed and struck through, so
+       they read as switched off rather than as a second list to bid on -->
+  <g fill="none" stroke="#5C4E42" stroke-width="2">
+    <rect x="500" y="102" width="240" height="52" rx="4"/>
+    <rect x="500" y="168" width="240" height="52" rx="4"/>
+    <rect x="500" y="234" width="240" height="52" rx="4"/>
+    <rect x="500" y="300" width="240" height="52" rx="4"/>
+  </g>
+  <g fill="#A89C88" font-family="Helvetica, Arial, sans-serif" font-size="20" text-decoration="line-through">
+    <text x="520" y="135">nursing home</text>
+    <text x="520" y="201">residential</text>
+    <text x="520" y="267">facility</text>
+    <text x="520" y="333">jobs</text>
+  </g>
+</svg>
