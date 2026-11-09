@@ -24,6 +24,7 @@ PAGES = {
     'ndis-marketing/social.html':        'faq',
     'ndis-marketing/social-ads.html':    'faq',
     'ndis-marketing/managed.html':       'faq',
+    'ndis-marketing/sales-process.html': 'faq',
 }
 
 TAGS = re.compile(r'<[^>]+>')
