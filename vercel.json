@@ -45,6 +45,7 @@
     {"source": "/founder-issues-impacting-your-business-growth/", "destination": "/blog/founder-issues-impacting-your-business-growth.html", "permanent": true},
     {"source": "/founder-issues-impacting-your-business-growth", "destination": "/blog/founder-issues-impacting-your-business-growth.html", "permanent": true},
     {"source": "/2024/:path*", "destination": "/blog.html", "permanent": true},
+    {"source": "/2024/:path*/", "destination": "/blog.html", "permanent": true},
     {"source": "/sitemap_index.xml", "destination": "/sitemap.xml", "permanent": true},
     {"source": "/wp-login.php", "destination": "/", "permanent": true},
     {"source": "/wp-admin/:path*", "destination": "/", "permanent": true},
