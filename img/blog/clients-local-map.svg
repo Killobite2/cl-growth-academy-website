@@ -1,55 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="">
-  <!-- Article figure: a provider's local referral list as a 10 to 20 km
-       circle around a simple house glyph, with the local referrer types
-       inside it, and arrows in from further away for the out-of-area
-       sources. A diagram, not a map: no real places, addresses or client
-       locations, and the house is a plain geometric glyph. For
-       blog/how-to-get-ndis-clients.html, section "Who should be on your
-       NDIS referral list?". Taller than 800x500 so the seven local types
-       fit inside the circle at a legible size. Drawn for an ink surface.
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1133" role="img" aria-label="">
+  <!-- Article figure: a provider's referral list. The local list sits in a
+       tinted panel under a 10 to 20 km circle around a simple house glyph;
+       the out-of-area sources sit below under "Further away", each with an
+       arrow pointing in towards the local area. A diagram, not a map: no
+       real places, addresses or client locations, and the house is a plain
+       geometric glyph. For blog/how-to-get-ndis-clients.html, section "Who
+       should be on your NDIS referral list?". Every item is the page's own
+       wording, in full, word for word, set as a single wrapped column so it
+       stays legible at phone width; hence the tall 800x1133 canvas. Drawn
+       for an ink surface.
 
        Palette hardcoded because an <img>-loaded SVG is a separate document
        and cannot read the page's :root tokens. Generic font stack because
        Work Sans is loaded by the page, not by this file. Loaded via <img>,
        never inlined. -->
-  <rect width="800" height="600" fill="#1A1310"/>
+  <rect width="800" height="1133" fill="#1A1310"/>
 
-  <!-- The local radius -->
-  <circle cx="290" cy="330" r="232" fill="#9E2D24" opacity="0.28"/>
-  <circle cx="290" cy="330" r="232" fill="none" stroke="#9E2D24" stroke-width="4" stroke-dasharray="14 10"/>
+  <!-- The local area: everything within 10 to 20 km -->
+  <rect x="40" y="40" width="720" height="669" rx="12" fill="#9E2D24" opacity="0.28"/>
+  <rect x="40" y="40" width="720" height="669" rx="12" fill="none" stroke="#9E2D24" stroke-width="4" stroke-dasharray="14 10"/>
 
-  <!-- Radius label, sitting on the ring -->
-  <rect x="200" y="78" width="180" height="44" rx="22" fill="#1A1310" stroke="#D4A038" stroke-width="3"/>
-  <text x="290" y="108" fill="#D4A038" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">10 to 20 km</text>
-
-  <!-- House glyph at the centre -->
-  <path d="M262 334 L290 308 L318 334 V368 H262 Z" fill="#F2DFA8"/>
-  <rect x="283" y="348" width="14" height="20" fill="#1A1310"/>
+  <!-- Circle-and-house motif with the radius label on the ring -->
+  <circle cx="400" cy="160" r="90" fill="#9E2D24" opacity="0.5"/>
+  <circle cx="400" cy="160" r="90" fill="none" stroke="#9E2D24" stroke-width="4" stroke-dasharray="14 10"/>
+  <rect x="310" y="48" width="180" height="44" rx="22" fill="#1A1310" stroke="#D4A038" stroke-width="3"/>
+  <text x="400" y="78" fill="#D4A038" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">10 to 20 km</text>
+  <path d="M372 168 L400 142 L428 168 V202 H372 Z" fill="#F2DFA8"/>
+  <rect x="393" y="182" width="14" height="20" fill="#1A1310"/>
 
   <!-- Local referrer types -->
-  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="21" text-anchor="middle">
-    <text x="290" y="182">Hospitals</text>
-    <text x="290" y="226">GPs</text>
-    <text x="290" y="270">Allied health</text>
-    <text x="290" y="412">Other providers</text>
-    <text x="290" y="448">Day programmes</text>
-    <text x="290" y="484">Schools</text>
-    <text x="290" y="520">Libraries and halls</text>
+  <g fill="#D4A038">
+    <circle cx="84" cy="296" r="6"/>
+    <circle cx="84" cy="343" r="6"/>
+    <circle cx="84" cy="390" r="6"/>
+    <circle cx="84" cy="468" r="6"/>
+    <circle cx="84" cy="546" r="6"/>
+    <circle cx="84" cy="593" r="6"/>
+    <circle cx="84" cy="671" r="6"/>
+  </g>
+  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="24">
+    <text x="112" y="304">Hospitals and their discharge teams</text>
+    <text x="112" y="351">GPs</text>
+    <text x="112" y="398">Allied health: OTs, behaviour</text>
+    <text x="112" y="429">support practitioners, psychologists</text>
+    <text x="112" y="476">Providers who do not offer SIL, and</text>
+    <text x="112" y="507">can send you participants who need it</text>
+    <text x="112" y="554">Day programmes and employment services</text>
+    <text x="112" y="601">School support officers and school</text>
+    <text x="112" y="632">counsellors, for school leaver transitions</text>
+    <text x="112" y="679">Libraries and community halls</text>
   </g>
 
-  <!-- Further away: arrows in from outside the circle -->
-  <text x="560" y="172" fill="#D4A038" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="2">FURTHER AWAY</text>
+  <!-- Further away: arrows pointing in, towards the local area -->
+  <text x="60" y="779" fill="#D4A038" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="2">FURTHER AWAY</text>
   <g stroke="#D4A038" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <path d="M552 236 L500 236 M512 226 L500 236 L512 246"/>
-    <path d="M552 330 L524 330 M536 320 L524 330 L536 340"/>
-    <path d="M552 424 L500 424 M512 414 L500 424 L512 434"/>
+    <path d="M84 868 V811 M74 823 L84 811 L94 823"/>
+    <path d="M84 952 V895 M74 907 L84 895 L94 907"/>
+    <path d="M84 1036 V979 M74 991 L84 979 L94 991"/>
+    <path d="M84 1089 V1063 M74 1075 L84 1063 L94 1075"/>
   </g>
-  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="21">
-    <text x="566" y="230">Family</text>
-    <text x="566" y="256">members</text>
-    <text x="566" y="324">People moving</text>
-    <text x="566" y="350">to the area</text>
-    <text x="566" y="418">Hospitals in</text>
-    <text x="566" y="444">other cities</text>
+  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="24">
+    <text x="112" y="831">A family member in another city or state, searching</text>
+    <text x="112" y="862">on behalf of someone who lives near you</text>
+    <text x="112" y="915">A participant moving to your area,</text>
+    <text x="112" y="946">looking for a provider before they arrive</text>
+    <text x="112" y="999">A hospital team in a capital city with</text>
+    <text x="112" y="1030">someone going home to your region</text>
+    <text x="112" y="1083">A provider in another region with a client moving to yours</text>
   </g>
 </svg>

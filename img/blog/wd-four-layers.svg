@@ -2,8 +2,9 @@
   <!-- Service figure: the four layers of page on an NDIS provider website,
        numbered in build order. Text only, as the brief asks. For
        ndis-marketing/website-design.html, section "How should you organise
-       an NDIS website?". The labels are the page's own list, shortened only
-       where a line would not fit. Drawn for an ink surface.
+       an NDIS website?". The labels are the page's own list, in full; layer
+       1's line finishes "Service pages by condition and support type".
+       Drawn for an ink surface.
 
        Palette hardcoded because an <img>-loaded SVG is a separate document
        and cannot read the page's :root tokens. The font stack is generic for
@@ -35,9 +36,9 @@
     </g>
     <g fill="#F2DFA8" font-size="20">
       <text x="160" y="125">By condition and support type</text>
-      <text x="160" y="225">SIL, SDA, respite, vacancies, location hubs</text>
+      <text x="160" y="225">SIL, SDA, respite, vacancies and location hubs</text>
       <text x="160" y="325">iCare, TAC and DVA</text>
-      <text x="160" y="425">Home, about, team, contact, careers, privacy</text>
+      <text x="160" y="425">Home, about, team, contact, careers and privacy</text>
     </g>
   </g>
 </svg>

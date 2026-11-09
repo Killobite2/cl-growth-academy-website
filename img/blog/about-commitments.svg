@@ -1,50 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 700" role="img" aria-label="">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 760" role="img" aria-label="">
   <!-- Page figure: Chris Lapa's six commitments, as listed under "What
        won't Chris Lapa do?" on about.html. Type only and no people, as the
-       brief asks. Each line is the page's own wording; the foundations line
-       drops its list of what the foundations are, and the last line drops
-       its second sentence, so each fits two lines. The full text is in the
-       markup beside this figure. Taller than 800x500 so six two-line
-       commitments stay legible at phone width. Drawn for an ink surface.
+       brief asks. Each commitment is the page's own wording, in full, word
+       for word; long commitments wrap onto more lines and their bands grow
+       to fit, so the canvas is 800x760. Drawn for an ink surface.
 
        Palette hardcoded because an <img>-loaded SVG is a separate document
        and cannot read the page's :root tokens. Generic font stack because
        Work Sans is loaded by the page, not by this file. Loaded via <img>,
        never inlined. -->
-  <rect width="800" height="700" fill="#1A1310"/>
+  <rect width="800" height="760" fill="#1A1310"/>
 
   <text x="60" y="62" fill="#D4A038" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="2">SIX COMMITMENTS ON EVERY ENGAGEMENT</text>
 
   <g fill="#9E2D24">
     <rect x="60" y="84" width="680" height="88" rx="6" opacity="0.9"/>
     <rect x="60" y="182" width="680" height="88" rx="6" opacity="0.7"/>
-    <rect x="60" y="280" width="680" height="88" rx="6" opacity="0.9"/>
-    <rect x="60" y="378" width="680" height="88" rx="6" opacity="0.7"/>
-    <rect x="60" y="476" width="680" height="88" rx="6" opacity="0.9"/>
-    <rect x="60" y="574" width="680" height="88" rx="6" opacity="0.7"/>
+    <rect x="60" y="280" width="680" height="118" rx="6" opacity="0.9"/>
+    <rect x="60" y="408" width="680" height="88" rx="6" opacity="0.7"/>
+    <rect x="60" y="506" width="680" height="88" rx="6" opacity="0.9"/>
+    <rect x="60" y="604" width="680" height="118" rx="6" opacity="0.7"/>
   </g>
 
   <g font-family="Helvetica, Arial, sans-serif">
     <g fill="#D4A038" font-size="24" font-weight="700">
       <text x="88" y="137">01</text>
       <text x="88" y="235">02</text>
-      <text x="88" y="333">03</text>
-      <text x="88" y="431">04</text>
-      <text x="88" y="529">05</text>
-      <text x="88" y="627">06</text>
+      <text x="88" y="348">03</text>
+      <text x="88" y="461">04</text>
+      <text x="88" y="559">05</text>
+      <text x="88" y="672">06</text>
     </g>
     <g fill="#F2EADB" font-size="22">
-      <text x="146" y="121">I won't market a service that isn't</text>
-      <text x="146" y="151">ready for more people.</text>
+      <text x="146" y="121">I won't market a service that</text>
+      <text x="146" y="151">isn't ready for more people.</text>
       <text x="146" y="234">I won't promise a number of leads.</text>
-      <text x="146" y="317">I won't skip the foundations to get</text>
-      <text x="146" y="347">ads running sooner.</text>
-      <text x="146" y="415">I won't use AI-generated people or</text>
-      <text x="146" y="445">homes in NDIS marketing.</text>
-      <text x="146" y="513">I won't report an enquiry against a</text>
-      <text x="146" y="543">channel that didn't bring it in.</text>
-      <text x="146" y="611">I won't work with a provider who doesn't</text>
-      <text x="146" y="641">care about the people they support.</text>
+      <text x="146" y="317">I won't skip the foundations to get ads running</text>
+      <text x="146" y="347">sooner: proper tracking, a website that turns visitors</text>
+      <text x="146" y="377">into enquiries, and a team ready to handle them.</text>
+      <text x="146" y="445">I won't use AI-generated people or homes in NDIS</text>
+      <text x="146" y="475">marketing. Every photo or video starts from a real one.</text>
+      <text x="146" y="543">I won't report an enquiry against</text>
+      <text x="146" y="573">a channel that didn't bring it in.</text>
+      <text x="146" y="641">I won't work with a provider who doesn't care about</text>
+      <text x="146" y="671">the people they support. Especially one that wouldn't</text>
+      <text x="146" y="701">live in the SIL home they want me to promote.</text>
     </g>
   </g>
 </svg>

@@ -1,54 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 650" role="img" aria-label="">
   <!-- Article figure: how a hospital referral reaches an NDIS provider. The
        caseworker, then eligibility for NDIS or state injury scheme funding,
-       then a panel list of providers, then the family's own research, and
-       only then the provider. Text only and no people, no hospital imagery.
-       For blog/ndis-clients-from-hospitals.html, section "How does the
-       hospital referral pathway work?". Taller than 800x500 so five steps
-       with a line of detail each stay legible at phone width. Drawn for an
-       ink surface.
+       then a panel list, then the family's research, and only then the
+       provider. Step names are the brief's wording in full; the two detail
+       lines are the page copy's own words. Long lines wrap and bands grow
+       to fit, so the canvas is 800x650. Text only and no people, no
+       hospital imagery. For blog/ndis-clients-from-hospitals.html, section
+       "How does the hospital referral pathway work?". Drawn for an ink
+       surface.
 
        Palette hardcoded because an <img>-loaded SVG is a separate document
        and cannot read the page's :root tokens. Generic font stack because
        Work Sans is loaded by the page, not by this file. Loaded via <img>,
        never inlined. -->
-  <rect width="800" height="600" fill="#1A1310"/>
+  <rect width="800" height="650" fill="#1A1310"/>
 
   <g fill="#9E2D24">
     <rect x="100" y="36" width="600" height="80" rx="6" opacity="0.55"/>
-    <rect x="100" y="142" width="600" height="80" rx="6" opacity="0.65"/>
-    <rect x="100" y="248" width="600" height="80" rx="6" opacity="0.75"/>
-    <rect x="100" y="354" width="600" height="80" rx="6" opacity="0.88"/>
+    <rect x="100" y="142" width="600" height="94" rx="6" opacity="0.65"/>
+    <rect x="100" y="262" width="600" height="98" rx="6" opacity="0.75"/>
+    <rect x="100" y="386" width="600" height="98" rx="6" opacity="0.88"/>
   </g>
   <!-- The provider comes last: the family has already researched by then -->
-  <rect x="100" y="460" width="600" height="80" rx="6" fill="#F2DFA8"/>
+  <rect x="100" y="510" width="600" height="80" rx="6" fill="#F2DFA8"/>
 
   <g stroke="#D4A038" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
     <path d="M400 120 L400 138 M390 128 L400 138 L410 128"/>
-    <path d="M400 226 L400 244 M390 234 L400 244 L410 234"/>
-    <path d="M400 332 L400 350 M390 340 L400 350 L410 340"/>
-    <path d="M400 438 L400 456 M390 446 L400 456 L410 446"/>
+    <path d="M400 240 L400 258 M390 248 L400 258 L410 248"/>
+    <path d="M400 364 L400 382 M390 372 L400 382 L410 372"/>
+    <path d="M400 488 L400 506 M390 496 L400 506 L410 496"/>
   </g>
 
   <g font-family="Helvetica, Arial, sans-serif">
     <g fill="#D4A038" font-size="22" font-weight="700">
-      <text x="128" y="84">01</text>
-      <text x="128" y="190">02</text>
-      <text x="128" y="296">03</text>
-      <text x="128" y="402">04</text>
-      <text x="128" y="508" fill="#9E2D24">05</text>
+      <text x="128" y="85">01</text>
+      <text x="128" y="183">02</text>
+      <text x="128" y="303">03</text>
+      <text x="128" y="427">04</text>
+      <text x="128" y="559" fill="#9E2D24">05</text>
     </g>
     <g fill="#F2EADB" font-size="24" font-weight="700">
-      <text x="184" y="84">Hospital caseworker</text>
-      <text x="184" y="176">Eligible for funding</text>
-      <text x="184" y="282">A panel list</text>
-      <text x="184" y="388">The family's research</text>
-      <text x="184" y="508" fill="#1A1310">The provider</text>
+      <text x="184" y="85">Hospital caseworker</text>
+      <text x="184" y="183">Eligibility for NDIS or state</text>
+      <text x="184" y="213">injury scheme funding</text>
+      <text x="184" y="303">A panel list</text>
+      <text x="184" y="427">The family's research</text>
+      <text x="184" y="559" fill="#1A1310">The provider</text>
     </g>
     <g fill="#F2DFA8" font-size="19">
-      <text x="184" y="205">NDIS or a state injury scheme</text>
-      <text x="184" y="311">A list of providers, rather than a single name</text>
-      <text x="184" y="417">At night, on a phone</text>
+      <text x="184" y="337">A list of providers, a panel, rather than a single name</text>
+      <text x="184" y="461">At night, on a phone</text>
     </g>
   </g>
 </svg>

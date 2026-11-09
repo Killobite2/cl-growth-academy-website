@@ -356,6 +356,15 @@ h3 { font-size: var(--fs-h3); }
 
 .btn-ghost:hover { border-color: var(--paper); }
 
+/* An email address as a button label is one unbreakable string: at 320 to
+   360px "chris@thegrowthacademy.com.au" in this face is wider than the
+   column. Let it wrap rather than run off the screen. */
+.btn[href^="mailto:"] {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
 .btn-row {
   display: flex;
   flex-wrap: wrap;
@@ -2869,6 +2878,7 @@ body.photo-hero .site-header.is-scrolled {
    because it is a 36-character unbreakable string. */
 .newsletter-footer p > a:only-child {
   display: inline-block;
+  min-width: 44px;   /* "About" alone is 41px of text */
   padding: var(--space-3) 0;
   overflow-wrap: anywhere;
 }
@@ -3338,6 +3348,15 @@ body.photo-hero .site-header.is-scrolled {
 
 .copy-table tbody th { font-weight: 700; color: var(--paper); }
 .copy-table td { color: var(--paper-muted); }
+
+/* A link that is a header cell's whole content is a standalone target, not
+   an inline one, so it gets the 44px box (about.html's offers table). Every
+   th link on the site is the cell's whole content; td links sit in prose. */
+.copy-table th > a:only-child {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 
 .copy-table tbody tr:last-child th,
 .copy-table tbody tr:last-child td { border-bottom: 0; }
