@@ -16,10 +16,12 @@ MARKETING = [
     ('04', 'email.html',      'Email Marketing',       'Straight-talking sequences that keep your provider top of mind.'),
     ('05', 'social.html',     'Social &amp; Content',  'Real stories from your team, built for the people deciding on you.'),
     ('06', 'linkedin.html',   'NDIS LinkedIn',         'Profiles for you and your staff, and the routine that earns referrals.'),
+    ('07', 'website-design.html', 'NDIS Website Design', 'Plan the pages first, then design them.'),
 ]
 GROWTH = [
-    ('07', 'referrals.html',     'Referrals &amp; Partnerships', 'Coordinator and allied health relationships that refer without ad spend.'),
-    ('08', 'sales-process.html', 'Sales &amp; Enquiry Process',  'What happens after the phone rings, and why it decides the outcome.'),
+    ('08', 'referrals.html',     'Referrals &amp; Partnerships', 'Coordinator and allied health relationships that refer without ad spend.'),
+    ('09', 'sales-process.html', 'Sales &amp; Enquiry Process',  'What happens after the phone rings, and why it decides the outcome.'),
+    ('10', 'coaching.html',      'Coaching &amp; Workshops',     'Regular sessions with you and your team on marketing, referrals, AI and sales, plus one-off strategy workshops.'),
 ]
 TIER = ('&#43;', 'managed.html', 'Managed Growth', 'Every channel and both engines, run as one plan by one person.')
 

@@ -2632,6 +2632,20 @@ body.photo-hero .site-header.is-scrolled {
   .ways { grid-template-columns: 1fr; }
 }
 
+/* .grid-even: the service grids R3-10 says must never leave one card alone
+   on a row (hub and homepage Engine 01, hub Engine 02, How We Help). At
+   desktop their column counts already divide evenly enough (4+3, 4+4+3, 3).
+   Between 601px and 900px every grid drops to two columns, so an odd count
+   would strand its last card on the left; this centres it instead, at one
+   column's width. Scoped to the class so no other grid changes. */
+@media (min-width: 601px) and (max-width: 900px) {
+  .grid-even > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc((100% - var(--space-5)) / 2);
+  }
+}
+
 /* ---- Small phones ----
    Everything above was written against 600px as the floor, so a 360px
    viewport used to get rules identical to a 599px one. This is the tier
