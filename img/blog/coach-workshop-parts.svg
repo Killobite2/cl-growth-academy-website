@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="">
+  <!-- Service figure: the three parts of an NDIS strategy workshop, the
+       pre-work pack, the day itself and what the provider gets after it.
+       Text only and no people, as the brief asks. For
+       ndis-marketing/coaching.html, section "What happens in an NDIS
+       strategy workshop?". Every label is the page's own wording, shortened
+       only where a line would not fit. Taller than 800x500 because the
+       pre-work band carries five items. Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="600" fill="#1A1310"/>
+
+  <g fill="#9E2D24">
+    <rect x="60" y="40" width="680" height="214" rx="6" opacity="0.9"/>
+    <rect x="60" y="270" width="680" height="128" rx="6" opacity="0.7"/>
+    <rect x="60" y="414" width="680" height="148" rx="6" opacity="0.55"/>
+  </g>
+
+  <g stroke="#D4A038" stroke-width="3" opacity="0.5">
+    <line x1="340" y1="60" x2="340" y2="234"/>
+    <line x1="340" y1="290" x2="340" y2="378"/>
+    <line x1="340" y1="434" x2="340" y2="542"/>
+  </g>
+
+  <g font-family="Helvetica, Arial, sans-serif">
+    <g fill="#D4A038" font-size="21" font-weight="700">
+      <text x="92" y="133">01</text>
+      <text x="92" y="320">02</text>
+      <text x="92" y="474">03</text>
+    </g>
+    <g fill="#F2EADB" font-size="27" font-weight="700">
+      <text x="92" y="168">Before the day</text>
+      <text x="92" y="355">On the day</text>
+      <text x="92" y="509">After the day</text>
+    </g>
+    <g fill="#F2EADB" font-size="22">
+      <text x="372" y="82">Discovery questionnaire</text>
+      <text x="372" y="122">Staff questionnaire</text>
+      <text x="372" y="162">Data template</text>
+      <text x="372" y="202">Outside-in audit</text>
+      <text x="372" y="242" fill="#F2DFA8">First-cut roadmap</text>
+
+      <text x="372" y="326">Review, Discuss, Decide</text>
+      <text x="372" y="364">Continue, Park or Update</text>
+
+      <text x="372" y="458">Written strategy</text>
+      <text x="372" y="496">Ranked 90-day roadmap</text>
+      <text x="372" y="534">1:1 follow-ups</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: the places families and referrers find an NDIS
+       provider online, one tile each. Text only and no people, and no
+       platform logos: the names are set in type. For
+       blog/how-to-get-ndis-clients.html, section "How do families and
+       referrers find NDIS providers online?". The full list, with what each
+       place covers, is in the markup beside this figure. Drawn for an ink
+       surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <text x="60" y="64" fill="#D4A038" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="2">MORE PLACES THAN A GOOGLE SEARCH</text>
+
+  <!-- Three by three. Opacity varies so the grid does not read as a ranked
+       table: no place here is presented as the one that matters most. -->
+  <g fill="#9E2D24">
+    <rect x="60" y="88" width="220" height="110" rx="6"/>
+    <rect x="290" y="88" width="220" height="110" rx="6" opacity="0.7"/>
+    <rect x="520" y="88" width="220" height="110" rx="6" opacity="0.85"/>
+    <rect x="60" y="208" width="220" height="110" rx="6" opacity="0.7"/>
+    <rect x="290" y="208" width="220" height="110" rx="6" opacity="0.9"/>
+    <rect x="520" y="208" width="220" height="110" rx="6" opacity="0.6"/>
+    <rect x="60" y="328" width="220" height="110" rx="6" opacity="0.85"/>
+    <rect x="290" y="328" width="220" height="110" rx="6" opacity="0.6"/>
+    <rect x="520" y="328" width="220" height="110" rx="6" opacity="0.8"/>
+  </g>
+
+  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="23" font-weight="700" text-anchor="middle">
+    <text x="170" y="151">Google</text>
+    <text x="400" y="151">Reviews</text>
+    <text x="630" y="151">AI answers</text>
+    <text x="170" y="271">Website</text>
+    <text x="400" y="271">Social</text>
+    <text x="630" y="271">LinkedIn</text>
+    <text x="170" y="377">Groups and</text>
+    <text x="170" y="405">forums</text>
+    <text x="400" y="391">Directories</text>
+    <text x="630" y="391">Email</text>
+  </g>
+</svg>

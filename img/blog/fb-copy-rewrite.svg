@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: an NDIS ad headline before and after. The original
+       knocks other providers and is struck out; the rewrite says what the
+       provider offers and where. Text only and no people. For
+       blog/ndis-facebook-ads-guide.html, section "What should an NDIS ad on
+       Facebook and Instagram say?". Both headlines are quoted from the page.
+
+       The strike is a drawn line, not text-decoration, and both headlines
+       use textLength, so the line matches the text width in every renderer.
+       Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <g font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="16" letter-spacing="2" fill="#D4A038">
+    <text x="80" y="76">BEFORE</text>
+    <text x="80" y="296">AFTER</text>
+  </g>
+
+  <!-- Before: dimmed, outlined, struck through -->
+  <rect x="60" y="92" width="680" height="120" rx="8" fill="none" stroke="#5C4E42" stroke-width="3"/>
+  <text x="400" y="163" fill="#A89C88" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="700" text-anchor="middle" textLength="500" lengthAdjust="spacingAndGlyphs">Stop Settling For SIL Promises</text>
+  <line x1="140" y1="153" x2="660" y2="153" stroke="#9E2D24" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Arrow down to the rewrite -->
+  <path d="M400 222 L400 262 M388 250 L400 262 L412 250" fill="none" stroke="#D4A038" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- After: full strength -->
+  <rect x="60" y="312" width="680" height="120" rx="8" fill="#9E2D24"/>
+  <text x="400" y="383" fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="700" text-anchor="middle" textLength="560" lengthAdjust="spacingAndGlyphs">Consistent SIL support in [suburb]</text>
+</svg>

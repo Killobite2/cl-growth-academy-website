@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="">
+  <!-- Article figure: a provider's local referral list as a 10 to 20 km
+       circle around a simple house glyph, with the local referrer types
+       inside it, and arrows in from further away for the out-of-area
+       sources. A diagram, not a map: no real places, addresses or client
+       locations, and the house is a plain geometric glyph. For
+       blog/how-to-get-ndis-clients.html, section "Who should be on your
+       NDIS referral list?". Taller than 800x500 so the seven local types
+       fit inside the circle at a legible size. Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="600" fill="#1A1310"/>
+
+  <!-- The local radius -->
+  <circle cx="290" cy="330" r="232" fill="#9E2D24" opacity="0.28"/>
+  <circle cx="290" cy="330" r="232" fill="none" stroke="#9E2D24" stroke-width="4" stroke-dasharray="14 10"/>
+
+  <!-- Radius label, sitting on the ring -->
+  <rect x="200" y="78" width="180" height="44" rx="22" fill="#1A1310" stroke="#D4A038" stroke-width="3"/>
+  <text x="290" y="108" fill="#D4A038" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">10 to 20 km</text>
+
+  <!-- House glyph at the centre -->
+  <path d="M262 334 L290 308 L318 334 V368 H262 Z" fill="#F2DFA8"/>
+  <rect x="283" y="348" width="14" height="20" fill="#1A1310"/>
+
+  <!-- Local referrer types -->
+  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="21" text-anchor="middle">
+    <text x="290" y="182">Hospitals</text>
+    <text x="290" y="226">GPs</text>
+    <text x="290" y="270">Allied health</text>
+    <text x="290" y="412">Other providers</text>
+    <text x="290" y="448">Day programmes</text>
+    <text x="290" y="484">Schools</text>
+    <text x="290" y="520">Libraries and halls</text>
+  </g>
+
+  <!-- Further away: arrows in from outside the circle -->
+  <text x="560" y="172" fill="#D4A038" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="2">FURTHER AWAY</text>
+  <g stroke="#D4A038" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M552 236 L500 236 M512 226 L500 236 L512 246"/>
+    <path d="M552 330 L524 330 M536 320 L524 330 L536 340"/>
+    <path d="M552 424 L500 424 M512 414 L500 424 L512 434"/>
+  </g>
+  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="21">
+    <text x="566" y="230">Family</text>
+    <text x="566" y="256">members</text>
+    <text x="566" y="324">People moving</text>
+    <text x="566" y="350">to the area</text>
+    <text x="566" y="418">Hospitals in</text>
+    <text x="566" y="444">other cities</text>
+  </g>
+</svg>

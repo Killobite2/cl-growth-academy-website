@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: radius targeting for NDIS Facebook ads, a pin on the
+       service with two rings, the metro radius inside the regional one. A
+       diagram, not a map: no real places. Rings are not to scale against
+       each other beyond inner and outer. For blog/ndis-facebook-ads-guide.html,
+       section "How do you target families when Facebook can't target
+       disability?". Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Regional ring, then metro ring -->
+  <circle cx="260" cy="250" r="200" fill="#9E2D24" opacity="0.3"/>
+  <circle cx="260" cy="250" r="200" fill="none" stroke="#9E2D24" stroke-width="4" stroke-dasharray="14 10"/>
+  <circle cx="260" cy="250" r="108" fill="#9E2D24" opacity="0.75"/>
+
+  <!-- Map pin -->
+  <path d="M260 274 C244 252 230 238 230 220 a30 30 0 0 1 60 0 C290 238 276 252 260 274 Z" fill="#F2DFA8"/>
+  <circle cx="260" cy="220" r="11" fill="#1A1310"/>
+
+  <!-- Leaders from each ring to its label -->
+  <g stroke="#D4A038" stroke-width="3" fill="none">
+    <path d="M354 196 L500 156"/>
+    <path d="M444 326 L500 346"/>
+  </g>
+  <g fill="#D4A038">
+    <circle cx="354" cy="196" r="6"/>
+    <circle cx="444" cy="326" r="6"/>
+  </g>
+
+  <g font-family="Helvetica, Arial, sans-serif">
+    <g fill="#F2EADB" font-size="30" font-weight="700">
+      <text x="512" y="146">Metro</text>
+      <text x="512" y="350">Regional</text>
+    </g>
+    <g fill="#F2DFA8" font-size="23">
+      <text x="512" y="180">about 12 to 25 km</text>
+      <text x="512" y="384">about 30 to 50 km</text>
+    </g>
+  </g>
+</svg>

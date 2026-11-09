@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="">
+  <!-- Article figure: the three steps for building relationships with
+       hospital teams, give before you ask, and the ask that comes after 90
+       days. Text only and no people. For
+       blog/ndis-clients-from-hospitals.html, section "How do you build
+       relationships with hospital teams?". Each line is the page's own
+       wording, shortened to fit. Taller than 800x500 so the steps and the
+       90-day ask stay legible at phone width. Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="600" fill="#1A1310"/>
+
+  <g fill="#9E2D24">
+    <rect x="60" y="40" width="680" height="100" rx="6" opacity="0.6"/>
+    <rect x="60" y="152" width="680" height="100" rx="6" opacity="0.75"/>
+    <rect x="60" y="264" width="680" height="100" rx="6" opacity="0.9"/>
+  </g>
+
+  <g font-family="Helvetica, Arial, sans-serif">
+    <g fill="#D4A038" font-size="28" font-weight="700">
+      <text x="90" y="101">01</text>
+      <text x="90" y="213">02</text>
+      <text x="90" y="325">03</text>
+    </g>
+    <g fill="#F2EADB" font-size="23" font-weight="700">
+      <text x="152" y="84">Open with a useful resource</text>
+      <text x="152" y="208">Offer a clinical briefing on the ward</text>
+      <text x="152" y="308">Co-author a de-identified success story</text>
+    </g>
+    <g fill="#F2DFA8" font-size="20">
+      <text x="152" y="115">A discharge checklist</text>
+      <text x="152" y="339">Once the first referral is stable at home</text>
+    </g>
+  </g>
+
+  <path d="M400 376 L400 410 M390 400 L400 410 L410 400" fill="none" stroke="#D4A038" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- The ask, held back until after 90 days -->
+  <rect x="60" y="422" width="680" height="136" rx="6" fill="none" stroke="#D4A038" stroke-width="3"/>
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="90" y="462" fill="#D4A038" font-size="16" font-weight="700" letter-spacing="2">AFTER 90 DAYS, ASK</text>
+    <g fill="#F2EADB" font-size="22">
+      <text x="90" y="500">About other complex patients coming up</text>
+      <text x="90" y="532">For introductions to other wards</text>
+    </g>
+  </g>
+</svg>

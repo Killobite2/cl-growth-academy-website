@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: the four retargeting audiences for NDIS Facebook and
+       Instagram ads, beside the two groups excluded because they have
+       already enquired or are already clients. Text only and no people.
+       For blog/ndis-facebook-ads-guide.html, section "How do you set up
+       retargeting for an NDIS provider?". Same include and exclude layout
+       as aged-care-search-terms.svg. Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+  <g transform="translate(0 30)">
+
+  <g font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="16" letter-spacing="2" fill="#D4A038">
+    <text x="60" y="78">INCLUDE</text>
+    <text x="470" y="78">EXCLUDE</text>
+  </g>
+
+  <g fill="#9E2D24">
+    <rect x="60" y="100" width="380" height="64" rx="5"/>
+    <rect x="60" y="178" width="380" height="64" rx="5" opacity="0.85"/>
+    <rect x="60" y="256" width="380" height="64" rx="5" opacity="0.75"/>
+    <rect x="60" y="334" width="380" height="64" rx="5" opacity="0.65"/>
+  </g>
+  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="22">
+    <text x="82" y="140" font-weight="700">Form starters</text>
+    <text x="82" y="218">Engagers, last 180 days</text>
+    <text x="82" y="296">50% video viewers</text>
+    <text x="82" y="374">Website visitors</text>
+  </g>
+
+  <!-- Excluded: outlined and dimmed, so they read as switched off -->
+  <g fill="none" stroke="#5C4E42" stroke-width="2">
+    <rect x="470" y="100" width="270" height="64" rx="5"/>
+    <rect x="470" y="178" width="270" height="64" rx="5"/>
+  </g>
+  <g fill="#A89C88" font-family="Helvetica, Arial, sans-serif" font-size="21">
+    <text x="490" y="128">Thank-you page</text>
+    <text x="490" y="154">visitors</text>
+    <text x="490" y="218">Existing clients</text>
+  </g>
+  </g>
+</svg>

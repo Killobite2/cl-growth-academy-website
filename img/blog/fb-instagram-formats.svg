@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: the same ad sized for Instagram feed (4:5), Stories
+       (9:16) and Reels (9:16), in three phone frames. Type and brand colours
+       only, with no photo, as the brief allows when no real provider photo
+       has written permission. The ad itself is drawn as blocks, not words,
+       so no copy is invented. For blog/ndis-facebook-ads-guide.html,
+       section "What's different about Instagram ads for NDIS providers?".
+       Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Phone frames, same size, so only the ad inside changes -->
+  <g fill="none" stroke="#C9BFAE" stroke-width="4">
+    <rect x="88" y="40" width="152" height="300" rx="20"/>
+    <rect x="324" y="40" width="152" height="300" rx="20"/>
+    <rect x="560" y="40" width="152" height="300" rx="20"/>
+  </g>
+
+  <!-- Feed: a 4:5 card (128 x 160) between other posts -->
+  <rect x="100" y="66" width="128" height="22" rx="4" fill="#A89C88" opacity="0.35"/>
+  <rect x="100" y="98" width="128" height="160" rx="4" fill="#9E2D24"/>
+  <rect x="112" y="200" width="96" height="12" rx="4" fill="#F2EADB"/>
+  <rect x="112" y="220" width="64" height="12" rx="4" fill="#F2DFA8"/>
+  <rect x="100" y="268" width="128" height="50" rx="4" fill="#A89C88" opacity="0.35"/>
+
+  <!-- Stories: 9:16 full screen (128 x 228), one idea per frame -->
+  <rect x="336" y="76" width="128" height="228" rx="6" fill="#9E2D24"/>
+  <rect x="346" y="86" width="108" height="5" rx="2" fill="#F2EADB" opacity="0.7"/>
+  <rect x="352" y="170" width="96" height="14" rx="4" fill="#F2EADB"/>
+  <rect x="352" y="192" width="70" height="14" rx="4" fill="#F2EADB"/>
+  <rect x="368" y="270" width="64" height="18" rx="9" fill="#F2DFA8"/>
+
+  <!-- Reels: 9:16 full screen video with a burned-on caption -->
+  <rect x="572" y="76" width="128" height="228" rx="6" fill="#9E2D24" opacity="0.8"/>
+  <path d="M624 160 L624 200 L656 180 Z" fill="#F2DFA8"/>
+  <rect x="584" y="258" width="104" height="12" rx="4" fill="#F2EADB"/>
+  <rect x="584" y="276" width="74" height="12" rx="4" fill="#F2EADB" opacity="0.8"/>
+
+  <g font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    <g fill="#F2EADB" font-size="28" font-weight="700">
+      <text x="164" y="398">Feed</text>
+      <text x="400" y="398">Stories</text>
+      <text x="636" y="398">Reels</text>
+    </g>
+    <g fill="#D4A038" font-size="24" font-weight="700">
+      <text x="164" y="436">4:5</text>
+      <text x="400" y="436">9:16</text>
+      <text x="636" y="436">9:16</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: the five steps for handling an NDIS enquiry, from the
+       5-minute acknowledgement to mapping every step from enquiry to intake.
+       Text only and no people. For blog/how-to-get-ndis-clients.html,
+       section "What happens when an enquiry comes in?". Each step is the
+       page's own wording, shortened to one line. Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Step 1 is the full-strength band: the 5-minute reply is the standard
+       the rest hangs off. -->
+  <g fill="#9E2D24">
+    <rect x="60" y="46" width="680" height="70" rx="6"/>
+    <rect x="60" y="128" width="680" height="70" rx="6" opacity="0.72"/>
+    <rect x="60" y="210" width="680" height="70" rx="6" opacity="0.62"/>
+    <rect x="60" y="292" width="680" height="70" rx="6" opacity="0.52"/>
+    <rect x="60" y="374" width="680" height="70" rx="6" opacity="0.42"/>
+  </g>
+
+  <g font-family="Helvetica, Arial, sans-serif">
+    <g fill="#D4A038" font-size="24" font-weight="700">
+      <text x="90" y="90">01</text>
+      <text x="90" y="172">02</text>
+      <text x="90" y="254">03</text>
+      <text x="90" y="336">04</text>
+      <text x="90" y="418">05</text>
+    </g>
+    <g fill="#F2EADB" font-size="23">
+      <text x="148" y="90" font-weight="700">Acknowledge within 5 minutes</text>
+      <text x="148" y="172">Call back fast, and text after a missed call</text>
+      <text x="148" y="254">Log every enquiry in one tracker or CRM</text>
+      <text x="148" y="336">Ask "how did you hear about us?"</text>
+      <text x="148" y="418">Map every step from enquiry to intake</text>
+    </g>
+  </g>
+</svg>

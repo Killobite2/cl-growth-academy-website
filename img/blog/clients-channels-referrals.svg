@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="">
+  <!-- Article figure: every growth and marketing channel pointing into
+       referrals, because referrers see the same search results, feeds and
+       inboxes as families. The channels are the page's table, in its
+       order. Text only and no people. For blog/how-to-get-ndis-clients.html,
+       section "How does every channel feed your referrals?". Taller than
+       800x500 so ten channels stay legible at phone width. Drawn for an ink
+       surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="600" fill="#1A1310"/>
+
+  <!-- Feed lines, drawn first so the chips and hub sit on top -->
+  <g stroke="#D4A038" stroke-width="3" fill="none" opacity="0.55">
+    <path d="M370 62 C470 62 470 300 530 300"/>
+    <path d="M370 114 C470 114 470 300 530 300"/>
+    <path d="M370 166 C470 166 470 300 530 300"/>
+    <path d="M370 218 C470 218 470 300 530 300"/>
+    <path d="M370 270 C470 270 470 300 530 300"/>
+    <path d="M370 322 C470 322 470 300 530 300"/>
+    <path d="M370 374 C470 374 470 300 530 300"/>
+    <path d="M370 426 C470 426 470 300 530 300"/>
+    <path d="M370 478 C470 478 470 300 530 300"/>
+    <path d="M370 530 C470 530 470 300 530 300"/>
+  </g>
+
+  <g fill="#9E2D24">
+    <rect x="50" y="42" width="320" height="40" rx="5"/>
+    <rect x="50" y="94" width="320" height="40" rx="5" opacity="0.8"/>
+    <rect x="50" y="146" width="320" height="40" rx="5"/>
+    <rect x="50" y="198" width="320" height="40" rx="5" opacity="0.8"/>
+    <rect x="50" y="250" width="320" height="40" rx="5"/>
+    <rect x="50" y="302" width="320" height="40" rx="5" opacity="0.8"/>
+    <rect x="50" y="354" width="320" height="40" rx="5"/>
+    <rect x="50" y="406" width="320" height="40" rx="5" opacity="0.8"/>
+    <rect x="50" y="458" width="320" height="40" rx="5"/>
+    <rect x="50" y="510" width="320" height="40" rx="5" opacity="0.8"/>
+  </g>
+  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="20">
+    <text x="68" y="69">Google reviews</text>
+    <text x="68" y="121">SEO and AI answers</text>
+    <text x="68" y="173">Website</text>
+    <text x="68" y="225">Google Ads</text>
+    <text x="68" y="277">Facebook and Instagram ads</text>
+    <text x="68" y="329">Organic social</text>
+    <text x="68" y="381">LinkedIn</text>
+    <text x="68" y="433">Email</text>
+    <text x="68" y="485">Events</text>
+    <text x="68" y="537">Enquiry process</text>
+  </g>
+
+  <!-- The hub, in the same rings-and-core form as strategy-channels.svg -->
+  <circle cx="640" cy="300" r="118" fill="#9E2D24"/>
+  <circle cx="640" cy="300" r="96" fill="#F2DFA8"/>
+  <text x="640" y="311" fill="#1A1310" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="700" text-anchor="middle">Referrals</text>
+</svg>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Service figure: the website types table as a graphic, five rows, the
+       type of provider beside its rough page count. Only the short type
+       names and the "Rough page count" column; the full table, with the
+       pages each type needs, is in the markup beside this figure. For
+       ndis-marketing/website-design.html, section "How many pages does an
+       NDIS website need?". Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <g font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="16" letter-spacing="2" fill="#D4A038">
+    <text x="76" y="68">WEBSITE TYPE</text>
+    <text x="432" y="68">ROUGH PAGE COUNT</text>
+  </g>
+
+  <g fill="#9E2D24">
+    <rect x="50" y="88" width="700" height="66" rx="5" opacity="0.9"/>
+    <rect x="50" y="164" width="700" height="66" rx="5" opacity="0.75"/>
+    <rect x="50" y="240" width="700" height="66" rx="5" opacity="0.9"/>
+    <rect x="50" y="316" width="700" height="66" rx="5" opacity="0.75"/>
+    <rect x="50" y="392" width="700" height="66" rx="5" opacity="0.9"/>
+  </g>
+
+  <!-- Column split, carried down all five rows -->
+  <g stroke="#D4A038" stroke-width="3" opacity="0.5">
+    <line x1="410" y1="100" x2="410" y2="142"/>
+    <line x1="410" y1="176" x2="410" y2="218"/>
+    <line x1="410" y1="252" x2="410" y2="294"/>
+    <line x1="410" y1="328" x2="410" y2="370"/>
+    <line x1="410" y1="404" x2="410" y2="446"/>
+  </g>
+
+  <g font-family="Helvetica, Arial, sans-serif" font-size="21">
+    <g fill="#F2EADB">
+      <text x="76" y="128">New or single-service</text>
+      <text x="76" y="204">Multi-service</text>
+      <text x="76" y="280">SIL and SDA accommodation</text>
+      <text x="76" y="356">Allied health practice</text>
+      <text x="76" y="419">Funded through</text>
+      <text x="76" y="444">iCare, TAC or DVA</text>
+    </g>
+    <g fill="#F2DFA8" font-weight="700">
+      <text x="432" y="128">10 to 15</text>
+      <text x="432" y="204">25 to 40 or more</text>
+      <text x="432" y="280">15 to 25, plus one per home</text>
+      <text x="432" y="356">15 to 30</text>
+      <text x="432" y="432">Add 1 per scheme</text>
+    </g>
+  </g>
+</svg>

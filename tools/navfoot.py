@@ -207,6 +207,9 @@ PAGES = {
     'aged-care-marketing.html':      ('',     'ndis-marketing/', 'aged-care'),
     'privacy.html':                  ('',     'ndis-marketing/', 'privacy'),
     'thank-you.html':                ('',     'ndis-marketing/', 'thank-you'),
+    'about.html':                    ('',     'ndis-marketing/', 'about'),
+    'ndis-marketing/website-design.html': ('../', '',            'website-design.html'),
+    'ndis-marketing/coaching.html':  ('../',  '',                'coaching.html'),
 
     # Appended last on purpose. The loop below rewrites by string index and
     # raises on the first file missing an anchor, having already rewritten
@@ -221,6 +224,9 @@ PAGES = {
     'blog/virtual-assistant-vs-ai.html':                   ('../', '../ndis-marketing/', 'blog-child'),
     'blog/key-areas-for-business-growth.html':             ('../', '../ndis-marketing/', 'blog-child'),
     'blog/founder-issues-impacting-your-business-growth.html': ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/how-to-get-ndis-clients.html':                   ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/ndis-facebook-ads-guide.html':                   ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/ndis-clients-from-hospitals.html':               ('../', '../ndis-marketing/', 'blog-child'),
 }
 
 for path, (root, ch, key) in PAGES.items():

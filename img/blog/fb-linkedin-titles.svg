@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: the job titles an NDIS referrer campaign targets on
+       LinkedIn, from the page's LinkedIn setup table. Type only and no
+       people, and no LinkedIn logo. For blog/ndis-facebook-ads-guide.html,
+       section "Should NDIS providers run LinkedIn ads?". Drawn for an ink
+       surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+  <g transform="translate(0 20)">
+
+  <text x="60" y="72" fill="#D4A038" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="2">WHO LINKEDIN ADS REACH</text>
+
+  <g fill="#9E2D24">
+    <rect x="60" y="96" width="335" height="64" rx="32"/>
+    <rect x="405" y="96" width="335" height="64" rx="32" opacity="0.8"/>
+    <rect x="60" y="174" width="335" height="64" rx="32" opacity="0.8"/>
+    <rect x="405" y="174" width="335" height="64" rx="32"/>
+    <rect x="60" y="252" width="335" height="64" rx="32"/>
+    <rect x="405" y="252" width="335" height="64" rx="32" opacity="0.8"/>
+    <rect x="60" y="330" width="680" height="64" rx="32" opacity="0.9"/>
+  </g>
+  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="22" text-anchor="middle">
+    <text x="227" y="136">Support Coordinator</text>
+    <text x="572" y="136">Occupational Therapist</text>
+    <text x="227" y="214">Local Area Coordinator</text>
+    <text x="572" y="214">Discharge Planner</text>
+    <text x="227" y="292">Social Worker</text>
+    <text x="572" y="292">Case Manager</text>
+    <text x="400" y="370">Behaviour Support Practitioner</text>
+  </g>
+  </g>
+</svg>

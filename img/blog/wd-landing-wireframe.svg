@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Service figure: a wireframe of a paid landing page. No menu, a
+       headline that matches the search or the ad, one enquiry form with a
+       "When do you need this?" field, and the call-back promise under the
+       button. Shapes and the
+       page's own wording only, no screenshot of any real site. For
+       ndis-marketing/website-design.html, section "Do NDIS ads need their
+       own landing pages?". Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- The page frame -->
+  <rect x="70" y="36" width="320" height="428" rx="18" fill="#F2EADB" fill-opacity="0.05" stroke="#C9BFAE" stroke-width="3"/>
+
+  <!-- Top bar with no menu: the empty slot where a menu would sit is
+       dashed and struck, so the absence reads as a choice. -->
+  <line x1="70" y1="92" x2="390" y2="92" stroke="#C9BFAE" stroke-width="2" opacity="0.5"/>
+  <rect x="96" y="56" width="70" height="18" rx="4" fill="#C9BFAE" opacity="0.6"/>
+  <g stroke="#A89C88" stroke-width="4" stroke-linecap="round" opacity="0.7">
+    <line x1="326" y1="56" x2="362" y2="56"/>
+    <line x1="326" y1="65" x2="362" y2="65"/>
+    <line x1="326" y1="74" x2="362" y2="74"/>
+  </g>
+  <line x1="318" y1="82" x2="370" y2="48" stroke="#9E2D24" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Headline -->
+  <rect x="96" y="114" width="268" height="20" rx="4" fill="#F2EADB"/>
+  <rect x="96" y="144" width="190" height="20" rx="4" fill="#F2EADB"/>
+
+  <!-- Form: two plain fields, then the timing field with its label -->
+  <g fill="none" stroke="#C9BFAE" stroke-width="2">
+    <rect x="96" y="188" width="268" height="42" rx="5"/>
+    <rect x="96" y="242" width="268" height="42" rx="5"/>
+    <rect x="96" y="296" width="268" height="46" rx="5" stroke="#D4A038" stroke-width="3"/>
+  </g>
+  <g fill="#A89C88" opacity="0.6">
+    <rect x="110" y="203" width="110" height="12" rx="3"/>
+    <rect x="110" y="257" width="140" height="12" rx="3"/>
+  </g>
+  <text x="110" y="326" fill="#F2DFA8" font-family="Helvetica, Arial, sans-serif" font-size="19">When do you need this?</text>
+
+  <!-- Button, then the call-back promise under it -->
+  <rect x="96" y="358" width="268" height="44" rx="6" fill="#9E2D24"/>
+  <rect x="190" y="374" width="80" height="12" rx="3" fill="#F2EADB" opacity="0.85"/>
+  <rect x="112" y="420" width="236" height="10" rx="3" fill="#F2DFA8" opacity="0.7"/>
+
+  <!-- Leader lines from each part to its label -->
+  <g stroke="#D4A038" stroke-width="2" opacity="0.7">
+    <line x1="378" y1="65" x2="430" y2="65"/>
+    <line x1="372" y1="139" x2="430" y2="139"/>
+    <line x1="372" y1="319" x2="430" y2="319"/>
+    <line x1="356" y1="425" x2="430" y2="425"/>
+  </g>
+
+  <g font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#F2EADB">
+    <text x="444" y="73">No menu</text>
+    <text x="444" y="133">Headline that matches</text>
+    <text x="444" y="161">the search or the ad</text>
+    <text x="444" y="313">"When do you</text>
+    <text x="444" y="341">need this?" field</text>
+    <text x="444" y="419">Call-back promise</text>
+    <text x="444" y="447">under the button</text>
+  </g>
+</svg>

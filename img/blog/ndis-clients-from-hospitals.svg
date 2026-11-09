@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Blog card artwork for blog/ndis-clients-from-hospitals.html: a plain
+       bed glyph for the ward, a stepped path, and a plain house glyph for
+       home. Shapes only, no people, no patients and no cross emblem.
+       Palette hardcoded because an <img>-loaded SVG cannot read the page's
+       :root tokens. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Ward: a bed, abstract -->
+  <g fill="#9E2D24">
+    <rect x="80" y="230" width="22" height="130" rx="4"/>
+    <rect x="80" y="290" width="200" height="40" rx="6"/>
+    <rect x="258" y="300" width="22" height="60" rx="4"/>
+  </g>
+  <rect x="112" y="262" width="58" height="28" rx="10" fill="#F2DFA8"/>
+
+  <!-- The path home, through three steps -->
+  <path d="M300 300 C380 300 390 180 480 180 S580 300 620 300" fill="none" stroke="#D4A038" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 22"/>
+  <g fill="#F2EADB">
+    <circle cx="386" cy="240" r="12"/>
+    <circle cx="480" cy="180" r="14"/>
+    <circle cx="569" cy="240" r="12"/>
+  </g>
+
+  <!-- Home: a plain geometric glyph -->
+  <path d="M630 296 L690 240 L750 296 V370 H630 Z" fill="#F2DFA8"/>
+  <rect x="678" y="320" width="24" height="50" fill="#1A1310"/>
+</svg>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Service figure: the whole-team referral exercise. Each person writes
+       5 to 10 bullets on one referral partner's world (funding cuts, new
+       plans, bed block on the ward), then the team role-plays the
+       conversation in pairs. Type only and no people: the pairs are two
+       speech bubbles, not figures. For ndis-marketing/coaching.html,
+       section "What does a whole-team referral session look like?", used
+       when no consented photo of a session exists. Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- The note card -->
+  <rect x="60" y="50" width="400" height="400" rx="8" fill="#9E2D24"/>
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="90" y="96" fill="#D4A038" font-size="16" font-weight="700" letter-spacing="2">5 TO 10 BULLETS</text>
+    <text x="90" y="134" fill="#F2EADB" font-size="24" font-weight="700">A referral partner's world</text>
+    <g fill="#F2EADB" font-size="22">
+      <text x="118" y="196">Funding cuts</text>
+      <text x="118" y="244">New plans</text>
+      <text x="118" y="292">Bed block on the ward</text>
+    </g>
+  </g>
+  <g fill="#F2DFA8">
+    <circle cx="98" cy="189" r="6"/>
+    <circle cx="98" cy="237" r="6"/>
+    <circle cx="98" cy="285" r="6"/>
+  </g>
+  <!-- The bullets still to write, as blank lines -->
+  <g fill="#F2EADB" opacity="0.3">
+    <circle cx="98" cy="333" r="6"/>
+    <circle cx="98" cy="381" r="6"/>
+    <rect x="118" y="327" width="220" height="12" rx="6"/>
+    <rect x="118" y="375" width="160" height="12" rx="6"/>
+  </g>
+
+  <!-- Then: two speech bubbles, one each way, for the pair -->
+  <path d="M478 250 L520 250 M508 238 L520 250 L508 262" fill="none" stroke="#D4A038" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M548 120 h150 a14 14 0 0 1 14 14 v62 a14 14 0 0 1 -14 14 h-110 l-24 22 v-22 h-16 a14 14 0 0 1 -14 -14 v-62 a14 14 0 0 1 14 -14 z" fill="#F2DFA8"/>
+  <path d="M600 226 h126 a14 14 0 0 1 14 14 v62 a14 14 0 0 1 -14 14 h-16 v22 l-24 -22 h-86 a14 14 0 0 1 -14 -14 v-62 a14 14 0 0 1 14 -14 z" fill="none" stroke="#F2EADB" stroke-width="4"/>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#F2EADB">
+    <text x="548" y="400">Then role-play</text>
+    <text x="548" y="432">in pairs</text>
+  </g>
+</svg>

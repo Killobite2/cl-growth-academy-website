@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Article figure: the two doors every NDIS client comes through, a
+       referrer or finding the provider directly, both leading into one
+       intake tracker. Text only and no people, as the brief asks. For
+       blog/how-to-get-ndis-clients.html, section "How do NDIS providers
+       find clients?". Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <!-- Two doors: plain arched frames, not buildings -->
+  <path d="M170 236 V110 a60 60 0 0 1 120 0 V236 Z" fill="#9E2D24"/>
+  <path d="M510 236 V110 a60 60 0 0 1 120 0 V236 Z" fill="#9E2D24" opacity="0.7"/>
+  <g fill="#F2DFA8">
+    <circle cx="270" cy="176" r="7"/>
+    <circle cx="610" cy="176" r="7"/>
+  </g>
+
+  <g font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    <g fill="#F2EADB" font-size="28" font-weight="700">
+      <text x="230" y="280">Referrer</text>
+      <text x="570" y="280">Direct</text>
+    </g>
+    <g fill="#C9BFAE" font-size="19">
+      <text x="230" y="310">Coordinators, OTs, hospitals</text>
+      <text x="570" y="310">Google, social, word of mouth</text>
+    </g>
+  </g>
+
+  <!-- Both paths converge on the tracker -->
+  <g stroke="#D4A038" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M230 326 C230 352 340 350 372 374"/>
+    <path d="M570 326 C570 352 460 350 428 374"/>
+    <path d="M358 362 L372 374 L354 378"/>
+    <path d="M446 378 L428 374 L442 362"/>
+  </g>
+
+  <rect x="230" y="384" width="340" height="76" rx="8" fill="#F2DFA8"/>
+  <text x="400" y="431" fill="#1A1310" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" text-anchor="middle">One intake tracker</text>
+</svg>

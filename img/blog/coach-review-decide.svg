@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="">
+  <!-- Service figure: how each block of a strategy workshop runs (Review,
+       Discuss, Decide) and the three ratings every current activity gets
+       (Continue, Park, Update). Text only and no people. For
+       ndis-marketing/coaching.html, section "On the day". Drawn for an ink
+       surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="500" fill="#1A1310"/>
+
+  <g font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="16" letter-spacing="2" fill="#D4A038">
+    <text x="60" y="64">EACH BLOCK OF THE DAY</text>
+    <text x="60" y="296">EVERY CURRENT ACTIVITY</text>
+  </g>
+
+  <!-- The three steps of a block, joined by arrows so they read as one run -->
+  <g fill="#9E2D24">
+    <rect x="60" y="86" width="196" height="120" rx="8"/>
+    <rect x="302" y="86" width="196" height="120" rx="8"/>
+    <rect x="544" y="86" width="196" height="120" rx="8"/>
+  </g>
+  <g stroke="#D4A038" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M264 146 L294 146 M284 136 L294 146 L284 156"/>
+    <path d="M506 146 L536 146 M526 136 L536 146 L526 156"/>
+  </g>
+  <g fill="#F2EADB" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="700" text-anchor="middle">
+    <text x="158" y="157">Review</text>
+    <text x="400" y="157">Discuss</text>
+    <text x="642" y="157">Decide</text>
+  </g>
+
+  <!-- The three ratings: one of each, so no activity carries over unrated -->
+  <rect x="60" y="318" width="196" height="96" rx="48" fill="#F2DFA8"/>
+  <rect x="302" y="318" width="196" height="96" rx="48" fill="none" stroke="#C9BFAE" stroke-width="3"/>
+  <rect x="544" y="318" width="196" height="96" rx="48" fill="#9E2D24" opacity="0.75"/>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="27" font-weight="700" text-anchor="middle">
+    <text x="158" y="375" fill="#1A1310">Continue</text>
+    <text x="400" y="375" fill="#C9BFAE">Park</text>
+    <text x="642" y="375" fill="#F2EADB">Update</text>
+  </g>
+</svg>
