@@ -135,10 +135,11 @@ Chris had not answered these, so Dreau set defaults that Chris can change later:
   channels" and carries a LinkedIn card at 06, as two rows of three (`grid-3`).
 - **C04's `datePublished` is 2024-02-01.** The content file only had "2024-02".
 
-## Waiting on Dreau
+## Done since go-live
 
-- **The privacy line on `newsletter.html` needs mirroring into
-  `signup-website-chris`.** That repo deploys straight to production on push.
+- **The privacy line on `newsletter.html` is mirrored into `signup-website-chris`.**
+  Live 6 November 2026, commit `2d61b49` in that repo. The same commit also removed
+  "Sydney" there and fixed the logo and footer links.
 
 ## Waiting on Chris
 
@@ -155,12 +156,6 @@ Chris had not answered these, so Dreau set defaults that Chris can change later:
   can read.
 - **Longer copy for Referrals and Sales Process** (carried over from September; not
   rechecked in round 2). Longer versions need Chris's words, not invented ones.
-
-## Known loose ends
-
-- **`tools/rules.js` only knows five of the nine posts.** Its `ARTICLES` list (line
-  21) drives the self-canonical and orphaned-article checks. Add the four round 2
-  posts so those checks cover them. Every other check already crawls them.
 
 ---
 

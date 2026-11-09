@@ -15,8 +15,8 @@ const notrack = require('./notrack');
 const BASE = process.env.BASE || 'http://localhost:3000';
 
 // The site has lived at thegrowthacademy.com.au since 20 October 2026. Every
-// canonical must be on it, and the four articles (which used to canonicalise
-// to their WordPress copies) must now point at themselves.
+// canonical must be on it, and every article (four of which used to
+// canonicalise to their WordPress copies) must point at itself.
 const SITE = 'https://thegrowthacademy.com.au/';
 const ARTICLES = [
   '/blog/ndis-digital-marketing-strategy.html',
@@ -24,6 +24,10 @@ const ARTICLES = [
   '/blog/marketing-for-business-growth.html',
   '/blog/how-can-seo-grow-my-business.html',
   '/blog/grow-your-business-through-social-media.html',
+  '/blog/grow-your-business-with-virtual-assistants.html',
+  '/blog/virtual-assistant-vs-ai.html',
+  '/blog/key-areas-for-business-growth.html',
+  '/blog/founder-issues-impacting-your-business-growth.html',
 ];
 
 (async () => {
