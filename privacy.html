@@ -56,16 +56,27 @@ src="https://www.facebook.com/tr?id=588636164309071&amp;ev=PageView&amp;noscript
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Privacy Policy",
-  "url": "https://thegrowthacademy.com.au/privacy.html",
-  "description": "How CL Growth Academy collects, uses and protects personal information through thegrowthacademy.com.au.",
-  "dateModified": "2026-11-03",
-  "publisher": {
-    "@type": "Organization",
-    "name": "CL Growth Academy",
-    "url": "https://thegrowthacademy.com.au"
-  }
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "name": "Privacy Policy",
+      "url": "https://thegrowthacademy.com.au/privacy.html",
+      "description": "How CL Growth Academy collects, uses and protects personal information through thegrowthacademy.com.au.",
+      "dateModified": "2026-11-03",
+      "publisher": {
+        "@type": "Organization",
+        "name": "CL Growth Academy",
+        "url": "https://thegrowthacademy.com.au"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thegrowthacademy.com.au/" },
+        { "@type": "ListItem", "position": 2, "name": "Privacy Policy" }
+      ]
+    }
+  ]
 }
 </script>
 </head>

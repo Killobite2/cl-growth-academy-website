@@ -56,15 +56,26 @@ src="https://www.facebook.com/tr?id=588636164309071&amp;ev=PageView&amp;noscript
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Subscribe | CL Growth Academy Newsletter",
-  "description": "A weekly newsletter for NDIS and aged care providers. Marketing, sales, AI, tech and offshoring, and one thing to do each week. Free. Founder-led.",
-  "url": "https://thegrowthacademy.com.au/newsletter.html",
-  "publisher": {
-    "@type": "Organization",
-    "name": "CL Growth Academy",
-    "url": "https://thegrowthacademy.com.au/"
-  }
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "name": "Subscribe | CL Growth Academy Newsletter",
+      "description": "A weekly newsletter for NDIS and aged care providers. Marketing, sales, AI, tech and offshoring, and one thing to do each week. Free. Founder-led.",
+      "url": "https://thegrowthacademy.com.au/newsletter.html",
+      "publisher": {
+        "@type": "Organization",
+        "name": "CL Growth Academy",
+        "url": "https://thegrowthacademy.com.au/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thegrowthacademy.com.au/" },
+        { "@type": "ListItem", "position": 2, "name": "Newsletter" }
+      ]
+    }
+  ]
 }
 </script>
 </head>

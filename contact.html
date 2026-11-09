@@ -56,17 +56,28 @@ src="https://www.facebook.com/tr?id=588636164309071&amp;ev=PageView&amp;noscript
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ContactPage",
-  "name": "Get In Touch | CL Growth Academy",
-  "description": "Talk to Chris Lapa about growing your NDIS or aged care provider. Straight answers on what is working, what is not, and what to do next.",
-  "url": "https://thegrowthacademy.com.au/contact.html",
-  "publisher": {
-    "@type": "Organization",
-    "name": "CL Growth Academy",
-    "url": "https://thegrowthacademy.com.au/"
-  },
-  "email": "chris@thegrowthacademy.com.au",
-  "telephone": "+61431584725"
+  "@graph": [
+    {
+      "@type": "ContactPage",
+      "name": "Get In Touch | CL Growth Academy",
+      "description": "Talk to Chris Lapa about growing your NDIS or aged care provider. Straight answers on what is working, what is not, and what to do next.",
+      "url": "https://thegrowthacademy.com.au/contact.html",
+      "publisher": {
+        "@type": "Organization",
+        "name": "CL Growth Academy",
+        "url": "https://thegrowthacademy.com.au/"
+      },
+      "email": "chris@thegrowthacademy.com.au",
+      "telephone": "+61431584725"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thegrowthacademy.com.au/" },
+        { "@type": "ListItem", "position": 2, "name": "Get In Touch" }
+      ]
+    }
+  ]
 }
 </script>
 </head>
