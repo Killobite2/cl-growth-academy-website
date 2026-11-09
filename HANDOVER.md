@@ -60,11 +60,16 @@ Google Ads tag goes live.**
 old date pages to `/blog.html`. This replaces the earlier setup, where four posts
 canonicalised to the WordPress copies and were kept out of the sitemap.
 
-**Channel numbering.** 01 SEO, 02 Google Ads, 03 Social Media Ads, 04 Email,
-05 Social & Content, 06 LinkedIn (Marketing); 07 Referrals, 08 Sales & Enquiry
-Process (Growth). The same numbers appear in the nav, the hub cards, How We Help,
-the homepage engine panel and each service page's hero eyebrow. Change one, change
-all of them.
+**Service numbering (round 3).** 01 SEO, 02 Google Ads, 03 Social Media Ads,
+04 Email, 05 Social & Content, 06 LinkedIn, 07 Website Design (Marketing);
+08 Referrals & Partnerships, 09 Sales & Enquiry Process, 10 Coaching & Workshops
+(Growth); + Managed Growth. The site counts "ten services", not channels, because
+Website Design and Coaching are not marketing channels. The same numbers appear in
+the nav, the hub cards, How We Help, the homepage engine cards and panel, and each
+service page's hero eyebrow. Change one, change all of them. The nav and footer
+come from `tools/navfoot.py` (run it, never hand-edit them); the card grids are
+edited by hand. Aged Care Marketing stays out of the numbering, as the last footer
+link.
 
 **Links in body copy are underlined site-wide** (paragraphs, list items, table cells,
 captions and quotes inside `<main>`). Nav, footer, buttons, cards, breadcrumbs, the

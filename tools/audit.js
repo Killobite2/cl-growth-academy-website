@@ -17,6 +17,11 @@ const PAGES = [
   '/blog/attract-ndis-participants-with-google-ads.html',
   '/blog/marketing-for-business-growth.html',
   '/blog/how-can-seo-grow-my-business.html',
+  // Round 3 pages
+  '/about.html', '/ndis-marketing/website-design.html', '/ndis-marketing/coaching.html',
+  '/blog/how-to-get-ndis-clients.html',
+  '/blog/ndis-facebook-ads-guide.html',
+  '/blog/ndis-clients-from-hospitals.html',
 ];
 const WIDTHS = [320, 360, 390, 430];
 

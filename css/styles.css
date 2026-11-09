@@ -1596,7 +1596,11 @@ label {
    same hover-to-mustard every other footer link uses. --paper-muted, not
    --paper-faint, because this sits on --ink-2 where faint falls under 4.5:1. */
 .footer-signup-link {
-  display: inline-block;
+  /* inline-flex and min-height give it the 44px tap target every other link
+     on the site meets, with the text still sitting on the same line. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   margin-top: var(--space-3);
   font-size: var(--fs-small);
   font-weight: 600;
@@ -3646,6 +3650,12 @@ body.photo-hero .site-header.is-scrolled {
      phone, where it reads as a glitch rather than as depth */
   .showcase.is-visible .showcase-back { transform: translateY(-14px); }
   .showcase.is-visible .showcase-front { transform: translateY(14px); }
+
+  /* The article variant's back plate starts at the column edge on a phone.
+     At -14% it ran past the viewport's left edge at 320 to 430px (clipped,
+     but still a box off-screen, which audit.js reports). The front card's
+     12% margin keeps the offset that makes it read as depth. */
+  .showcase-wide .showcase-back { left: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
