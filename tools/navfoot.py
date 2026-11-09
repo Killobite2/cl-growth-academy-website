@@ -1,5 +1,5 @@
 # Regenerates the nav and the footer across every page that carries them.
-# Generated rather than hand-edited: there are 13 copies now, and the last
+# Generated rather than hand-edited: there are 25 copies now, and the last
 # time these were edited by hand they drifted (two blog excerpts, and a
 # channel order that disagreed with itself).
 import io, os, re, glob
@@ -15,12 +15,20 @@ MARKETING = [
     ('03', 'social-ads.html', 'NDIS Social Media Ads', 'Meta campaigns that reach families before they start searching.'),
     ('04', 'email.html',      'Email Marketing',       'Straight-talking sequences that keep your provider top of mind.'),
     ('05', 'social.html',     'Social &amp; Content',  'Real stories from your team, built for the people deciding on you.'),
+    ('06', 'linkedin.html',   'NDIS LinkedIn',         'Profiles for you and your staff, and the routine that earns referrals.'),
 ]
 GROWTH = [
-    ('06', 'referrals.html',     'Referrals &amp; Partnerships', 'Coordinator and allied health relationships that refer without ad spend.'),
-    ('07', 'sales-process.html', 'Sales &amp; Enquiry Process',  'What happens after the phone rings, and why it decides the outcome.'),
+    ('07', 'referrals.html',     'Referrals &amp; Partnerships', 'Coordinator and allied health relationships that refer without ad spend.'),
+    ('08', 'sales-process.html', 'Sales &amp; Enquiry Process',  'What happens after the phone rings, and why it decides the outcome.'),
 ]
 TIER = ('&#43;', 'managed.html', 'Managed Growth', 'Every channel and both engines, run as one plan by one person.')
+
+# The footer's Services list. It shares the nav's order but not its labels,
+# and it carries Aged Care Marketing last: that page is outside the numbered
+# menu, and this link is the only one to it across the site. href is relative
+# to the channel dir unless it starts with '/', which means the site root.
+FOOTER_SERVICES = ([(h, t) for _, h, t, _ in MARKETING + GROWTH]
+                   + [(TIER[1], TIER[2]), ('/aged-care-marketing.html', 'Aged Care Marketing')])
 
 LINKEDIN = 'https://www.linkedin.com/in/christopher-lapa-36108055/'
 BRAND = ('<span class="brand-mark">CL</span> <span class="brand-word">'
@@ -93,6 +101,7 @@ def build_nav(root, ch, current):
         </div>
       </div>
       <a href="{root}blog.html"{blog_attr}>Blog</a>
+      <a href="{root}newsletter.html">Newsletter</a>
       <a href="{root}contact.html" class="btn btn-mustard nav-cta"{cur('contact.html')}>Get In Touch</a>
       <span class="nav-indicator" aria-hidden="true"></span>
     </div>
@@ -103,9 +112,8 @@ def build_nav(root, ch, current):
 
 
 def build_footer(root, ch):
-    services = ''.join(f'          <li><a href="{ch}{h}">{t}</a></li>\n'
-                       for _, h, t, _ in MARKETING + GROWTH)
-    services += f'          <li><a href="{ch}{TIER[1]}">{TIER[2]}</a></li>\n'
+    services = ''.join(f'          <li><a href="{root + h[1:] if h.startswith("/") else ch + h}">{t}</a></li>\n'
+                       for h, t in FOOTER_SERVICES)
 
     return f'''<footer class="site-footer">
   <div class="wrap">
@@ -126,6 +134,7 @@ def build_footer(root, ch):
           <li><a href="{root}how-we-help.html">How We Help</a></li>
           <li><a href="{ch}index.html">NDIS Growth</a></li>
           <li><a href="{root}blog.html">Blog</a></li>
+          <li><a href="{root}newsletter.html">Newsletter</a></li>
           <li><a href="{root}contact.html">Get In Touch</a></li>
         </ul>
       </nav>
@@ -146,10 +155,12 @@ def build_footer(root, ch):
          genuinely submits. -->
     <div class="footer-signup">
       <div>
-        <p class="footer-signup-title">Get the weekly note</p>
+        <p class="footer-signup-title">Free weekly newsletter</p>
         <p class="note">One short read for NDIS and aged care providers, and one thing to do before next week.</p>
+        <a class="footer-signup-link" href="{root}newsletter.html">Learn more about the newsletter &rarr;</a>
       </div>
-      <form class="js-waitlist" action="https://clgrowth.beehiiv.com/subscribe" method="POST">
+      <form class="js-waitlist" action="/api/subscribe" method="POST">
+        <input type="checkbox" name="botcheck" class="form-botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
         <label class="sr-only" for="footer-email">Your email address</label>
         <div class="form-pill">
           <div class="form-pill-fields">
@@ -164,11 +175,13 @@ def build_footer(root, ch):
             You're in. Watch your inbox.
           </p>
         </div>
+        <p class="form-error" role="alert" hidden>That didn't go through. Try again, or email <a href="mailto:chris@thegrowthacademy.com.au">chris@thegrowthacademy.com.au</a></p>
         <p class="form-note">Free. Weekly. You can leave any time.</p>
+        <p class="form-note">We handle your details as set out in our <a href="{root}privacy.html">Privacy Policy</a>.</p>
       </form>
     </div>
 
-    <div class="footer-bottom">\u00a9 2026 CL Growth Academy.</div>
+    <div class="footer-bottom">\u00a9 2026 CL Growth Academy. &middot; <a href="{root}privacy.html">Privacy Policy</a></div>
   </div>
 </footer>
 
@@ -190,6 +203,10 @@ PAGES = {
     'ndis-marketing/referrals.html': ('../',  '',                'referrals.html'),
     'ndis-marketing/sales-process.html': ('../', '',             'sales-process.html'),
     'ndis-marketing/managed.html':   ('../',  '',                'managed.html'),
+    'ndis-marketing/linkedin.html':  ('../',  '',                'linkedin.html'),
+    'aged-care-marketing.html':      ('',     'ndis-marketing/', 'aged-care'),
+    'privacy.html':                  ('',     'ndis-marketing/', 'privacy'),
+    'thank-you.html':                ('',     'ndis-marketing/', 'thank-you'),
 
     # Appended last on purpose. The loop below rewrites by string index and
     # raises on the first file missing an anchor, having already rewritten
@@ -199,6 +216,11 @@ PAGES = {
     'blog/attract-ndis-participants-with-google-ads.html': ('../', '../ndis-marketing/', 'blog-child'),
     'blog/marketing-for-business-growth.html':             ('../', '../ndis-marketing/', 'blog-child'),
     'blog/how-can-seo-grow-my-business.html':              ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/grow-your-business-through-social-media.html':   ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/grow-your-business-with-virtual-assistants.html': ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/virtual-assistant-vs-ai.html':                   ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/key-areas-for-business-growth.html':             ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/founder-issues-impacting-your-business-growth.html': ('../', '../ndis-marketing/', 'blog-child'),
 }
 
 for path, (root, ch, key) in PAGES.items():
@@ -206,7 +228,7 @@ for path, (root, ch, key) in PAGES.items():
 
     # --- nav ---
     a = s.index('<header class="site-header">')
-    b = s.index('<main id="main">')
+    b = s.index('<main id="main"')
     s = s[:a] + build_nav(root, ch, key) + s[b:]
 
     # --- footer ---
