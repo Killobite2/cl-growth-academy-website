@@ -23,12 +23,25 @@ GROWTH = [
 ]
 TIER = ('&#43;', 'managed.html', 'Managed Growth', 'Every channel and both engines, run as one plan by one person.')
 
-# The footer's Services list. It shares the nav's order but not its labels,
-# and it carries Aged Care Marketing last: that page is outside the numbered
-# menu, and this link is the only one to it across the site. href is relative
+# The footer's Services list (R3-09). It shares the nav's order but uses short
+# labels without "NDIS", and it carries Aged Care Marketing last: that page is
+# outside the numbered menu, and this link is the only one to it across the
+# site. href is relative
 # to the channel dir unless it starts with '/', which means the site root.
-FOOTER_SERVICES = ([(h, t) for _, h, t, _ in MARKETING + GROWTH]
-                   + [(TIER[1], TIER[2]), ('/aged-care-marketing.html', 'Aged Care Marketing')])
+FOOTER_SERVICES = [
+    ('seo.html',            'SEO'),
+    ('ads.html',            'Google Ads'),
+    ('social-ads.html',     'Social Media Ads'),
+    ('email.html',          'Email Marketing'),
+    ('social.html',         'Social &amp; Content'),
+    ('linkedin.html',       'LinkedIn'),
+    ('website-design.html', 'Website Design'),
+    ('referrals.html',      'Referrals &amp; Partnerships'),
+    ('sales-process.html',  'Sales &amp; Enquiry Process'),
+    ('coaching.html',       'Coaching &amp; Workshops'),
+    (TIER[1],               TIER[2]),
+    ('/aged-care-marketing.html', 'Aged Care Marketing'),
+]
 
 LINKEDIN = 'https://www.linkedin.com/in/christopher-lapa-36108055/'
 BRAND = ('<span class="brand-mark">CL</span> <span class="brand-word">'
@@ -135,6 +148,7 @@ def build_footer(root, ch):
           <li><a href="{ch}index.html">NDIS Growth</a></li>
           <li><a href="{root}blog.html">Blog</a></li>
           <li><a href="{root}newsletter.html">Newsletter</a></li>
+          <li><a href="{root}about.html">About</a></li>
           <li><a href="{root}contact.html">Get In Touch</a></li>
         </ul>
       </nav>
