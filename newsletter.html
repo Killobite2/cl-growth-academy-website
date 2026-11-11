@@ -130,6 +130,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <form class="js-waitlist load-in load-in-5" action="/api/subscribe" method="POST">
         <input type="checkbox" name="botcheck" class="form-botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="form-names">
+          <label class="sr-only" for="hero-first-name">First name (optional)</label>
+          <input id="hero-first-name" type="text" name="first_name" autocomplete="given-name" placeholder="First name (optional)">
+          <label class="sr-only" for="hero-last-name">Last name (optional)</label>
+          <input id="hero-last-name" type="text" name="last_name" autocomplete="family-name" placeholder="Last name (optional)">
+        </div>
         <label class="sr-only" for="hero-email">Email</label>
         <div class="form-pill">
           <div class="form-pill-fields">
@@ -214,6 +220,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="lead-panel">
       <form class="js-waitlist" action="/api/subscribe" method="POST">
         <input type="checkbox" name="botcheck" class="form-botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="form-names">
+          <label class="sr-only" for="repeat-first-name">First name (optional)</label>
+          <input id="repeat-first-name" type="text" name="first_name" autocomplete="given-name" placeholder="First name (optional)">
+          <label class="sr-only" for="repeat-last-name">Last name (optional)</label>
+          <input id="repeat-last-name" type="text" name="last_name" autocomplete="family-name" placeholder="Last name (optional)">
+        </div>
         <label class="sr-only" for="repeat-email">Email</label>
         <div class="form-pill">
           <div class="form-pill-fields">

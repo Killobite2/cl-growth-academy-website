@@ -797,8 +797,10 @@
     };
     var honey = form.querySelector('input[name="botcheck"]');
     if (honey && honey.checked) body.botcheck = 'on';
-    var name = form.querySelector('input[name="first_name"]');
-    if (name && name.value) body.first_name = name.value;
+    var first = form.querySelector('input[name="first_name"]');
+    if (first && first.value) body.first_name = first.value;
+    var last = form.querySelector('input[name="last_name"]');
+    if (last && last.value) body.last_name = last.value;
 
     fetch(form.action, {
       method: 'POST',

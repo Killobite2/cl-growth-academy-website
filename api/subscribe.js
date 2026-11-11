@@ -120,11 +120,13 @@ module.exports = async function handler(req, res) {
 
   // beehiiv takes anything beyond its own columns as a custom field, and
   // the field has to exist on the publication first or the call is
-  // refused. Only sent when the form actually collected a name.
+  // refused. Each name is sent only when the form actually collected it.
+  var customFields = [];
   var firstName = clean(body.first_name, 80);
-  if (firstName) {
-    payload.custom_fields = [{ name: 'first_name', value: firstName }];
-  }
+  var lastName = clean(body.last_name, 80);
+  if (firstName) customFields.push({ name: 'first_name', value: firstName });
+  if (lastName) customFields.push({ name: 'last_name', value: lastName });
+  if (customFields.length) payload.custom_fields = customFields;
 
   var controller = new AbortController();
   var timer = setTimeout(function () { controller.abort(); }, TIMEOUT_MS);

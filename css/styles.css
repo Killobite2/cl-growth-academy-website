@@ -1417,6 +1417,33 @@ label {
 
 .form-pill:focus-within { border-color: var(--mustard); }
 
+/* Optional name fields above the newsletter pill. Each is its own pill in
+   the pill's colours (the base and light-surface input rules supply them),
+   with the text inset to line up with the email placeholder below: the
+   pill's own padding plus its field's. */
+.form-names {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+.form-names input {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 44px;
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) calc(var(--space-4) + var(--space-2));
+}
+
+.form-names input:focus { border-color: var(--mustard); outline: none; }
+
+/* Closer to the pill than the pill sits to the copy above, so the three
+   fields read as one form */
+.form-names ~ .form-pill { margin-top: var(--space-2); }
+
+/* Once the pill has morphed, the names step back with the email field */
+.form-names input:disabled { opacity: 0.6; }
+
 /* Button-only variant, for the contact form — a four-field form has no
    single field to sit in the pill, so only its submit morphs */
 .form-pill-compact { display: inline-flex; margin-top: 0; }
@@ -2698,6 +2725,21 @@ body.photo-hero .site-header.is-scrolled {
   /* Shrink-wrapped on wider screens because it holds only a button; at this
      width it should span the column like every other stacked control */
   .form-pill-compact { display: flex; }
+
+  /* The names stack too, shaped and centred like the stacked email field */
+  .form-names {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .form-names input {
+    flex: 0 0 auto;
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    text-align: center;
+  }
+
+  .form-names ~ .form-pill { margin-top: var(--space-3); }
 
   /* Gentler again, and down to about two cards across. */
   .gallery {
