@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" role="img" aria-label="">
+  <!-- Service figure: the capital cities and "regional areas in every
+       state and territory". Type only, no map pins and no people. For
+       ndis-marketing/in-person-workshops.html, section "Where do you run
+       in-person workshops?". Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="560" fill="#1A1310"/>
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="60" y="86" font-size="34" fill="#F2EADB" font-weight="700">I travel anywhere in Australia</text>
+    <text x="60" y="146" font-size="19" fill="#D4A038" font-weight="700">EVERY CAPITAL CITY</text>
+  </g>
+  <rect x="60" y="170" width="680" height="232" rx="6" fill="#9E2D24"/>
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="100" y="220" font-size="27" fill="#F2EADB" font-weight="700">Sydney</text>
+    <text x="430" y="220" font-size="27" fill="#F2EADB" font-weight="700">Melbourne</text>
+    <text x="100" y="270" font-size="27" fill="#F2EADB" font-weight="700">Brisbane</text>
+    <text x="430" y="270" font-size="27" fill="#F2EADB" font-weight="700">Perth</text>
+    <text x="100" y="320" font-size="27" fill="#F2EADB" font-weight="700">Adelaide</text>
+    <text x="430" y="320" font-size="27" fill="#F2EADB" font-weight="700">Canberra</text>
+    <text x="100" y="370" font-size="27" fill="#F2EADB" font-weight="700">Hobart</text>
+    <text x="430" y="370" font-size="27" fill="#F2EADB" font-weight="700">Darwin</text>
+    <text x="60" y="456" font-size="19" fill="#D4A038" font-weight="700">PLUS</text>
+    <text x="60" y="496" font-size="27" fill="#F2DFA8" font-weight="700">Regional areas in every state and territory</text>
+  </g>
+</svg>

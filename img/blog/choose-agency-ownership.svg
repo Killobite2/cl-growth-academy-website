@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 578" role="img" aria-label="">
+  <!-- Article figure: the "who should own what" table as a checklist on
+       paper, with "You" in oxblood beside each asset. Text and shapes
+       only. For blog/how-to-choose-an-ndis-marketing-agency.html, the
+       red flags section.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="578" fill="#F2EADB"/>
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="60" y="78" font-size="32" fill="#1A1310" font-weight="700">Who should own what</text>
+    <text x="740" y="78" font-size="18" fill="#1A1310" font-weight="700" text-anchor="end">Owner</text>
+    <rect x="60" y="116" width="28" height="28" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="108" y="140" font-size="23" fill="#1A1310">Meta and Google Ads accounts</text>
+    <text x="740" y="140" font-size="23" fill="#9E2D24" font-weight="700" text-anchor="end">You</text>
+    <line x1="60" y1="162" x2="740" y2="162" stroke="#1A1310" stroke-opacity="0.15" stroke-width="1.5"/>
+    <rect x="60" y="180" width="28" height="28" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="108" y="204" font-size="23" fill="#1A1310">Domain name</text>
+    <text x="740" y="204" font-size="23" fill="#9E2D24" font-weight="700" text-anchor="end">You</text>
+    <line x1="60" y1="226" x2="740" y2="226" stroke="#1A1310" stroke-opacity="0.15" stroke-width="1.5"/>
+    <rect x="60" y="244" width="28" height="28" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="108" y="268" font-size="23" fill="#1A1310">Website and hosting</text>
+    <text x="740" y="268" font-size="23" fill="#9E2D24" font-weight="700" text-anchor="end">You</text>
+    <line x1="60" y1="290" x2="740" y2="290" stroke="#1A1310" stroke-opacity="0.15" stroke-width="1.5"/>
+    <rect x="60" y="308" width="28" height="28" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="108" y="332" font-size="23" fill="#1A1310">Google Business Profile</text>
+    <text x="740" y="332" font-size="23" fill="#9E2D24" font-weight="700" text-anchor="end">You</text>
+    <line x1="60" y1="354" x2="740" y2="354" stroke="#1A1310" stroke-opacity="0.15" stroke-width="1.5"/>
+    <rect x="60" y="372" width="28" height="28" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="108" y="396" font-size="23" fill="#1A1310">Analytics and tag manager</text>
+    <text x="740" y="396" font-size="23" fill="#9E2D24" font-weight="700" text-anchor="end">You</text>
+    <line x1="60" y1="418" x2="740" y2="418" stroke="#1A1310" stroke-opacity="0.15" stroke-width="1.5"/>
+    <rect x="60" y="436" width="28" height="28" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="108" y="460" font-size="23" fill="#1A1310">Enquiry data and CRM</text>
+    <text x="740" y="460" font-size="23" fill="#9E2D24" font-weight="700" text-anchor="end">You</text>
+    <line x1="60" y1="482" x2="740" y2="482" stroke="#1A1310" stroke-opacity="0.15" stroke-width="1.5"/>
+    <rect x="60" y="500" width="28" height="28" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="108" y="524" font-size="23" fill="#1A1310">Ads, photos and videos made for you</text>
+    <text x="740" y="524" font-size="23" fill="#9E2D24" font-weight="700" text-anchor="end">You</text>
+  </g>
+</svg>

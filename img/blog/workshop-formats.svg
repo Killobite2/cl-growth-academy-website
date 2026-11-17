@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="">
+  <!-- Service figure: the four in-person formats, half-day workshop,
+       full-day workshop, team session and strategy day. Text only and no
+       people. For ndis-marketing/in-person-workshops.html, section "When
+       is in-person worth it?". Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="600" fill="#1A1310"/>
+  <g fill="#9E2D24">
+    <rect x="60" y="40" width="680" height="116" rx="6" opacity="0.55"/>
+    <rect x="60" y="172" width="680" height="116" rx="6" opacity="0.67"/>
+    <rect x="60" y="304" width="680" height="116" rx="6" opacity="0.79"/>
+    <rect x="60" y="436" width="680" height="116" rx="6" opacity="0.91"/>
+  </g>
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="92" y="92" font-size="22" fill="#D4A038" font-weight="700">01</text>
+    <text x="152" y="92" font-size="27" fill="#F2EADB" font-weight="700">Half-day workshop</text>
+    <text x="152" y="128" font-size="21" fill="#F2EADB">One decision or one group</text>
+    <text x="92" y="224" font-size="22" fill="#D4A038" font-weight="700">02</text>
+    <text x="152" y="224" font-size="27" fill="#F2EADB" font-weight="700">Full-day workshop</text>
+    <text x="152" y="260" font-size="21" fill="#F2EADB">Several decisions in one day</text>
+    <text x="92" y="356" font-size="22" fill="#D4A038" font-weight="700">03</text>
+    <text x="152" y="356" font-size="27" fill="#F2EADB" font-weight="700">Team session</text>
+    <text x="152" y="392" font-size="21" fill="#F2EADB">A shorter session for a whole team</text>
+    <text x="92" y="488" font-size="22" fill="#D4A038" font-weight="700">04</text>
+    <text x="152" y="488" font-size="27" fill="#F2EADB" font-weight="700">Strategy day</text>
+    <text x="152" y="524" font-size="21" fill="#F2EADB">The owner and leadership team on direction</text>
+  </g>
+</svg>

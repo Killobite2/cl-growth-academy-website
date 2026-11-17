@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 700" role="img" aria-label="">
+  <!-- Article figure: the five ways to get NDIS marketing done, as five
+       equal cards with a "Fits when" and a "Check" line from the page's
+       table. Same size and colour for every card, no ticks or crosses.
+       Stacked rather than side by side so the lines stay legible at
+       phone width. For blog/how-to-choose-an-ndis-marketing-agency.html.
+       Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="700" fill="#1A1310"/>
+  <g fill="#9E2D24">
+    <rect x="40" y="30" width="720" height="116" rx="6"/>
+    <rect x="40" y="162" width="720" height="116" rx="6"/>
+    <rect x="40" y="294" width="720" height="116" rx="6"/>
+    <rect x="40" y="426" width="720" height="116" rx="6"/>
+    <rect x="40" y="558" width="720" height="116" rx="6"/>
+  </g>
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="70" y="68" font-size="23" fill="#F2EADB" font-weight="700">Specialist NDIS agency</text>
+    <text x="70" y="102" font-size="19" fill="#F2EADB"><tspan fill="#F2DFA8" font-weight="700">Fits when </tspan>Several channels run with sector knowledge</text>
+    <text x="70" y="131" font-size="19" fill="#F2EADB"><tspan fill="#F2DFA8" font-weight="700">Check </tspan>Some work with competitors in your area</text>
+    <text x="70" y="200" font-size="23" fill="#F2EADB" font-weight="700">Generalist agency</text>
+    <text x="70" y="234" font-size="19" fill="#F2EADB"><tspan fill="#F2DFA8" font-weight="700">Fits when </tspan>A specific skill, such as a website build</text>
+    <text x="70" y="263" font-size="19" fill="#F2EADB"><tspan fill="#F2DFA8" font-weight="700">Check </tspan>You supply the sector knowledge</text>
+    <text x="70" y="332" font-size="23" fill="#F2EADB" font-weight="700">Freelancer</text>
+    <text x="70" y="366" font-size="19" fill="#F2EADB"><tspan fill="#F2DFA8" font-weight="700">Fits when </tspan>One channel run well, and you direct the work</text>
+    <text x="70" y="395" font-size="19" fill="#F2EADB"><tspan fill="#F2DFA8" font-weight="700">Check </tspan>Cover when they are away</text>
+    <text x="70" y="464" font-size="23" fill="#F2EADB" font-weight="700">In-house hire</text>
+    <text x="70" y="498" font-size="19" fill="#F2EADB"><tspan fill="#F2DFA8" font-weight="700">Fits when </tspan>Enough work for a full-time role</text>
+    <text x="70" y="527" font-size="19" fill="#F2EADB"><tspan fill="#F2DFA8" font-weight="700">Check </tspan>Salary, recruitment, training and tools</text>
+    <text x="70" y="596" font-size="23" fill="#F2EADB" font-weight="700">Fractional CMO or CGO</text>
+    <text x="70" y="630" font-size="19" fill="#F2EADB"><tspan fill="#F2DFA8" font-weight="700">Fits when </tspan>Senior plan, budget and reporting, part time</text>
+    <text x="70" y="659" font-size="19" fill="#F2EADB"><tspan fill="#F2DFA8" font-weight="700">Check </tspan>Strategy-level time, execution by a team</text>
+  </g>
+</svg>

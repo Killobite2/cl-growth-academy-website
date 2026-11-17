@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1116" role="img" aria-label="">
+  <!-- Article figure: the 14 questions to ask an NDIS marketing agency,
+       as a printable one-page checklist with tick boxes. Text and shapes
+       only. For blog/how-to-choose-an-ndis-marketing-agency.html, the
+       questions section.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="800" height="1116" fill="#F2EADB"/>
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="60" y="76" font-size="32" fill="#1A1310" font-weight="700">Questions to ask before signing</text>
+    <rect x="60" y="109" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="130" font-size="21" fill="#1A1310">Who sets my strategy, who builds the campaigns, and who is</text>
+    <text x="104" y="160" font-size="21" fill="#1A1310">on my monthly call?</text>
+    <rect x="60" y="193" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="214" font-size="21" fill="#1A1310">How many other NDIS providers do you work with in my areas?</text>
+    <rect x="60" y="247" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="268" font-size="21" fill="#1A1310">How do you reach support coordinators, allied health,</text>
+    <text x="104" y="298" font-size="21" fill="#1A1310">hospital teams and families, and what do you say to each?</text>
+    <rect x="60" y="331" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="352" font-size="21" fill="#1A1310">What claims and logo rules do you follow for NDIS ads?</text>
+    <rect x="60" y="385" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="406" font-size="21" fill="#1A1310">How do you get consent for photos and stories?</text>
+    <rect x="60" y="439" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="460" font-size="21" fill="#1A1310">What do you report each month, and does it include cost per</text>
+    <text x="104" y="490" font-size="21" fill="#1A1310">enquiry and clients signed?</text>
+    <rect x="60" y="523" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="544" font-size="21" fill="#1A1310">How do you track each enquiry back to the channel that</text>
+    <text x="104" y="574" font-size="21" fill="#1A1310">brought it in?</text>
+    <rect x="60" y="607" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="628" font-size="21" fill="#1A1310">What will you need from my intake team, and will you look at</text>
+    <text x="104" y="658" font-size="21" fill="#1A1310">how we handle enquiries?</text>
+    <rect x="60" y="691" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="712" font-size="21" fill="#1A1310">What is the notice period, and is there a minimum term?</text>
+    <rect x="60" y="745" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="766" font-size="21" fill="#1A1310">Whose name are the ad accounts, domain, website and</text>
+    <text x="104" y="796" font-size="21" fill="#1A1310">analytics in?</text>
+    <rect x="60" y="829" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="850" font-size="21" fill="#1A1310">If I leave, what do I take with me, and how fast?</text>
+    <rect x="60" y="883" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="904" font-size="21" fill="#1A1310">Is ad spend billed by the platforms to me, or by you? If by</text>
+    <text x="104" y="934" font-size="21" fill="#1A1310">you, do I see the platform receipts?</text>
+    <rect x="60" y="967" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="988" font-size="21" fill="#1A1310">How do you use AI in the work, and where does my data go?</text>
+    <rect x="60" y="1021" width="24" height="24" rx="3" fill="none" stroke="#1A1310" stroke-width="2.5"/>
+    <text x="104" y="1042" font-size="21" fill="#1A1310">What won't you do?</text>
+  </g>
+</svg>

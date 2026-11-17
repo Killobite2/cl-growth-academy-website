@@ -243,6 +243,8 @@ PAGES = {
     'blog/how-to-get-ndis-clients.html':                   ('../', '../ndis-marketing/', 'blog-child'),
     'blog/ndis-facebook-ads-guide.html':                   ('../', '../ndis-marketing/', 'blog-child'),
     'blog/ndis-clients-from-hospitals.html':               ('../', '../ndis-marketing/', 'blog-child'),
+    'blog/how-to-choose-an-ndis-marketing-agency.html':    ('../', '../ndis-marketing/', 'blog-child'),
+    'ndis-marketing/in-person-workshops.html':             ('../', '',                   'in-person-workshops'),
 }
 
 for path, (root, ch, key) in PAGES.items():

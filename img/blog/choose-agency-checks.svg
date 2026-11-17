@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-label="">
+  <!-- Article hero: two paths meeting at one card, "What to check",
+       listing the six checks. Text and shapes only, no people. For
+       blog/how-to-choose-an-ndis-marketing-agency.html. 3:2 to match the
+       .hero-plate crop. Drawn for an ink surface.
+
+       Palette hardcoded because an <img>-loaded SVG is a separate document
+       and cannot read the page's :root tokens. Generic font stack because
+       Work Sans is loaded by the page, not by this file. Loaded via <img>,
+       never inlined. -->
+  <rect width="900" height="600" fill="#1A1310"/>
+  <g fill="none" stroke="#F2EADB" stroke-width="10" stroke-linecap="round" opacity="0.85">
+    <path d="M40 120 C200 120 240 300 400 300"/>
+    <path d="M40 480 C200 480 240 300 400 300"/>
+  </g>
+  <rect x="400" y="60" width="450" height="480" rx="8" fill="#9E2D24"/>
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="440" y="128" font-size="36" fill="#F2DFA8" font-weight="700">What to check</text>
+    <text x="440" y="196" font-size="22" fill="#D4A038" font-weight="700">01</text>
+    <text x="488" y="196" font-size="26" fill="#F2EADB">The NDIS rules</text>
+    <text x="440" y="254" font-size="22" fill="#D4A038" font-weight="700">02</text>
+    <text x="488" y="254" font-size="26" fill="#F2EADB">Who chooses</text>
+    <text x="440" y="312" font-size="22" fill="#D4A038" font-weight="700">03</text>
+    <text x="488" y="312" font-size="26" fill="#F2EADB">Who does the work</text>
+    <text x="440" y="370" font-size="22" fill="#D4A038" font-weight="700">04</text>
+    <text x="488" y="370" font-size="26" fill="#F2EADB">Reporting</text>
+    <text x="440" y="428" font-size="22" fill="#D4A038" font-weight="700">05</text>
+    <text x="488" y="428" font-size="26" fill="#F2EADB">Contract and ownership</text>
+    <text x="440" y="486" font-size="22" fill="#D4A038" font-weight="700">06</text>
+    <text x="488" y="486" font-size="26" fill="#F2EADB">Speed</text>
+  </g>
+</svg>
