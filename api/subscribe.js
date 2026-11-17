@@ -118,14 +118,18 @@ module.exports = async function handler(req, res) {
   if (utmCampaign) payload.utm_campaign = utmCampaign;
   if (referring) payload.referring_site = referring;
 
-  // beehiiv takes anything beyond its own columns as a custom field, and
-  // the field has to exist on the publication first or the call is
-  // refused. Each name is sent only when the form actually collected it.
+  /* beehiiv takes anything beyond its own columns as a custom field, and
+     the field has to exist on the publication first. A name it does not
+     know is NOT refused: beehiiv drops that value, still creates the
+     subscription and returns 2xx, so nothing here would ever notice. The
+     names below must therefore match the publication's custom fields
+     exactly, spaces and capitals included ("First Name", "Last Name").
+     Each one is sent only when the form actually collected it. */
   var customFields = [];
   var firstName = clean(body.first_name, 80);
   var lastName = clean(body.last_name, 80);
-  if (firstName) customFields.push({ name: 'first_name', value: firstName });
-  if (lastName) customFields.push({ name: 'last_name', value: lastName });
+  if (firstName) customFields.push({ name: 'First Name', value: firstName });
+  if (lastName) customFields.push({ name: 'Last Name', value: lastName });
   if (customFields.length) payload.custom_fields = customFields;
 
   var controller = new AbortController();
