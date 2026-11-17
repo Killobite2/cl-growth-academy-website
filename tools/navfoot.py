@@ -100,7 +100,7 @@ def build_nav(root, ch, current):
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div class="nav-panel" id="nav-ndis">
-          <a class="nav-panel-overview" href="{ch}index.html"{cur('hub')}>
+          <a class="nav-panel-overview" href="{root}ndis-marketing/"{cur('hub')}>
             <span class="nav-panel-num">&rarr;</span>
             <span><span class="nav-panel-title">NDIS Growth</span><span class="nav-panel-desc">Two engines, and how they fit together.</span></span>
           </a>
