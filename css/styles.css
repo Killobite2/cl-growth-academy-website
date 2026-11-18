@@ -476,6 +476,20 @@ h3 { font-size: var(--fs-h3); }
   font-size: var(--fs-small);
 }
 
+/* Round 4 added a sixth item (Free resources). Between the hamburger at
+   800px and about 960px the 32px gaps no longer fit, and three labels and
+   the CTA broke onto two lines. A tighter gap and no wrapping in that band
+   keeps the row on one line; wider screens are untouched. */
+@media (min-width: 801px) and (max-width: 1000px) {
+  .nav-links { gap: var(--space-4); }
+  .nav-links > a,
+  .nav-links .nav-sub-trigger { white-space: nowrap; }
+}
+@media (min-width: 801px) and (max-width: 860px) {
+  .nav-links { gap: var(--space-3); }
+  .nav-links .nav-cta { padding-left: var(--space-4); padding-right: var(--space-4); }
+}
+
 .nav-links a { transition: color var(--t-fast) var(--ease); }
 .nav-links a:hover { color: var(--mustard); }
 

@@ -74,6 +74,11 @@ def build_nav(root, ch, current):
     blog_attr = (' aria-current="page"' if current == 'blog.html'
                  else ' aria-current="true"' if current == 'blog-child'
                  else '')
+    # Same treatment for the free resources: the hub is the page, a resource
+    # page or the thanks page sits inside that section.
+    resources_attr = (' aria-current="page"' if current == 'resources'
+                      else ' aria-current="true"' if current in ('resource-child', 'resources-thanks')
+                      else '')
 
     # The reading-progress bar lives inside the sticky header so it travels
     # with it and needs no stacking context of its own. Emitted here rather
@@ -116,6 +121,7 @@ def build_nav(root, ch, current):
         </div>
       </div>
       <a href="{root}blog.html"{blog_attr}>Blog</a>
+      <a href="{root}resources.html"{resources_attr}>Free resources</a>
       <a href="{root}newsletter.html">Newsletter</a>
       <a href="{root}contact.html" class="btn btn-mustard nav-cta"{cur('contact.html')}>Get In Touch</a>
       <span class="nav-indicator" aria-hidden="true"></span>
@@ -149,6 +155,7 @@ def build_footer(root, ch):
           <li><a href="{root}how-we-help.html">How We Help</a></li>
           <li><a href="{ch}index.html">NDIS Growth</a></li>
           <li><a href="{root}blog.html">Blog</a></li>
+          <li><a href="{root}resources.html">Free resources</a></li>
           <li><a href="{root}newsletter.html">Newsletter</a></li>
           <li><a href="{root}about.html">About</a></li>
           <li><a href="{root}contact.html">Get In Touch</a></li>
