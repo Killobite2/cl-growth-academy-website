@@ -4507,3 +4507,191 @@ body.photo-hero .site-header.is-scrolled {
 }
 .form-error a { color: inherit; }
 .consult .form-error { color: var(--mustard); }
+
+/* ---------------------------------------------------------------
+   32. FREE RESOURCES — /resources.html, /resources/*.html (round 4)
+
+   Everything here is scoped to a resource- class, so no page that
+   existed before round 4 renders any differently. The pages otherwise
+   reuse what is already here: the hero, .section-head, .copy-table,
+   .faq, .lead-panel and its form, .post-card for the hub's cards, and
+   the closing CTA band.
+   --------------------------------------------------------------- */
+
+/* The PDF cover beside the hero copy. A portrait page, so not
+   .hero-plate: that crops to 3:2 for event photographs. 300px is about
+   the width of a printed page at arm's length, enough to read the title
+   on the cover without it outweighing the headline. */
+.hero-resource .wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.resource-cover {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  background: var(--paper);
+}
+
+@media (max-width: 900px) {
+  .hero-resource .wrap {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  /* Small on a phone: the cover confirms what the download is, and the
+     copy and buttons above it are what the visitor came for */
+  .hero-resource .resource-cover { max-width: 200px; }
+}
+
+/* R4-12's access warning: a highlighted box straight under the buttons */
+.resource-warning {
+  margin-top: var(--space-6);
+  max-width: 62ch;
+  padding: var(--space-4) var(--space-5);
+  border-left: 3px solid var(--mustard);
+  border-radius: var(--radius-md);
+  background: rgba(var(--ink-rgb), 0.28);
+  color: var(--cream);
+}
+.resource-warning p { margin: 0; }
+
+/* The signup panel. Narrower than the full wrap, so the two fields and
+   the opt-in line read as one short form rather than a banner. */
+.resource-panel {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.resource-panel > p,
+.resource-panel > ul { color: var(--ink-muted); }
+.resource-panel h2 { margin-bottom: var(--space-4); }
+.resource-panel .form-note { margin-top: var(--space-4); }
+.resource-panel .form-note a { text-decoration: underline; text-underline-offset: 3px; }
+.resource-panel .btn-row { margin-top: var(--space-5); }
+.resource-soft-link { margin-top: var(--space-5); font-weight: 600; }
+
+/* The growth audit's jump menu of 16 areas. Two columns on a desktop,
+   one on a phone, and every link a full-width row at least 44px tall, so
+   a thumb can hit any area without zooming. */
+.resource-jump { margin: var(--space-6) 0 var(--space-7); }
+.resource-jump ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+.resource-jump a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-hairline);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-decoration: none;
+}
+.resource-jump a:hover,
+.resource-jump a:focus-visible { border-color: var(--mustard); }
+.resource-jump .card-num { color: var(--mustard); }
+@media (max-width: 700px) {
+  .resource-jump ol { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Anchored headings land below the sticky header, not under it */
+.copy-page h3[id] { scroll-margin-top: 96px; }
+.copy-page h3[id] .card-num { color: var(--mustard); }
+
+/* The Sources lists quote full web addresses, which are longer than a
+   phone is wide. Let them break anywhere rather than run off the edge. */
+#sources li { overflow-wrap: anywhere; }
+
+/* A table or instruction with a page of the PDF beside it */
+.resource-beside {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: var(--space-7);
+  align-items: start;
+  margin: var(--space-5) 0;
+}
+.resource-beside-media { margin: 0; }
+.resource-beside-media img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  background: var(--paper);
+}
+@media (max-width: 900px) {
+  .resource-beside { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+  .resource-beside-media { max-width: 360px; }
+}
+
+/* The report instruction preview: text to copy, not a pull-quote */
+.resource-instruction {
+  margin: 0;
+  padding: var(--space-5);
+  border-left: 3px solid var(--mustard);
+  border-radius: var(--radius-md);
+  background: var(--ink-2);
+}
+.section-ink2 .resource-instruction { background: var(--ink); }
+.resource-instruction p { margin: 0; color: var(--paper); }
+.resource-instruction p + p { margin-top: var(--space-3); }
+
+/* The hub's cards show the top of each cover, where the title sits */
+.resource-card .post-thumb {
+  aspect-ratio: 3 / 2;
+  object-position: top;
+  background: var(--paper);
+}
+
+/* Lists inside FAQ answers, inset like the answer paragraphs */
+.faq details > ul,
+.faq details > ol {
+  margin: 0 var(--space-6) var(--space-5);
+  color: var(--paper-muted);
+  max-width: 68ch;
+}
+
+/* /resources/thanks.html */
+.resource-downloads { margin: 0; padding-left: var(--space-5); }
+.resource-downloads li { margin-bottom: var(--space-3); }
+.resource-downloads li::marker { color: var(--mustard); font-weight: 700; }
+
+.resource-questions fieldset {
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  border: 0;
+}
+.resource-questions legend {
+  margin-bottom: var(--space-3);
+  font-weight: 700;
+  color: var(--ink);
+}
+.resource-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.resource-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid rgba(var(--ink-rgb), 0.2);
+  border-radius: var(--radius-pill);
+  background: #FFFDF8;
+  color: var(--ink);
+  cursor: pointer;
+}
+.resource-option:has(input:checked) { border-color: var(--oxblood); }
+.resource-option input { accent-color: var(--oxblood); margin: 0; }
+.resource-questions .btn { margin-top: var(--space-6); }
+.resource-questions-done { margin: var(--space-5) 0 0; font-weight: 700; color: var(--ink); }

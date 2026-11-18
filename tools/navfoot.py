@@ -245,6 +245,18 @@ PAGES = {
     'blog/ndis-clients-from-hospitals.html':               ('../', '../ndis-marketing/', 'blog-child'),
     'blog/how-to-choose-an-ndis-marketing-agency.html':    ('../', '../ndis-marketing/', 'blog-child'),
     'ndis-marketing/in-person-workshops.html':             ('../', '',                   'in-person-workshops'),
+    'resources.html':                                      ('',    'ndis-marketing/',    'resources'),
+    'resources/growth-audit-checklist.html':               ('../', '../ndis-marketing/', 'resource-child'),
+    'resources/linkedin-referral-outreach-sop.html':       ('../', '../ndis-marketing/', 'resource-child'),
+    'resources/ndis-linkedin-playbook.html':               ('../', '../ndis-marketing/', 'resource-child'),
+    'resources/block-negative-comments-meta.html':         ('../', '../ndis-marketing/', 'resource-child'),
+    'resources/weekly-meta-ads-report.html':               ('../', '../ndis-marketing/', 'resource-child'),
+    'resources/ndis-marketing-playbook.html':              ('../', '../ndis-marketing/', 'resource-child'),
+    'resources/ndis-event-marketing-playbook.html':        ('../', '../ndis-marketing/', 'resource-child'),
+    'resources/facebook-groups-playbook.html':             ('../', '../ndis-marketing/', 'resource-child'),
+    'resources/ndis-website-checklist.html':               ('../', '../ndis-marketing/', 'resource-child'),
+    'resources/enquiry-response-script.html':              ('../', '../ndis-marketing/', 'resource-child'),
+    'resources/thanks.html':                               ('../', '../ndis-marketing/', 'resources-thanks'),
 }
 
 for path, (root, ch, key) in PAGES.items():

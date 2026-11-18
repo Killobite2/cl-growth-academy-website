@@ -760,6 +760,14 @@
      happened — including the months when the endpoint had stopped
      accepting the post at all. Nothing here may claim a signup on
      anything weaker than ok:true. */
+  /* What a refused signup tells the visitor. /api/subscribe names the field
+     it refused, and those two get a line that says what to fix. Everything
+     else keeps the form's own failure line, with Chris's email in it. */
+  var SIGNUP_ERRORS = {
+    missing_first_name: 'Please add your first name.',
+    invalid_email: 'Please check your email address.'
+  };
+
   function subscribe(form) {
     var btn = form.querySelector('button[type="submit"]');
     var err = form.querySelector('.form-error');
@@ -768,7 +776,11 @@
 
     if (form.dataset.sending) return;
     form.dataset.sending = '1';
-    if (err) err.hidden = true;
+    if (err) {
+      if (!err.dataset.generic) err.dataset.generic = err.innerHTML;
+      err.innerHTML = err.dataset.generic;
+      err.hidden = true;
+    }
 
     var label = btn ? btn.innerHTML : '';
     if (btn) {
@@ -776,13 +788,16 @@
       btn.textContent = 'Sending…';
     }
 
-    function fail() {
+    function fail(code) {
       delete form.dataset.sending;
       if (btn) {
         btn.disabled = false;
         btn.innerHTML = label;
       }
-      if (err) err.hidden = false;
+      if (err) {
+        if (SIGNUP_ERRORS[code]) err.textContent = SIGNUP_ERRORS[code];
+        err.hidden = false;
+      }
     }
 
     // Whatever brought them to this page travels with the signup, so a
@@ -799,8 +814,11 @@
     if (honey && honey.checked) body.botcheck = 'on';
     var first = form.querySelector('input[name="first_name"]');
     if (first && first.value) body.first_name = first.value;
-    var last = form.querySelector('input[name="last_name"]');
-    if (last && last.value) body.last_name = last.value;
+    // The free-resource forms (the hub, the resource pages, newsletter.html)
+    // carry a hidden `resource`. The footer and homepage forms do not.
+    var resourceField = form.querySelector('input[name="resource"]');
+    var resource = resourceField ? resourceField.value : '';
+    if (resource) body.resource = resource;
 
     fetch(form.action, {
       method: 'POST',
@@ -811,17 +829,133 @@
         return res.json().catch(function () { return null; }).then(function (json) {
           // Both have to agree. A 200 carrying ok:false is still a failure,
           // and so is a body that never arrived.
-          if (!res.ok || !json || json.ok !== true) throw new Error('not confirmed');
+          if (!res.ok || !json || json.ok !== true) {
+            var e = new Error('not confirmed');
+            e.code = json && json.error;
+            throw e;
+          }
+          return json;
         });
       })
-      .then(function () {
+      .then(function (json) {
         if (pill) pill.classList.add('is-submitted');
         lockForm(form);
+        if (resource) completeResourceSignup(resource, json.ref);
       })
       .catch(function (e) {
         console.warn('Subscription did not go through:', e);
-        fail();
+        fail(e && e.code);
       });
+  }
+
+  /* ---------------- Free resources ----------------
+
+     A confirmed signup from a resource form goes to /resources/thanks.html.
+     The subscriber reference rides in sessionStorage, never in the address:
+     the thanks page uses it to attach the two follow-up answers to the
+     right subscription, and the address bar, history, analytics and
+     referrer headers never see it. sessionStorage rather than localStorage
+     because it should not outlive the tab. Every storage call is guarded:
+     private modes can throw, and the download links work without it. */
+
+  var RESOURCE_THANKS = '/resources/thanks.html';
+  var SIGNUP_REF_KEY = 'clga_signup_ref';
+
+  // GA4 runs through Google Tag Manager, so events go to the dataLayer and
+  // GTM's tags pick them up. One push per event, so nothing counts twice.
+  function pushEvent(name, params) {
+    window.dataLayer = window.dataLayer || [];
+    var payload = { event: name };
+    for (var k in params) payload[k] = params[k];
+    window.dataLayer.push(payload);
+  }
+
+  function completeResourceSignup(resource, ref) {
+    try {
+      if (ref) window.sessionStorage.setItem(SIGNUP_REF_KEY, ref);
+      else window.sessionStorage.removeItem(SIGNUP_REF_KEY);
+    } catch (e) { /* the thanks page still shows every download */ }
+    pushEvent('resource_signup', { resource: resource });
+    // Long enough for the tick to land and for GTM to send the event.
+    window.setTimeout(function () {
+      window.location.assign(RESOURCE_THANKS);
+    }, 700);
+  }
+
+  /* One event per file on every link to it: download_ plus the file name
+     with no extension and hyphens as underscores, e.g.
+     ndis-comment-block-keywords-block-only.csv fires
+     download_ndis_comment_block_keywords_block_only. Delegated, so it
+     covers every download link on every page, now and later. */
+  function initDownloadEvents() {
+    document.addEventListener('click', function (e) {
+      // Matched on the resolved path, not the href text: the thanks page
+      // links to "files/…", relative to /resources/.
+      var link = e.target.closest ? e.target.closest('a[href]') : null;
+      if (!link || link.pathname.indexOf('/resources/files/') !== 0) return;
+      var file = link.pathname.split('/').pop();
+      if (!file) return;
+      pushEvent('download_' + file.replace(/\.[^.]+$/, '').replace(/-/g, '_'), { file_name: file });
+    });
+  }
+
+  /* The thanks page's two questions. Shown only when this tab holds a
+     subscriber reference from a signup, because there is nothing to attach
+     the answers to otherwise. The download links never depend on it. */
+  function initResourceQuestions() {
+    var box = document.querySelector('.js-resource-questions');
+    if (!box) return;
+    var ref = '';
+    try { ref = window.sessionStorage.getItem(SIGNUP_REF_KEY) || ''; } catch (e) { ref = ''; }
+    if (!ref) return;
+    box.hidden = false;
+
+    var form = box.querySelector('form');
+    var btn = form.querySelector('button[type="submit"]');
+    var err = form.querySelector('.form-error');
+    var done = box.querySelector('.js-resource-questions-done');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (form.dataset.sending) return;
+      var role = form.querySelector('input[name="role"]:checked');
+      var type = form.querySelector('input[name="business_type"]:checked');
+      if (!role && !type) {
+        if (err) err.hidden = false;
+        return;
+      }
+      form.dataset.sending = '1';
+      if (err) err.hidden = true;
+      if (btn) btn.disabled = true;
+
+      fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          ref: ref,
+          role: role ? role.value : '',
+          business_type: type ? type.value : ''
+        })
+      })
+        .then(function (res) {
+          return res.json().catch(function () { return null; }).then(function (json) {
+            if (!res.ok || !json || json.ok !== true) throw new Error('not saved');
+          });
+        })
+        .then(function () {
+          lockForm(form);
+          form.hidden = true;
+          if (done) done.hidden = false;
+          // Answered once is enough for this tab
+          try { window.sessionStorage.removeItem(SIGNUP_REF_KEY); } catch (e2) {}
+        })
+        .catch(function (e2) {
+          console.warn('Answers did not save:', e2);
+          delete form.dataset.sending;
+          if (btn) btn.disabled = false;
+          if (err) err.hidden = false;
+        });
+    });
   }
 
   function bindWaitlistForm(form) {
@@ -1139,6 +1273,8 @@
     initHeroVideo();
     initPhotoHeroVideo();
     initWaitlistForms();
+    initDownloadEvents();
+    initResourceQuestions();
     initConsultDialog();
     initNewsletterNudge();
   }
