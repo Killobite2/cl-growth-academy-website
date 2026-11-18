@@ -61,5 +61,18 @@
   ],
   "rewrites": [
     {"source": "/thank-you", "destination": "/thank-you.html"}
+  ],
+  "headers": [
+    {"source": "/resources/files/growth-audit-checklist.pdf", "headers": [{"key": "X-Robots-Tag", "value": "noindex"}]},
+    {"source": "/resources/files/linkedin-referral-outreach-sop.pdf", "headers": [{"key": "X-Robots-Tag", "value": "noindex"}]},
+    {"source": "/resources/files/ndis-linkedin-playbook.pdf", "headers": [{"key": "X-Robots-Tag", "value": "noindex"}]},
+    {"source": "/resources/files/ndis-marketing-playbook.pdf", "headers": [{"key": "X-Robots-Tag", "value": "noindex"}]},
+    {"source": "/resources/files/ndis-event-marketing-playbook.pdf", "headers": [{"key": "X-Robots-Tag", "value": "noindex"}]},
+    {"source": "/resources/files/facebook-groups-playbook.pdf", "headers": [{"key": "X-Robots-Tag", "value": "noindex"}]},
+    {"source": "/resources/files/weekly-meta-ads-report.pdf", "headers": [{"key": "X-Robots-Tag", "value": "noindex"}]},
+    {"source": "/resources/files/ndis-website-checklist.pdf", "headers": [{"key": "X-Robots-Tag", "value": "noindex"}]},
+    {"source": "/resources/files/enquiry-response-script.pdf", "headers": [{"key": "X-Robots-Tag", "value": "noindex"}]},
+    {"source": "/resources/files/ndis-comment-block-keywords.csv", "headers": [{"key": "Content-Type", "value": "text/csv; charset=utf-8"}]},
+    {"source": "/resources/files/ndis-comment-block-keywords-block-only.csv", "headers": [{"key": "Content-Type", "value": "text/csv; charset=utf-8"}]}
   ]
 }

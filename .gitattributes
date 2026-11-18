@@ -1,0 +1,4 @@
+# Downloads in /resources/files/ are served exactly as supplied. Without this,
+# core.autocrlf would store the CRLF CSVs with LF line endings and Vercel
+# would deploy files that differ from the originals.
+resources/files/** -text
