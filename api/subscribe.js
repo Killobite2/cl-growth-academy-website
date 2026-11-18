@@ -26,7 +26,9 @@
 
    2. PROFILE (has a ref, no email). The two questions on the thanks page.
       Saves role and business_type to the subscription, and when the role
-      is Owner posts one message to Slack.
+      is Owner posts one message to Slack. The page also sends the first
+      name and resource it kept from signup; the alert uses them only when
+      beehiiv's read-back does not include them.
 
    beehiiv custom fields used here, and they must exist on the publication
    with exactly these names: "First Name", "Last Name", "resource", "role",
@@ -162,10 +164,22 @@ function failed(res, err) {
   return send(res, 504, { ok: false, error: err.kind });
 }
 
+/* A custom field's value from a subscription read back from beehiiv.
+   Matched loosely ("First Name", "first_name", "firstname" are one field):
+   the first preview test saved the name correctly yet the exact-name match
+   found nothing, so the exact spelling beehiiv reads back cannot be relied
+   on. */
+function fieldKey(name) {
+  return String(name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
 function fieldValue(subscription, name) {
   var fields = (subscription && subscription.custom_fields) || [];
+  var want = fieldKey(name);
   for (var i = 0; i < fields.length; i++) {
-    if (fields[i] && fields[i].name === name) return String(fields[i].value == null ? '' : fields[i].value);
+    if (fields[i] && fieldKey(fields[i].name) === want && fields[i].value != null && fields[i].value !== '') {
+      return String(fields[i].value);
+    }
   }
   return '';
 }
@@ -282,21 +296,34 @@ async function profile(res, body, key, publication) {
   if (role === 'Owner' && !process.env.SLACK_SIGNUP_WEBHOOK_URL) {
     console.warn('[subscribe] SLACK_SIGNUP_WEBHOOK_URL is not set, owner alert skipped');
   } else if (role === 'Owner') {
-    // The page only holds the ref, so the name, email and resource come back
-    // from beehiiv rather than from anything the browser could have edited.
+    /* The email always comes back from beehiiv. The first name and resource
+       come from beehiiv when it returns them, and otherwise from what this
+       tab sent at signup, which the page carries beside the ref in
+       sessionStorage (never in an address). Those two only ever reach the
+       Slack message, never beehiiv, so a value edited in the browser can
+       mislabel one alert and nothing else. */
     var subscription = null;
     try {
-      var json = await beehiiv('GET', path + '?expand[]=custom_fields', key);
+      var json = await beehiiv('GET', path + '?expand%5B%5D=custom_fields', key);
       subscription = json && json.data;
     } catch (err) {
       console.error('[subscribe] could not read the subscription for the owner alert: ' + err.message);
     }
+    var firstName = fieldValue(subscription, 'First Name');
+    var resource = fieldValue(subscription, 'resource');
+    if (subscription && (!firstName || !resource)) {
+      // Field names only, never values, so the log holds no personal data
+      var names = ((subscription.custom_fields) || []).map(function (f) { return f && f.name; });
+      console.warn('[subscribe] owner alert: beehiiv returned custom fields ' + JSON.stringify(names) +
+        (firstName ? '' : ', no first name') + (resource ? '' : ', no resource') + '; using the values from signup');
+    }
+    var sentResource = clean(body.resource, 64);
     await alertOwnerSignup({
-      firstName: fieldValue(subscription, 'First Name'),
+      firstName: firstName || clean(body.first_name, 80),
       email: subscription && subscription.email,
       role: role,
       businessType: businessType,
-      resource: fieldValue(subscription, 'resource')
+      resource: resource || (RESOURCES.indexOf(sentResource) !== -1 ? sentResource : '')
     });
   }
 

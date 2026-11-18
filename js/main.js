@@ -840,7 +840,7 @@
       .then(function (json) {
         if (pill) pill.classList.add('is-submitted');
         lockForm(form);
-        if (resource) completeResourceSignup(resource, json.ref);
+        if (resource) completeResourceSignup(resource, json.ref, body.first_name || '');
       })
       .catch(function (e) {
         console.warn('Subscription did not go through:', e);
@@ -860,6 +860,10 @@
 
   var RESOURCE_THANKS = '/resources/thanks.html';
   var SIGNUP_REF_KEY = 'clga_signup_ref';
+  // Carried beside the ref for the owner alert on the thanks page, in case
+  // beehiiv's read-back leaves them out. sessionStorage only, never a URL.
+  var SIGNUP_NAME_KEY = 'clga_signup_first_name';
+  var SIGNUP_RESOURCE_KEY = 'clga_signup_resource';
 
   // GA4 runs through Google Tag Manager, so events go to the dataLayer and
   // GTM's tags pick them up. One push per event, so nothing counts twice.
@@ -870,10 +874,27 @@
     window.dataLayer.push(payload);
   }
 
-  function completeResourceSignup(resource, ref) {
+  function storedSignup(key) {
+    try { return window.sessionStorage.getItem(key) || ''; } catch (e) { return ''; }
+  }
+
+  function clearSignup() {
     try {
-      if (ref) window.sessionStorage.setItem(SIGNUP_REF_KEY, ref);
-      else window.sessionStorage.removeItem(SIGNUP_REF_KEY);
+      [SIGNUP_REF_KEY, SIGNUP_NAME_KEY, SIGNUP_RESOURCE_KEY].forEach(function (k) {
+        window.sessionStorage.removeItem(k);
+      });
+    } catch (e) { /* nothing to clear */ }
+  }
+
+  function completeResourceSignup(resource, ref, firstName) {
+    try {
+      if (ref) {
+        window.sessionStorage.setItem(SIGNUP_REF_KEY, ref);
+        window.sessionStorage.setItem(SIGNUP_NAME_KEY, String(firstName).trim().slice(0, 80));
+        window.sessionStorage.setItem(SIGNUP_RESOURCE_KEY, resource);
+      } else {
+        clearSignup();
+      }
     } catch (e) { /* the thanks page still shows every download */ }
     pushEvent('resource_signup', { resource: resource });
     // Long enough for the tick to land and for GTM to send the event.
@@ -933,6 +954,8 @@
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           ref: ref,
+          first_name: storedSignup(SIGNUP_NAME_KEY),
+          resource: storedSignup(SIGNUP_RESOURCE_KEY),
           role: role ? role.value : '',
           business_type: type ? type.value : ''
         })
@@ -947,7 +970,7 @@
           form.hidden = true;
           if (done) done.hidden = false;
           // Answered once is enough for this tab
-          try { window.sessionStorage.removeItem(SIGNUP_REF_KEY); } catch (e2) {}
+          clearSignup();
         })
         .catch(function (e2) {
           console.warn('Answers did not save:', e2);
