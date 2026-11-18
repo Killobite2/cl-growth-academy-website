@@ -19,6 +19,7 @@ Contact: chris@thegrowthacademy.com.au, +61 431 584 725
 - [Referrals and partnerships](https://thegrowthacademy.com.au/ndis-marketing/referrals.html): support coordinator, allied health and hospital discharge relationships, and referral tracking
 - [Sales and enquiry process](https://thegrowthacademy.com.au/ndis-marketing/sales-process.html): response time, intake conversations, follow-up and team coaching
 - [NDIS business coaching and workshops](https://thegrowthacademy.com.au/ndis-marketing/coaching.html): coaching and workshops for owners, intake teams and BDMs, with a written strategy, a ranked 90-day roadmap and team sessions on referrals
+- [In-person NDIS workshops](https://thegrowthacademy.com.au/ndis-marketing/in-person-workshops.html): in-person NDIS workshops, strategy days and team sessions for NDIS and aged care providers
 - [Aged care marketing](https://thegrowthacademy.com.au/aged-care-marketing.html): marketing for Support at Home and residential aged care providers: Google Ads, SEO, referrals and enquiry handling under the new Aged Care Act
 
 ## About
@@ -39,6 +40,21 @@ Contact: chris@thegrowthacademy.com.au, +61 431 584 725
 - [How to find and get NDIS clients](https://thegrowthacademy.com.au/blog/how-to-get-ndis-clients.html): every way a provider finds clients, through referrals, Google, AI search, social media, ads, email and a fast enquiry process
 - [NDIS Facebook ads guide](https://thegrowthacademy.com.au/blog/ndis-facebook-ads-guide.html): Facebook and Instagram setup, targeting, website or lead forms, compliance, and when LinkedIn ads reach referrers
 - [How to get NDIS clients from hospitals](https://thegrowthacademy.com.au/blog/ndis-clients-from-hospitals.html): what discharge planners, social workers and case managers want from a provider, and how to build the relationship
+- [How to choose an NDIS marketing agency](https://thegrowthacademy.com.au/blog/how-to-choose-an-ndis-marketing-agency.html): what to check, the questions to ask, contract red flags, who should own your ad accounts and what drives the cost
+
+## Resources
+
+- [Free NDIS marketing resources](https://thegrowthacademy.com.au/resources.html): free NDIS marketing templates and checklists for providers: a 160-point growth audit, LinkedIn and event playbooks and Meta ad guides
+- [Growth Audit Checklist](https://thegrowthacademy.com.au/resources/growth-audit-checklist.html): 160 checks across 16 areas, from your Google profile to your referral partners, all readable on the page
+- [LinkedIn Referral Partner Outreach SOP](https://thegrowthacademy.com.au/resources/linkedin-referral-outreach-sop.html): A step-by-step process your assistant can run to connect with support coordinators, allied health, other providers and hospital teams, then turn those connections into referral relationships
+- [Block Negative Comments on Your Meta Ads](https://thegrowthacademy.com.au/resources/block-negative-comments-meta.html): A 10-minute setup in Meta's comment moderation, with keyword lists for NDIS pages
+- [NDIS Marketing Playbook](https://thegrowthacademy.com.au/resources/ndis-marketing-playbook.html): How to stand out, win referrals and know your numbers: six audience profiles, awareness stages, before-and-after copy, a cost-per-Participant worksheet and a channel matrix
+- [NDIS LinkedIn Playbook](https://thegrowthacademy.com.au/resources/ndis-linkedin-playbook.html): Win referrals on LinkedIn from support coordinators, hospital teams and allied health
+- [NDIS Event Marketing Playbook](https://thegrowthacademy.com.au/resources/ndis-event-marketing-playbook.html): Pick the expos, conferences and meetups worth your time, then run each one: a scoring sheet, persona brief, one-minute pitches and a 48-hour follow-up plan
+- [Facebook Groups Playbook for NDIS Providers](https://thegrowthacademy.com.au/resources/facebook-groups-playbook.html): Build trust and win enquiries in local Facebook Groups: a daily routine with pacing limits, how to answer recommendation requests, and privacy rules
+- [Weekly Meta Ads Report Setup Guide](https://thegrowthacademy.com.au/resources/weekly-meta-ads-report.html): Get your Facebook and Instagram ad numbers sent to Slack or email every Monday, with enquiries and cost per enquiry, plus a weekly template and monthly review
+- [NDIS Provider Website Checklist](https://thegrowthacademy.com.au/resources/ndis-website-checklist.html): 91 yes or no checks across 14 parts of an NDIS provider website, all readable on the page, from the homepage and forms to tracking and compliance
+- [Enquiry Response Checklist and Call Script](https://thegrowthacademy.com.au/resources/enquiry-response-script.html): Who owns each enquiry, what to say on the first call to a family or a referrer, and how to follow up across week one, with text scripts, a tracker and a Monday review
 
 ## Optional
 
